@@ -1,27 +1,24 @@
-import React from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
-  Link
 } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import Search from "./pages/Search";
-import Entry from "./pages/Entry";
 
+import LandingPage from "./routes/LandingPage";
+import Search from "./routes/Search";
+import Entry from "./routes/Entry";
 import Navigation from "./components/Navigation";
 
-
-export default function App() {
+const App = () => {
   return (
-    <Router>
+    <>
       <Navigation />
-        <Routes>
-          <Route path='/search' element={<Search />} />
-          <Route path='/entry' element={<Entry />} />
-          <Route path='/' element={<LandingPage />} />
-        </Routes>
-    </Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="search" element={<Search />} />
+        <Route path="entry" element={<Entry />} />
+      </Routes>
+    </>
   );
-}
+};
 
+export default App;
