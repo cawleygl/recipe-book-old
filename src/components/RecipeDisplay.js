@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 
-const RecipeDisplay = () => {
+const RecipeDisplay = ({ingredientToggle, directionToggle, nutritionToggle}) => {
   let recipes = getRecipes();
   return (
     <>
@@ -29,24 +29,37 @@ const RecipeDisplay = () => {
                     <img src={recipe.image} alt={recipe.name} width='100%' ></img>
                   </Col>
                   <Col xs={8}>
-                    <h4>Ingredients</h4>
-                    <ol>
-                      {recipe.ingredients.map((ingredient) => (
-                        <li key={recipe.ingredients.indexOf(ingredient)}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
-                      ))}
-                    </ol>
-                    <h4>Directions</h4>
-                    <ol>
-                      {recipe.directions.map((direction) => (
-                        <li key={recipe.directions.indexOf(direction)}>{direction}</li>
-                      ))}
-                    </ol>
-                    <h5>Nutrition Facts</h5>
-                    <ul>
-                      {recipe.nutrition_facts.map((fact) => (
-                        <li key={recipe.nutrition_facts.indexOf(fact)}>{fact.name}: {fact.amount}{fact.unit}</li>
-                      ))}
-                    </ul>
+                    {ingredientToggle ?
+                      <>
+                        <h4>Ingredients</h4>
+                        <ol>
+                          {recipe.ingredients.map((ingredient) => (
+                            <li key={recipe.ingredients.indexOf(ingredient)}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
+                          ))}
+                        </ol>
+                      </>
+                      : null}
+                    {directionToggle ?
+                      <>
+                        <h4>Directions</h4>
+                        <ol>
+                          {recipe.directions.map((direction) => (
+                            <li key={recipe.directions.indexOf(direction)}>{direction}</li>
+                          ))}
+                        </ol>
+                      </>
+                      : null}
+
+                    {nutritionToggle ?
+                      <>
+                        <h5>Nutrition Facts</h5>
+                        <ul>
+                          {recipe.nutrition_facts.map((fact) => (
+                            <li key={recipe.nutrition_facts.indexOf(fact)}>{fact.name}: {fact.amount}{fact.unit}</li>
+                          ))}
+                        </ul>
+                      </>
+                      : null}
 
                   </Col>
                 </Row>

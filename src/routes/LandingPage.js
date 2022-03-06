@@ -1,6 +1,13 @@
+import RecipeDisplay from "../components/RecipeDisplay";
+
+
 const LandingPage = () => {
   return (
-    <h1>Landing Page</h1>
+    <RecipeDisplay
+      ingredientToggle={true}
+      directionToggle={true}
+      nutritionToggle={true}
+    />
   )
 }
 
