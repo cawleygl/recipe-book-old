@@ -1,6 +1,6 @@
 const Search = () => {
   return (
-    <div>Hello World</div>
+    <div>Search</div>
   )
 }
 
