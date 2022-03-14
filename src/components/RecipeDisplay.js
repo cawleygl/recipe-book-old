@@ -4,18 +4,19 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
+import placeholder from '../assets/logo512.png'
 
-const RecipeDisplay = ({ingredientToggle, directionToggle, nutritionToggle}) => {
-  let recipes = getRecipes();
+
+const RecipeDisplay = ({ recipes, ingredientToggle, directionToggle }) => {
   return (
     <>
-      <Accordion>
+      <Accordion alwaysOpen={true}>
         {recipes.map((recipe) => (
           <Accordion.Item eventKey={recipe.id} key={recipe.id} >
             <Accordion.Header>
               {recipe.name}
-              {recipe.nutrition_tags.map((tag) => (
-                <div key={recipe.nutrition_tags.indexOf(tag)}>
+              {recipe.tags.map((tag) => (
+                <div key={recipe.tags.indexOf(tag)}>
                   <Badge pill bg="primary">{tag}</Badge>{' '}
                 </div>
               ))}
@@ -24,11 +25,15 @@ const RecipeDisplay = ({ingredientToggle, directionToggle, nutritionToggle}) => 
             <Accordion.Body>
               <Container>
                 <Row>
-                  <Col xs={4}>
+                  <Col xs={12}>
                     <h3>{recipe.name}</h3>
-                    <img src={recipe.image} alt={recipe.name} width='100%' ></img>
                   </Col>
-                  <Col xs={8}>
+                </Row>
+                <Row>
+                  <Col xs={2}>
+                    <img src={recipe.image ? recipe.image : placeholder} alt={recipe.name} width='100%' ></img>
+                  </Col>
+                  <Col xs={10}>
                     {ingredientToggle ?
                       <>
                         <h4>Ingredients</h4>
@@ -49,18 +54,6 @@ const RecipeDisplay = ({ingredientToggle, directionToggle, nutritionToggle}) => 
                         </ol>
                       </>
                       : null}
-
-                    {nutritionToggle ?
-                      <>
-                        <h5>Nutrition Facts</h5>
-                        <ul>
-                          {recipe.nutrition_facts.map((fact) => (
-                            <li key={recipe.nutrition_facts.indexOf(fact)}>{fact.name}: {fact.amount}{fact.unit}</li>
-                          ))}
-                        </ul>
-                      </>
-                      : null}
-
                   </Col>
                 </Row>
               </Container>
