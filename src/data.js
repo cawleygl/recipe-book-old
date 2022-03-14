@@ -19,13 +19,7 @@ let recipes = [
       "Remove from heat, add half of the grated Pecorino Romano, and toss or stir rapidly to combine. Once cheese is fully emulsified in the sauce, add remaining Pecorino Romano, and toss or stir rapidly once more to combine. Adjust sauce consistency as needed with more pasta water. Season with salt and pepper, if needed. Serve right away, passing more cheese at the table.",
 
     ],
-    nutrition_facts: [
-      { name: "Calories", amount: 550, unit: null},
-      { name: "Fat", amount: 43, unit: "g"},
-      { name: "Carbs", amount: 28, unit: "g"},
-      { name: "Protien", amount: 13, unit: "g"},
-    ],
-    nutrition_tags: [
+    tags: [
       'vegan', 'gluten-free', 'dairy-free'
     ]
   },
