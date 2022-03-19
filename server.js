@@ -19,9 +19,10 @@ mongoose.connect(
   process.env.MONGODB_URI || 'mongodb://localhost/recipe-book',
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
+    useUnifiedTopology: true
+  }, err => {
+    if (err) throw err;
+    console.log('Connected to MongoDB!!!')
   }
 );
 
