@@ -19,7 +19,6 @@ const App = () => {
           <Route path="entry" element={<Entry />} />
         </Routes>
       </Container>
-
     </>
   );
 };
