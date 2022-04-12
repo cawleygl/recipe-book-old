@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { getRecipes } from "../data";
 import Accordion from 'react-bootstrap/Accordion'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -20,9 +19,9 @@ const RecipeDisplay = ({ recipes, ingredientToggle, directionToggle }) => {
         <Accordion alwaysOpen={true}>
           {recipes ?
             recipes.map((recipe) => (
-              <Accordion.Item eventKey={recipe.id} key={recipe.id} >
+              <Accordion.Item eventKey={recipe._id} key={recipe._id} >
                 <Accordion.Header>
-                  <Link to={"/recipes/" + recipe.id}>
+                  <Link to={"/recipes/" + recipe._id}>
                     {recipe.name}
                   </Link>
                   {recipe.tags.map((tag) => (
@@ -80,10 +79,10 @@ const RecipeDisplay = ({ recipes, ingredientToggle, directionToggle }) => {
     return (
       <>
         <Accordion alwaysOpen={true}>
-          <Accordion.Item eventKey={recipes.id} key={recipes.id} >
+          <Accordion.Item eventKey={recipes._id} key={recipes._id} >
 
             <Accordion.Header>
-              <Link to={"/recipes/" + recipes.id}>
+              <Link to={"/recipes/" + recipes._id}>
                 {recipes.name}
               </Link>
               {recipes.tags.map((tag) => (
