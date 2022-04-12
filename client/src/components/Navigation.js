@@ -18,6 +18,10 @@ const Navigation = () => {
             <LinkContainer to="/entry">
               <Nav.Link>Entry</Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/recipes">
+              <Nav.Link>Recipes</Nav.Link>
+            </LinkContainer>
+
           </Nav>
         </Navbar.Collapse>
       </Container>
