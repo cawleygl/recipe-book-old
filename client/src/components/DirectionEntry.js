@@ -74,6 +74,7 @@ const About = () => {
             <Button variant="outline-danger" id="delete-button" onClick={deleteArrayValue}>
               <FontAwesomeIcon icon={faTrash} />
             </Button>
+            
           </InputGroup>
         )}
         <Button variant="primary" onClick={console.log("submit")}>
