@@ -24,28 +24,56 @@ const About = () => {
   }
   // Setting our component's initial state
   const [recipes, setRecipes] = useState([]);
+  const [steps, setSteps] = useState(1);
+
   const [ingredientObject, setIngredientObject] = useState({});
   const [arrayValue, setArrayValue] = useState([""]);
 
+
+  const handleSubmit = (event) => {
+    console.log("submit");
+  };
+
+  const updateSteps = (event) => {
+
+    const steps = event.target.value;
+    const operator = event.target.dataset.operator;
+
+    console.log("Steps", steps, "Operator", operator)
+
+    if (operator === "-") {
+      if (steps <= 1) {
+        setSteps(1)
+      } else {
+        setSteps(parseInt(steps) - 1)
+      }
+    } else if (operator === "+") {
+      setSteps(parseInt(steps) + 1)
+    } else {
+      setSteps(steps)
+    }
+  }
+
   const updateArrayValue = (event) => {
+
+    const value = event.target.value;
+    const index = event.target.dataset.index;
+
     // Destructure current state array
     const arrayvalue = [...arrayValue];
+    arrayvalue[parseInt(index)] = value;
 
-    arrayvalue[parseInt(event.target.name)] = event.target.value;
-    console.log(parseInt(event.target.name), arrayvalue.length)
-    if (parseInt(event.target.name) === arrayvalue.length - 1) {
-      arrayvalue.push(`Step {}`);
-    }
-
-    console.log(event.target.name)
+    console.log(arrayvalue);
     setArrayValue(arrayvalue);
   };
 
   const deleteArrayValue = (event) => {
+    const index = event.target.dataset.index;
+
     // Destructure current state array
     const arrayvalue = [...arrayValue];
 
-    arrayvalue.splice(parseInt(event.target.name), 1)
+    arrayvalue.splice(parseInt(index), 1)
 
     setArrayValue(arrayvalue);
   };
@@ -53,6 +81,9 @@ const About = () => {
   useEffect(() => {
     console.log("arrayValue", arrayValue);
   }, [arrayValue])
+  useEffect(() => {
+    console.log("steps", steps);
+  }, [steps])
 
 
   return (
@@ -60,13 +91,35 @@ const About = () => {
       <p>{JSON.stringify(arrayValue, null, 2)}</p>
       <Form>
         <Form.Label>Directions</Form.Label>
+        <Row>
+          <Col xs={4} md={3} lg={2}>
+            <InputGroup className="mb-3">
+              <Button variant="outline-primary" id="minus-button" value={steps} data-operator={"-"} onClick={updateSteps}>
+                -
+              </Button>
+              <Form.Control
+                type="text"
+                placeholder="Number of Steps"
+                title="numberOfSteps"
+                onChange={(event) => setSteps(event.target.value)}
+                value={steps}
+                aria-label="Text input number of steps"
+                aria-describedby="recipe-number-of-steps"
+              />
+              <Button variant="outline-primary" id="plus-button" value={steps} data-operator={"+"} onClick={updateSteps}>
+                +
+              </Button>
+            </InputGroup>
+          </Col>
+        </Row>
+
         {arrayValue && arrayValue.map((direction, index) =>
           <InputGroup className="mb-3">
             <Form.Control
               type="text"
               placeholder="Directions"
               title="directions"
-              name={index}
+              data-index={index}
               onChange={updateArrayValue}
               aria-label="Text input recipe directions"
               aria-describedby="recipe-directions"
@@ -74,10 +127,10 @@ const About = () => {
             <Button variant="outline-danger" id="delete-button" onClick={deleteArrayValue}>
               <FontAwesomeIcon icon={faTrash} />
             </Button>
-            
+
           </InputGroup>
         )}
-        <Button variant="primary" onClick={console.log("submit")}>
+        <Button id="submit-button" variant="primary" onClick={handleSubmit}>
           Submit Recipe
         </Button>
       </Form>
