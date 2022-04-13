@@ -73,7 +73,7 @@ function Recipes() {
               {recipes.map(recipe => (
                 <ListGroup.Item key={recipe._id}>
                     <RecipeDisplay
-                      recipes={[recipe]}
+                      recipes={recipe}
                       ingredientToggle={true}
                       directionToggle={true}
                       nutritionToggle={true}
