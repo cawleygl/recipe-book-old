@@ -68,7 +68,7 @@ function Recipes() {
       <Row>
         <Col size="sm-12">
           <h1>Recipes</h1>
-          <p>{recipes}</p>
+          <p>{JSON.stringify(recipes, null, 2)}</p>
           {/* {recipes.length ? (
             <ListGroup>
               {recipes.map(recipe => (
