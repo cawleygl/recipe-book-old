@@ -68,7 +68,8 @@ function Recipes() {
       <Row>
         <Col size="sm-12">
           <h1>Recipes</h1>
-          {recipes.length ? (
+          <p>{recipes}</p>
+          {/* {recipes.length ? (
             <ListGroup>
               {recipes.map(recipe => (
                 <ListGroup.Item key={recipe._id}>
@@ -86,7 +87,7 @@ function Recipes() {
             </ListGroup>
           ) : (
             <h3>No Results to Display</h3>
-          )}
+          )} */}
         </Col>
       </Row>
     </Container>
