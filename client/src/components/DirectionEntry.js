@@ -3,7 +3,7 @@ import RecipeDisplay from "../components/RecipeDisplay";
 import API from "../utils/API";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -15,123 +15,128 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import CloseButton from 'react-bootstrap/CloseButton'
-
+import Toast from 'react-bootstrap/Toast'
 
 
 const About = () => {
   function capitalizeName(name) {
     return name.replace(/\b(\w)/g, s => s.toUpperCase());
   }
-  // Setting our component's initial state
-  const [recipes, setRecipes] = useState([]);
-  const [steps, setSteps] = useState(1);
+  const [currentDirection, setCurrentDirection] = useState("");
+  const [directionArray, setDirectionArray] = useState([""]);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const [ingredientObject, setIngredientObject] = useState({});
-  const [arrayValue, setArrayValue] = useState([""]);
-
-
-  const handleSubmit = (event) => {
-    console.log("submit");
+  const isEditing = (index) => {
+    if (currentStep === index) {
+      return false;
+    }
+    return true;
   };
 
-  const updateSteps = (event) => {
+  const addStep = (event) => {
+    const arrayvalue = [...directionArray];
+    console.log(event.target);
+    arrayvalue.push("");
+    setDirectionArray(arrayvalue);
+    setCurrentStep(directionArray.length)
+    setCurrentDirection("")
+  };
 
-    const steps = event.target.value;
-    const operator = event.target.dataset.operator;
+  const updateCurrentDirection = (event) => {
+    const value = event.target.value;
+    // Destructure current state array
+    let arrayvalue = [...directionArray];
+    arrayvalue[currentStep] = value;
+    setDirectionArray(arrayvalue);
+    setCurrentDirection(event.target.value);
+  };
 
-    console.log("Steps", steps, "Operator", operator)
+  const deleteStep = (event) => {
+    const index = event.target.closest('button').dataset.index;
+    // Destructure current state array
+    const arrayvalue = [...directionArray];
+    // Remove value at index
+    arrayvalue.splice(index, 1);
+    setDirectionArray(arrayvalue);
 
-    if (operator === "-") {
-      if (steps <= 1) {
-        setSteps(1)
-      } else {
-        setSteps(parseInt(steps) - 1)
-      }
-    } else if (operator === "+") {
-      setSteps(parseInt(steps) + 1)
-    } else {
-      setSteps(steps)
-    }
+    // change current step to last step
+    setCurrentStep(arrayvalue.length - 1)
+    setCurrentDirection(arrayvalue[arrayvalue.length - 1]);
+  };
+
+  const selectStepToEdit = (event) => {
+    const index = event.target.closest('button').dataset.index;
+    setCurrentStep(parseInt(index));
+    // Destructure current state array
+    const arrayvalue = [...directionArray];
+    setCurrentDirection(arrayvalue[index]);
+    console.log(index);
+  };
+
+
+  const submitDirection = (event) => {
+    console.log("submit")
   }
 
-  const updateArrayValue = (event) => {
-
-    const value = event.target.value;
-    const index = event.target.dataset.index;
-
-    // Destructure current state array
-    const arrayvalue = [...arrayValue];
-    arrayvalue[parseInt(index)] = value;
-
-    console.log(arrayvalue);
-    setArrayValue(arrayvalue);
-  };
-
-  const deleteArrayValue = (event) => {
-    const index = event.target.dataset.index;
-
-    // Destructure current state array
-    const arrayvalue = [...arrayValue];
-
-    arrayvalue.splice(parseInt(index), 1)
-
-    setArrayValue(arrayvalue);
-  };
-
   useEffect(() => {
-    console.log("arrayValue", arrayValue);
-  }, [arrayValue])
+    console.log("directionArray", directionArray);
+  }, [directionArray])
   useEffect(() => {
-    console.log("steps", steps);
-  }, [steps])
+    console.log("currentStep", currentStep);
+  }, [currentStep])
+
 
 
   return (
     <Container>
-      <p>{JSON.stringify(arrayValue, null, 2)}</p>
+      <h4>Directions</h4>
+      <ol>
+        {directionArray.map((direction, index) => (
+          <li key={index}>
+            <Row>
+              <InputGroup className="mb-2">
+                <Col sm="11">
+                  <Form.Control
+                    type="text"
+                    placeholder={`Step ${index + 1}`}
+                    title={`step-${index + 1}`}
+                    value={direction}
+                    readOnly
+                    plaintext={isEditing(index)}
+                    aria-label="Text input recipe directions"
+                    aria-describedby="recipe-directions"
+                  />
+                </Col>
+                <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectStepToEdit}>
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </Button>
+                <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+              </InputGroup>
+            </Row>
+
+          </li>
+        ))}
+      </ol>
       <Form>
-        <Form.Label>Directions</Form.Label>
-        <Row>
-          <Col xs={4} md={3} lg={2}>
-            <InputGroup className="mb-3">
-              <Button variant="outline-primary" id="minus-button" value={steps} data-operator={"-"} onClick={updateSteps}>
-                -
-              </Button>
-              <Form.Control
-                type="text"
-                placeholder="Number of Steps"
-                title="numberOfSteps"
-                onChange={(event) => setSteps(event.target.value)}
-                value={steps}
-                aria-label="Text input number of steps"
-                aria-describedby="recipe-number-of-steps"
-              />
-              <Button variant="outline-primary" id="plus-button" value={steps} data-operator={"+"} onClick={updateSteps}>
-                +
-              </Button>
-            </InputGroup>
-          </Col>
-        </Row>
+        <InputGroup className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Directions"
+            title="directions"
+            onChange={updateCurrentDirection}
+            value={currentDirection}
+            aria-label="Text input recipe directions"
+            aria-describedby="recipe-directions"
+          />
+          <Button variant="outline-primary" id="add-step-button" onClick={addStep}>
+            <FontAwesomeIcon icon={faPlus} />
+          </Button>
 
-        {arrayValue && arrayValue.map((direction, index) =>
-          <InputGroup className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder="Directions"
-              title="directions"
-              data-index={index}
-              onChange={updateArrayValue}
-              aria-label="Text input recipe directions"
-              aria-describedby="recipe-directions"
-            />
-            <Button variant="outline-danger" id="delete-button" onClick={deleteArrayValue}>
-              <FontAwesomeIcon icon={faTrash} />
-            </Button>
-
-          </InputGroup>
-        )}
-        <Button id="submit-button" variant="primary" onClick={handleSubmit}>
-          Submit Recipe
+        </InputGroup>
+        <Button variant="primary" id="submit-button" onClick={submitDirection}>
+          Submit
         </Button>
       </Form>
     </Container>
