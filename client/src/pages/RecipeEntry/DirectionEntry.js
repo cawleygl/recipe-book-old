@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import RecipeDisplay from "../components/RecipeDisplay";
-import API from "../utils/API";
+import RecipeDisplay from "../../components/RecipeDisplay";
+import API from "../../utils/API";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'

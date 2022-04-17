@@ -5,7 +5,7 @@ import {
 import Container from 'react-bootstrap/Container';
 import LandingPage from "./pages/LandingPage";
 import Search from "./pages/Search";
-import Entry from "./pages/Entry";
+import Entry from "./pages/RecipeEntry/EntryPage";
 import Recipes from "./pages/Recipes";
 
 import Navigation from "./components/Navigation";

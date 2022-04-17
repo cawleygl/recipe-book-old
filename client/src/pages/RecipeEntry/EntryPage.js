@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import RecipeDisplay from "../components/RecipeDisplay";
-import DirectionEntry from "../components/DirectionEntry";
+import RecipeDisplay from "../../components/RecipeDisplay";
+import DirectionEntry from "./DirectionEntry";
 
-import API from "../utils/API";
+import API from "../../utils/API";
 import Container from 'react-bootstrap/Container';
 
 const Entry = () => {
