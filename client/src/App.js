@@ -3,10 +3,10 @@ import {
   Route,
 } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
-import LandingPage from "./routes/LandingPage";
-import Search from "./routes/Search";
-import Entry from "./routes/Entry";
-import Recipes from "./routes/Recipes";
+import LandingPage from "./pages/LandingPage";
+import Search from "./pages/Search";
+import Entry from "./pages/Entry";
+import Recipes from "./pages/Recipes";
 
 import Navigation from "./components/Navigation";
 
