@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import RecipeDisplay from "../../components/RecipeDisplay";
 import DirectionEntry from "./DirectionEntry";
 import IngredientEntry from "./IngredientEntry";
+import TagsEntry from "./TagsEntry";
+
+
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 
 import API from "../../utils/API";
@@ -10,11 +15,24 @@ import Container from 'react-bootstrap/Container';
 
 const Entry = () => {
   // Setting our component's initial state
+  const [recipeName, setRecipeName] = useState("");
+  const [recipeImg, setRecipeImg] = useState("");
+
   const [recipes, setRecipes] = useState([])
   const [formObject, setFormObject] = useState({})
   const [ingredientObject, setIngredientObject] = useState({})
   const [directionArr, setDirectionArr] = useState([])
 
+  useEffect(() => {
+    console.log("recipeName", recipeName);
+  }, [recipeName])
+
+  const handleRecipeName = (event) => {
+    setRecipeName(event.target.value);
+  };
+  const handleRecipeImg = (event) => {
+    setRecipeImg(event.target.value);
+  };
 
   // Load all recipes and store them with setRecipes
   useEffect(() => {
@@ -94,6 +112,7 @@ const Entry = () => {
 
   return (
     <Container>
+      <h1 className="my-3">New Recipe</h1>
 
       {/* <RecipeDisplay
         recipes={[formObject]}
@@ -102,8 +121,39 @@ const Entry = () => {
         nutritionToggle={true}
       /> */}
 
+      <h4 className="my-3">Name</h4>
+      <InputGroup className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Name"
+          title="name"
+          onChange={handleRecipeName}
+          value={recipeName}
+          aria-label="Text input recipe name"
+          aria-describedby="recipe-name-entry"
+        />
+      </InputGroup>
+
+      <h4 className="my-3">Image</h4>
+      <InputGroup className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Image Link"
+          title="image"
+          onChange={handleRecipeImg}
+          value={recipeImg}
+          aria-label="Text input recipe image"
+          aria-describedby="recipe-image-entry"
+        />
+      </InputGroup>
+
       <IngredientEntry />
+
       <DirectionEntry />
+
+      <TagsEntry />
+
+
       <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={() => (console.log("Submit"))}>
         Submit Recipe
       </Button>

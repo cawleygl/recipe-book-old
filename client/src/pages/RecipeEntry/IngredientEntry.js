@@ -15,7 +15,7 @@ import Stack from 'react-bootstrap/Stack'
 import { capitalizeName } from "../../utils/useTools";
 
 
-const About = () => {
+const IngredientEntry = () => {
   const [currentNumber, setCurrentNumber] = useState("");
   const [currentUnit, setCurrentUnit] = useState("");
   const [currentName, setCurrentName] = useState("");
@@ -175,4 +175,4 @@ const About = () => {
     </>
   )
 }
-export default About
+export default IngredientEntry

@@ -12,71 +12,71 @@ import Col from 'react-bootstrap/Col'
 
 import { capitalizeName } from "../../utils/useTools";
 
-const DirectionEntry = () => {
-  const [currentDirection, setCurrentDirection] = useState("");
-  const [directionArray, setDirectionArray] = useState([""]);
+const TagsEntry = () => {
+  const [currentTag, setCurrentTag] = useState("");
+  const [tagArray, setTagArray] = useState([""]);
   const [currentStep, setCurrentStep] = useState(0);
 
   const addStep = (event) => {
-    const arrayvalue = [...directionArray];
+    const arrayvalue = [...tagArray];
     console.log(event.target);
     arrayvalue.push("");
-    setDirectionArray(arrayvalue);
-    setCurrentStep(directionArray.length)
-    setCurrentDirection("")
+    setTagArray(arrayvalue);
+    setCurrentStep(tagArray.length)
+    setCurrentTag("")
   };
 
-  const updateCurrentDirection = (event) => {
+  const updateCurrentTag = (event) => {
     const value = event.target.value;
     // Destructure current state array
-    let arrayvalue = [...directionArray];
+    let arrayvalue = [...tagArray];
     arrayvalue[currentStep] = value;
-    setDirectionArray(arrayvalue);
-    setCurrentDirection(event.target.value);
+    setTagArray(arrayvalue);
+    setCurrentTag(event.target.value);
   };
 
   const deleteStep = (event) => {
     // Do not delete last step
-    if (directionArray.length === 1) {
+    if (tagArray.length === 1) {
       return;
     }
     const index = event.target.closest('button').dataset.index;
     // Destructure current state array
-    const arrayvalue = [...directionArray];
+    const arrayvalue = [...tagArray];
     // Remove value at index
     arrayvalue.splice(index, 1);
-    setDirectionArray(arrayvalue);
+    setTagArray(arrayvalue);
 
     // change current step to last step
     setCurrentStep(arrayvalue.length - 1)
-    setCurrentDirection(arrayvalue[arrayvalue.length - 1]);
+    setCurrentTag(arrayvalue[arrayvalue.length - 1]);
   };
 
   const selectStepToEdit = (event) => {
     const index = event.target.closest('button').dataset.index;
     setCurrentStep(parseInt(index));
     // Destructure current state array
-    const arrayvalue = [...directionArray];
-    setCurrentDirection(arrayvalue[index]);
+    const arrayvalue = [...tagArray];
+    setCurrentTag(arrayvalue[index]);
     console.log(index);
   };
 
   useEffect(() => {
-    console.log("directionArray", directionArray);
-  }, [directionArray])
+    console.log("tagArray", tagArray);
+  }, [tagArray])
   useEffect(() => {
     console.log("currentStep", currentStep);
   }, [currentStep])
 
   return (
     <>
-      <h4 className="my-3">Directions</h4>
+      <h4 className="my-3">Tags</h4>
       <Form>
         <ol>
-          {directionArray.map((direction, index) => (
+          {tagArray.map((tag, index) => (
             <Row>
               <Col xs="auto" md="2" lg="1">
-                <ButtonGroup aria-label="direction tools">
+                <ButtonGroup aria-label="tag tools">
                   <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
                     <FontAwesomeIcon icon={faXmark} />
                   </Button>
@@ -87,7 +87,7 @@ const DirectionEntry = () => {
               </Col>
               <Col xs="auto">
                 <li key={index}>
-                  {capitalizeName(direction)}
+                  {capitalizeName(tag)}
                 </li>
               </Col>
             </Row>
@@ -97,14 +97,14 @@ const DirectionEntry = () => {
 
       <Form>
         <InputGroup className="mb-3">
-          <Form.Control
+          <Form.Select
             type="text"
-            placeholder="Directions"
-            title="directions"
-            onChange={updateCurrentDirection}
-            value={currentDirection}
-            aria-label="Text input recipe directions"
-            aria-describedby="recipe-direction-entry"
+            placeholder="Tags"
+            title="tags"
+            onChange={updateCurrentTag}
+            value={currentTag}
+            aria-label="Text input recipe tags"
+            aria-describedby="recipe-tag-entry"
           />
           <Button variant="outline-primary" id="add-step-button" onClick={addStep}>
             <FontAwesomeIcon icon={faPlus} />
@@ -114,4 +114,4 @@ const DirectionEntry = () => {
     </>
   )
 }
-export default DirectionEntry;
+export default TagsEntry
