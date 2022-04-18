@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import RecipeDisplay from "../../components/RecipeDisplay";
 import DirectionEntry from "./DirectionEntry";
+import IngredientEntry from "./IngredientEntry";
+import Button from 'react-bootstrap/Button'
+
 
 import API from "../../utils/API";
 import Container from 'react-bootstrap/Container';
@@ -99,7 +102,11 @@ const Entry = () => {
         nutritionToggle={true}
       /> */}
 
+      <IngredientEntry />
       <DirectionEntry />
+      <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={() => (console.log("Submit"))}>
+        Submit Recipe
+      </Button>
 
     </Container>
   )
