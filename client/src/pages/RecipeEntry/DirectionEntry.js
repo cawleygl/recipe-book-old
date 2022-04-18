@@ -1,37 +1,22 @@
 import React, { useState, useEffect } from "react";
-import RecipeDisplay from "../../components/RecipeDisplay";
-import API from "../../utils/API";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import Container from 'react-bootstrap/Container';
 import InputGroup from 'react-bootstrap/InputGroup'
-import Dropdown from 'react-bootstrap/Dropdown'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import ListGroup from 'react-bootstrap/ListGroup'
-import CloseButton from 'react-bootstrap/CloseButton'
-import Toast from 'react-bootstrap/Toast'
+import Stack from 'react-bootstrap/Stack'
 
+import { capitalizeName } from "../../utils/useTools";
 
 const About = () => {
-  function capitalizeName(name) {
-    return name.replace(/\b(\w)/g, s => s.toUpperCase());
-  }
   const [currentDirection, setCurrentDirection] = useState("");
   const [directionArray, setDirectionArray] = useState([""]);
   const [currentStep, setCurrentStep] = useState(0);
-
-  const isEditing = (index) => {
-    if (currentStep === index) {
-      return false;
-    }
-    return true;
-  };
 
   const addStep = (event) => {
     const arrayvalue = [...directionArray];
@@ -73,11 +58,6 @@ const About = () => {
     console.log(index);
   };
 
-
-  const submitDirection = (event) => {
-    console.log("submit")
-  }
-
   useEffect(() => {
     console.log("directionArray", directionArray);
   }, [directionArray])
@@ -85,40 +65,33 @@ const About = () => {
     console.log("currentStep", currentStep);
   }, [currentStep])
 
-
-
   return (
-    <Container>
-      <h4>Directions</h4>
-      <ol>
-        {directionArray.map((direction, index) => (
-          <li key={index}>
+    <>
+      <h4 className="my-3">Directions</h4>
+      <Form>
+        <ol>
+          {directionArray.map((direction, index) => (
             <Row>
-              <InputGroup className="mb-2">
-                <Col sm="11">
-                  <Form.Control
-                    type="text"
-                    placeholder={`Step ${index + 1}`}
-                    title={`step-${index + 1}`}
-                    value={direction}
-                    readOnly
-                    plaintext={isEditing(index)}
-                    aria-label="Text input recipe directions"
-                    aria-describedby="recipe-directions"
-                  />
-                </Col>
-                <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectStepToEdit}>
-                  <FontAwesomeIcon icon={faPenToSquare} />
-                </Button>
-                <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Button>
-              </InputGroup>
+              <Col xs="auto" md="2" lg="1">
+                <ButtonGroup aria-label="direction tools">
+                  <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
+                    <FontAwesomeIcon icon={faXmark} />
+                  </Button>
+                  <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectStepToEdit}>
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </Button>
+                </ButtonGroup>
+              </Col>
+              <Col xs="auto">
+                <li key={index}>
+                  {capitalizeName(direction)}
+                </li>
+              </Col>
             </Row>
+          ))}
+        </ol>
+      </Form>
 
-          </li>
-        ))}
-      </ol>
       <Form>
         <InputGroup className="mb-3">
           <Form.Control
@@ -128,18 +101,14 @@ const About = () => {
             onChange={updateCurrentDirection}
             value={currentDirection}
             aria-label="Text input recipe directions"
-            aria-describedby="recipe-directions"
+            aria-describedby="recipe-direction-entry"
           />
           <Button variant="outline-primary" id="add-step-button" onClick={addStep}>
             <FontAwesomeIcon icon={faPlus} />
           </Button>
-
         </InputGroup>
-        <Button variant="primary" id="submit-button" onClick={submitDirection}>
-          Submit
-        </Button>
       </Form>
-    </Container>
+    </>
   )
 }
 export default About
