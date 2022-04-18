@@ -37,6 +37,10 @@ const About = () => {
   };
 
   const deleteStep = (event) => {
+    // Do not delete last step
+    if (directionArray.length === 1) {
+      return;
+    }
     const index = event.target.closest('button').dataset.index;
     // Destructure current state array
     const arrayvalue = [...directionArray];
