@@ -118,26 +118,27 @@ const IngredientEntry = () => {
       <Form>
         <ol>
           {ingredientArray.map((ingredient, index) => (
-            <Row>
-              <Col xs="auto" md="2" lg="1">
-                <ButtonGroup aria-label="ingredient tools">
-                  <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteItem}>
-                    <FontAwesomeIcon icon={faXmark} />
-                  </Button>
-                  <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectItemToEdit}>
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </Button>
-                </ButtonGroup>
-              </Col>
-              <Col xs="auto">
-                <li key={index}>
-                  {capitalizeName(ingredient.number)}{' '}
-                  {capitalizeName(ingredient.unit)}{' '}
-                  {capitalizeName(ingredient.name)}
-                </li>
-              </Col>
-            </Row>
-
+            <div key={index}>
+              <Row>
+                <Col xs="auto">
+                  <ButtonGroup aria-label="ingredient tools">
+                    <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteItem}>
+                      <FontAwesomeIcon icon={faXmark} />
+                    </Button>
+                    <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectItemToEdit}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </Button>
+                  </ButtonGroup>
+                </Col>
+                <Col xs="auto">
+                  <li key={index}>
+                    {capitalizeName(ingredient.number)}{' '}
+                    {capitalizeName(ingredient.unit)}{' '}
+                    {capitalizeName(ingredient.name)}
+                  </li>
+                </Col>
+              </Row>
+            </div>
           ))}
         </ol>
       </Form>

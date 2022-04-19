@@ -76,23 +76,25 @@ const DirectionEntry = () => {
       <Form>
         <ol>
           {directionArray.map((direction, index) => (
-            <Row>
-              <Col xs="auto" md="2" lg="1">
-                <ButtonGroup aria-label="direction tools">
-                  <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
-                    <FontAwesomeIcon icon={faXmark} />
-                  </Button>
-                  <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectStepToEdit}>
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </Button>
-                </ButtonGroup>
-              </Col>
-              <Col xs="auto">
-                <li key={index}>
-                  {capitalizeName(direction)}
-                </li>
-              </Col>
-            </Row>
+            <div key={index}>
+              <Row>
+                <Col xs="auto">
+                  <ButtonGroup aria-label="direction tools">
+                    <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
+                      <FontAwesomeIcon icon={faXmark} />
+                    </Button>
+                    <Button variant="outline-primary" id="edit-button" data-index={index} onClick={selectStepToEdit}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </Button>
+                  </ButtonGroup>
+                </Col>
+                <Col xs="auto">
+                  <li>
+                    {capitalizeName(direction)}
+                  </li>
+                </Col>
+              </Row>
+            </div>
           ))}
         </ol>
       </Form>
