@@ -105,7 +105,8 @@ const TagsEntry = () => {
             value={currentTag}
             aria-label="Text input recipe tags"
             aria-describedby="recipe-tag-entry"
-          />
+          >
+          </Form.Select>
           <Button variant="outline-primary" id="add-step-button" onClick={addStep}>
             <FontAwesomeIcon icon={faPlus} />
           </Button>

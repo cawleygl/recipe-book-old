@@ -1,3 +1,4 @@
 module.exports = {
-  Recipe: require("./recipe")
+  Recipe: require("./recipe"),
+  Tag: require("./tag")
 };

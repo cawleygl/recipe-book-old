@@ -55,9 +55,15 @@ const recipeSeed = [
 
     ],
     tags: [
-      'vegan', 'gluten-free', 'dairy-free'
+      '625df96e79d43671cb0b27a2'
     ],
     notes: "",
+  }
+];
+
+const tagSeed = [
+  { 
+    name: "vegan"
   }
 ];
 
@@ -65,10 +71,23 @@ db.Recipe
   .remove({})
   .then(() => db.Recipe.collection.insertMany(recipeSeed))
   .then(data => {
-    console.log(data.insertedCount + " records inserted!");
+    console.log(data.insertedCount + " Recipe records inserted!");
     process.exit(0);
   })
   .catch(err => {
     console.error(err);
     process.exit(1);
   });
+
+  db.Tag
+  .remove({})
+  .then(() => db.Tag.collection.insertMany(tagSeed))
+  .then(data => {
+    console.log(data.insertedCount + " Tag records inserted!");
+    process.exit(0);
+  })
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+

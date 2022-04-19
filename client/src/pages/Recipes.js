@@ -17,11 +17,14 @@ import Form from 'react-bootstrap/Form'
 function Recipes() {
   // Setting our component's initial state
   const [recipes, setRecipes] = useState([])
+  const [tags, setTags] = useState([])
+
   const [formObject, setFormObject] = useState({})
 
   // Load all recipes and store them with setRecipes
   useEffect(() => {
     loadRecipes()
+    loadTags()
   }, [])
 
   // Loads all recipes and sets them to recipes
@@ -34,6 +37,18 @@ function Recipes() {
       )
       .catch(err => console.log(err));
   };
+
+    // Loads all tags and sets them to tags
+    function loadTags() {
+      API.getTags()
+        .then(res => {
+          console.log("res", res);
+          setTags(res.data)
+        }
+        )
+        .catch(err => console.log(err));
+    };
+  
 
   // Deletes a recipe from the database with a given id, then reloads recipes from the db
   function deleteRecipe(id) {
@@ -69,6 +84,9 @@ function Recipes() {
         <Col size="sm-12">
           <h1>Recipes</h1>
           <p>{JSON.stringify(recipes, null, 2)}</p>
+          <h1>Tags</h1>
+          <p>{JSON.stringify(tags, null, 2)}</p>
+
           {/* {recipes.length ? (
             <ListGroup>
               {recipes.map(recipe => (
