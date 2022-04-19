@@ -30,8 +30,8 @@ const API = {
     return axios.delete("/api/tags/" + id);
   },
   // Saves a Tag to the database
-  saveTag: function(recipeData) {
-    return axios.post("/api/tags", recipeData);
+  saveTag: function(tagData) {
+    return axios.post("/api/tags", tagData);
   }
 
 };
