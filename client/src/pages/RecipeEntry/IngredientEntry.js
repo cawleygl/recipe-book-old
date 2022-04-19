@@ -10,7 +10,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Stack from 'react-bootstrap/Stack'
 
 import { capitalizeName } from "../../utils/useTools";
 
@@ -67,8 +66,13 @@ const IngredientEntry = () => {
 
 
   const deleteItem = (event) => {
-    // Do not delete last item
+    // Do not delete last item, only clear
     if (ingredientArray.length === 1) {
+      setCurrentIngredient({ number: "", unit: "", name: "" });
+      setCurrentNumber("");
+      setCurrentUnit("");
+      setCurrentName("");
+      setIngredientArray([""]);
       return;
     }
     const index = event.target.closest('button').dataset.index;

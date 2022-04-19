@@ -36,8 +36,10 @@ const DirectionEntry = () => {
   };
 
   const deleteStep = (event) => {
-    // Do not delete last step
+    // Do not delete last step, only clear
     if (directionArray.length === 1) {
+      setCurrentDirection("");
+      setDirectionArray([""]);
       return;
     }
     const index = event.target.closest('button').dataset.index;
