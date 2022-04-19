@@ -10,8 +10,6 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { capitalizeName } from "../../utils/useTools";
-
 const DirectionEntry = () => {
   const [currentDirection, setCurrentDirection] = useState("");
   const [directionArray, setDirectionArray] = useState([""]);
@@ -90,7 +88,7 @@ const DirectionEntry = () => {
                 </Col>
                 <Col xs="auto">
                   <li>
-                    {capitalizeName(direction)}
+                    {direction}
                   </li>
                 </Col>
               </Row>
