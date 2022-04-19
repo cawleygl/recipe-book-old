@@ -61,7 +61,9 @@ const recipeSeed = [
   }
 ];
 const tagSeed = [
-  { name: "vegan" }
+  { name: "vegan" },
+  { name: "vegetarian" },
+  { name: "gluten-free" }
 ];
 
 db.Recipe
