@@ -34,7 +34,6 @@ const TagsEntry = () => {
     console.log("Add");
     console.log(parsedNewTag);
     createTag({name: parsedNewTag});
-    loadTags()
   };
 
   const handleNewTag = (event) => {
@@ -98,6 +97,7 @@ const TagsEntry = () => {
       .then(res => {
         console.log("res", res);
         setTags(res.data)
+        loadTags();
       }
       )
       .catch(err => console.log(err));
