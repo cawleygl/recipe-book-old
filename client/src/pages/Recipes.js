@@ -82,9 +82,9 @@ function Recipes() {
     <Container fluid>
       <Row>
         <Col size="sm-12">
-          <h1>Recipes</h1>
+          <h1 className="my-3" >Recipes</h1>
           <p>{JSON.stringify(recipes, null, 2)}</p>
-          <h1>Tags</h1>
+          <h1 className="my-3" >Tags</h1>
           <p>{JSON.stringify(tags, null, 2)}</p>
 
           {/* {recipes.length ? (

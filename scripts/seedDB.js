@@ -6,18 +6,18 @@ const db = require("../models");
 mongoose.connect(
   process.env.MONGODB_URI ||
   'mongodb://localhost/recipe-book'
-  );
+);
 
 const recipeSeed = [
-  { 
+  {
     name: "Pasta alla Gricia",
     img: "https://www.seriouseats.com/thmb/2JIfR84hQDdB2JTBJjmuzKlI1cA=/880x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2018__10__20181017-pasta-gricia-vicky-wasik-21-b1cfa4939bd347d1a59068b55c801d29.jpg",
     ingredients: [
-      { name: "Guanciale", amount: 8, unit: "oz"},
-      { name: "Extra-virgin olive oil", amount: 1, unit: "tbsp"},
-      { name: "Rigatoni", amount: 12, unit: "oz"},
-      { name: "Pecorino Romano cheese", amount: 2, unit: "oz"},
-      { name: "Salt and Pepper", amount: null, unit: null},
+      { name: "Guanciale", amount: 8, unit: "oz" },
+      { name: "Extra-virgin olive oil", amount: 1, unit: "tbsp" },
+      { name: "Rigatoni", amount: 12, unit: "oz" },
+      { name: "Pecorino Romano cheese", amount: 2, unit: "oz" },
+      { name: "Salt and Pepper", amount: null, unit: null },
     ],
     directions: [
       "Freeze guanciale for at least 15 minutes, and up to 45 minutes (partially freezing the guanciale makes it easier to slice). Using a sharp chef's knife, cut into 1/4-inch-thick planks, then cut planks into 1/4-inch-thick batons (lardons).",
@@ -34,15 +34,15 @@ const recipeSeed = [
     ],
     notes: "",
   },
-  { 
+  {
     name: "Pasta alla Gricia2",
     img: "https://www.seriouseats.com/thmb/2JIfR84hQDdB2JTBJjmuzKlI1cA=/880x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2018__10__20181017-pasta-gricia-vicky-wasik-21-b1cfa4939bd347d1a59068b55c801d29.jpg",
     ingredients: [
-      { name: "Guanciale", amount: 8, unit: "oz"},
-      { name: "Extra-virgin olive oil", amount: 1, unit: "tbsp"},
-      { name: "Rigatoni", amount: 12, unit: "oz"},
-      { name: "Pecorino Romano cheese", amount: 2, unit: "oz"},
-      { name: "Salt and Pepper", amount: null, unit: null},
+      { name: "Guanciale", amount: 8, unit: "oz" },
+      { name: "Extra-virgin olive oil", amount: 1, unit: "tbsp" },
+      { name: "Rigatoni", amount: 12, unit: "oz" },
+      { name: "Pecorino Romano cheese", amount: 2, unit: "oz" },
+      { name: "Salt and Pepper", amount: null, unit: null },
     ],
     directions: [
       "Freeze guanciale for at least 15 minutes, and up to 45 minutes (partially freezing the guanciale makes it easier to slice). Using a sharp chef's knife, cut into 1/4-inch-thick planks, then cut planks into 1/4-inch-thick batons (lardons).",
@@ -55,39 +55,34 @@ const recipeSeed = [
 
     ],
     tags: [
-      '625df96e79d43671cb0b27a2'
+      'vegan', 'gluten-free', 'dairy-free'
     ],
     notes: "",
   }
 ];
-
 const tagSeed = [
-  { 
-    name: "vegan"
-  }
+  { name: "vegan" }
 ];
 
 db.Recipe
-  .remove({})
+  .deleteMany({})
   .then(() => db.Recipe.collection.insertMany(recipeSeed))
   .then(data => {
-    console.log(data.insertedCount + " Recipe records inserted!");
-    process.exit(0);
+    console.log(data.insertedCount + " recipe records inserted!");
   })
   .catch(err => {
     console.error(err);
     process.exit(1);
   });
 
-  db.Tag
-  .remove({})
+db.Tag
+  .deleteMany({})
   .then(() => db.Tag.collection.insertMany(tagSeed))
   .then(data => {
-    console.log(data.insertedCount + " Tag records inserted!");
+    console.log(data.insertedCount + " tag records inserted!");
     process.exit(0);
   })
   .catch(err => {
     console.error(err);
     process.exit(1);
   });
-
