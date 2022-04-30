@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
 
-import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -172,7 +171,7 @@ const IngredientEntry = ({ingredientArray, handleRecipeIngredients}) => {
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </InputGroup>
-        <Form.Text>Click the '+' icon to add a new ingredient.</Form.Text>
+        <Form.Text>Click the '+' icon to submit the current ingredient and add a new one.</Form.Text>
 
     </Form.Group>
   )

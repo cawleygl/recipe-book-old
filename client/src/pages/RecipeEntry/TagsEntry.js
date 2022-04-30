@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'

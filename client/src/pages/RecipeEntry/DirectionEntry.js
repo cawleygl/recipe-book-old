@@ -107,7 +107,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </InputGroup>
-        <Form.Text>Click the '+' icon to add a new step.</Form.Text>
+        <Form.Text>Click the '+' icon to submit the current step and add a new one.</Form.Text>
 
     </Form.Group>
   )
