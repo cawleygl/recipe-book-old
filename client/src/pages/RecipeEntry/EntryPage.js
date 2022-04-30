@@ -16,6 +16,7 @@ const Entry = () => {
   const [ingredientArray, setIngredientArray] = useState([]);
   const [directionArray, setDirectionArray] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [recipeNotes, setRecipeNotes] = useState("");
 
   const handleRecipeName = (event) => {
     setRecipeName(event.target.value);
@@ -32,6 +33,10 @@ const Entry = () => {
   const handleSelectedTags = (value) => {
     setSelectedTags(value);
   };
+  const handleRecipeNotes = (event) => {
+    setRecipeNotes(event.target.value);
+  };
+
 
   useEffect(() => {
     console.log("Recipe Object", recipeObject);
@@ -41,13 +46,14 @@ const Entry = () => {
       img: recipeImg,
       ingredients: ingredientArray,
       directions: directionArray,
-      tags: selectedTags
+      tags: selectedTags,
+      notes: recipeNotes
     };
 
     console.log("newRecipe", newRecipe);
     setRecipeObject(newRecipe);
     
-  }, [recipeName, recipeImg, ingredientArray, directionArray, selectedTags])
+  }, [recipeName, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
 
 
   function handleFormSubmit(event) {
@@ -99,6 +105,19 @@ const Entry = () => {
         <IngredientEntry ingredientArray={ingredientArray} handleRecipeIngredients={handleRecipeIngredients} />
         <DirectionEntry directionArray={directionArray} handleRecipeDirections={handleRecipeDirections} />
         <TagsEntry selectedTags={selectedTags} handleSelectedTags={handleSelectedTags} />
+
+        <Form.Group className="mb-3">
+          <Form.Label>Notes</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Notes"
+            title="notes"
+            onChange={handleRecipeNotes}
+            value={recipeNotes}
+            aria-label="Text input recipe notes"
+            aria-describedby="recipe-notes-entry"
+          />
+        </Form.Group>
 
         <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={handleFormSubmit}>
           Submit Recipe
