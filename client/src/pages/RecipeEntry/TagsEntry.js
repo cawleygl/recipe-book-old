@@ -13,10 +13,9 @@ import Col from 'react-bootstrap/Col'
 
 import { capitalizeName } from "../../utils/useTools";
 
-const TagsEntry = () => {
+const TagsEntry = ({selectedTags, handleSelectedTags}) => {
 
   const [tags, setTags] = useState([""]);
-  const [selectedTags, setSelectedTags] = useState([""]);
 
   const [checkedState, setCheckedState] = useState([""]);
 
@@ -59,12 +58,12 @@ const TagsEntry = () => {
     console.log(checkedState[index])
     if (!checkedState[index]) {
       arrayvalue.push(id)
-      setSelectedTags(arrayvalue);
+      handleSelectedTags(arrayvalue);
 
       // If setting to false, find ID and splice
     } else {
       const removed = arrayvalue.filter(tagId => tagId !== id);
-      setSelectedTags(removed);
+      handleSelectedTags(removed);
     }
     // Update checked state
     updateCheckState(index);
@@ -105,15 +104,15 @@ const TagsEntry = () => {
 
 
   return (
-    <>
-      <h4 className="my-3">Tags</h4>
-      {/* <p className="my-3">{tags && JSON.stringify(tags)}</p>
+    <Form.Group className="mb-3">
+      <p className="my-3">{tags && JSON.stringify(tags)}</p>
       <p className="my-3">{newTag && JSON.stringify(newTag)}</p>
       <p className="my-3">{parsedNewTag && JSON.stringify(parsedNewTag)}</p>
       <p className="my-3">{selectedTags && JSON.stringify(selectedTags)}</p>
-      <p className="my-3">{checkedState && JSON.stringify(checkedState)}</p> */}
+      <p className="my-3">{checkedState && JSON.stringify(checkedState)}</p>
 
-      <Form>
+      <Form.Label>Tags</Form.Label>
+
         <Row>
           <Col xs="auto">
             <InputGroup className="mb-3">
@@ -133,7 +132,6 @@ const TagsEntry = () => {
           </Col>
           <Col xs="auto">
             <InputGroup hasValidation className="mb-3">
-
               <Form.Control
                 type="text"
                 placeholder="Add New Tag"
@@ -161,8 +159,7 @@ const TagsEntry = () => {
 
           </Col>
         </Row>
-      </Form>
-    </>
+    </Form.Group>
   )
 }
 export default TagsEntry

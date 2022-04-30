@@ -14,7 +14,7 @@ import Col from 'react-bootstrap/Col'
 import { capitalizeName } from "../../utils/useTools";
 
 
-const IngredientEntry = () => {
+const IngredientEntry = ({ingredientArray, handleRecipeIngredients}) => {
   const [currentNumber, setCurrentNumber] = useState("");
   const [currentUnit, setCurrentUnit] = useState("");
   const [currentName, setCurrentName] = useState("");
@@ -23,14 +23,13 @@ const IngredientEntry = () => {
     { number: "", unit: "", name: "" }
   );
 
-  const [ingredientArray, setIngredientArray] = useState([""]);
   const [currentItem, setCurrentItem] = useState(0);
 
   const addItem = (event) => {
     // Destructure and add empty value to ingredient array
     const arrayvalue = [...ingredientArray];
     arrayvalue.push("");
-    setIngredientArray(arrayvalue);
+    handleRecipeIngredients(arrayvalue);
     // Clear current number, unit, name, and change current item
     setCurrentNumber("");
     setCurrentUnit("");
@@ -44,7 +43,7 @@ const IngredientEntry = () => {
   const addToIngredientArray = (newIngredient) => {
     let arrayvalue = [...ingredientArray];
     arrayvalue[currentItem] = newIngredient;
-    setIngredientArray(arrayvalue);
+    handleRecipeIngredients(arrayvalue);
   };
 
   const updateCurrentNumber = (event) => {
@@ -72,7 +71,7 @@ const IngredientEntry = () => {
       setCurrentNumber("");
       setCurrentUnit("");
       setCurrentName("");
-      setIngredientArray([""]);
+      handleRecipeIngredients([""]);
       return;
     }
     const index = event.target.closest('button').dataset.index;
@@ -80,7 +79,7 @@ const IngredientEntry = () => {
     const arrayvalue = [...ingredientArray];
     // Remove value at index
     arrayvalue.splice(index, 1);
-    setIngredientArray(arrayvalue);
+    handleRecipeIngredients(arrayvalue);
 
     // change current item to last item
     setCurrentItem(arrayvalue.length - 1)
@@ -113,9 +112,9 @@ const IngredientEntry = () => {
   }, [currentItem])
 
   return (
-    <>
-      <h4 className="my-3">Ingredients</h4>
-      <Form>
+    <Form.Group className="mb-3">
+      <Form.Label>Ingredients</Form.Label>
+
         <ol>
           {ingredientArray.map((ingredient, index) => (
             <div key={index}>
@@ -141,10 +140,7 @@ const IngredientEntry = () => {
             </div>
           ))}
         </ol>
-      </Form>
-
-      <Form>
-        <InputGroup className="mb-3">
+        <InputGroup className="mb-1">
           <Form.Control
             type="text"
             placeholder="Number"
@@ -176,8 +172,9 @@ const IngredientEntry = () => {
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </InputGroup>
-      </Form>
-    </>
+        <Form.Text>Click the '+' icon to add a new ingredient.</Form.Text>
+
+    </Form.Group>
   )
 }
 export default IngredientEntry

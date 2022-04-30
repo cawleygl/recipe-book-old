@@ -10,16 +10,15 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-const DirectionEntry = () => {
+const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
   const [currentDirection, setCurrentDirection] = useState("");
-  const [directionArray, setDirectionArray] = useState([""]);
   const [currentStep, setCurrentStep] = useState(0);
 
   const addStep = (event) => {
     const arrayvalue = [...directionArray];
     console.log(event.target);
     arrayvalue.push("");
-    setDirectionArray(arrayvalue);
+    handleRecipeDirections(arrayvalue);
     setCurrentStep(directionArray.length)
     setCurrentDirection("")
   };
@@ -29,7 +28,7 @@ const DirectionEntry = () => {
     // Destructure current state array
     let arrayvalue = [...directionArray];
     arrayvalue[currentStep] = value;
-    setDirectionArray(arrayvalue);
+    handleRecipeDirections(arrayvalue);
     setCurrentDirection(event.target.value);
   };
 
@@ -37,7 +36,7 @@ const DirectionEntry = () => {
     // Do not delete last step, only clear
     if (directionArray.length === 1) {
       setCurrentDirection("");
-      setDirectionArray([""]);
+      handleRecipeDirections([""]);
       return;
     }
     const index = event.target.closest('button').dataset.index;
@@ -45,7 +44,7 @@ const DirectionEntry = () => {
     const arrayvalue = [...directionArray];
     // Remove value at index
     arrayvalue.splice(index, 1);
-    setDirectionArray(arrayvalue);
+    handleRecipeDirections(arrayvalue);
 
     // change current step to last step
     setCurrentStep(arrayvalue.length - 1)
@@ -69,9 +68,8 @@ const DirectionEntry = () => {
   }, [currentStep])
 
   return (
-    <>
-      <h4 className="my-3">Directions</h4>
-      <Form>
+    <Form.Group className="mb-3">
+      <Form.Label>Directions</Form.Label>
         <ol>
           {directionArray.map((direction, index) => (
             <div key={index}>
@@ -95,10 +93,7 @@ const DirectionEntry = () => {
             </div>
           ))}
         </ol>
-      </Form>
-
-      <Form>
-        <InputGroup className="mb-3">
+        <InputGroup className="mb-1">
           <Form.Control
             type="text"
             placeholder="Directions"
@@ -112,8 +107,9 @@ const DirectionEntry = () => {
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </InputGroup>
-      </Form>
-    </>
+        <Form.Text>Click the '+' icon to add a new step.</Form.Text>
+
+    </Form.Group>
   )
 }
 export default DirectionEntry;

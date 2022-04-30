@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from "react";
-import RecipeDisplay from "../../components/RecipeDisplay";
 import DirectionEntry from "./DirectionEntry";
 import IngredientEntry from "./IngredientEntry";
 import TagsEntry from "./TagsEntry";
 
-
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import InputGroup from 'react-bootstrap/InputGroup'
-
-
-import API from "../../utils/API";
 import Container from 'react-bootstrap/Container';
 
 const Entry = () => {
   // Setting our component's initial state
+  const [recipeObject, setRecipeObject] = useState({})
+
   const [recipeName, setRecipeName] = useState("");
   const [recipeImg, setRecipeImg] = useState("");
-
-  const [recipes, setRecipes] = useState([])
-  const [formObject, setFormObject] = useState({})
-  const [ingredientObject, setIngredientObject] = useState({})
-  const [directionArr, setDirectionArr] = useState([])
-
-  useEffect(() => {
-    console.log("recipeName", recipeName);
-  }, [recipeName])
+  const [ingredientArray, setIngredientArray] = useState([]);
+  const [directionArray, setDirectionArray] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const handleRecipeName = (event) => {
     setRecipeName(event.target.value);
@@ -33,130 +23,87 @@ const Entry = () => {
   const handleRecipeImg = (event) => {
     setRecipeImg(event.target.value);
   };
+  const handleRecipeIngredients = (value) => {
+    setIngredientArray(value);
+  };
+  const handleRecipeDirections = (value) => {
+    setDirectionArray(value);
+  };
+  const handleSelectedTags = (value) => {
+    setSelectedTags(value);
+  };
 
-  // Load all recipes and store them with setRecipes
   useEffect(() => {
-    loadRecipes()
-  }, [])
+    console.log("Recipe Object", recipeObject);
 
-  useEffect(() => {
-    console.log("formObject", formObject);
-  }, [formObject])
+    let newRecipe = {
+      name: recipeName,
+      img: recipeImg,
+      ingredients: ingredientArray,
+      directions: directionArray,
+      tags: selectedTags
+    };
 
-
-  // Loads all recipes and sets them to recipes
-  function loadRecipes() {
-    API.getRecipes()
-      .then(res =>
-        setRecipes(res.data)
-      )
-      .catch(err => console.log(err));
-  };
-
-  // Deletes a recipe from the database with a given id, then reloads recipes from the db
-  function deleteRecipe(id) {
-    API.deleteRecipe(id)
-      .then(res => loadRecipes())
-      .catch(err => console.log(err));
-  }
-
-  // Handles updating component state when the user types into the input field
-  function handleNameChange(event) {
-    const { title, value } = event.target;
-    setFormObject({ ...formObject, [title]: value })
-  };
-
-  // Sorts ingredients before updating component state
-  function handleIngredientChange(event) {
-    const { title, value } = event.target;
-    setIngredientObject({ ...ingredientObject, [title]: value })
-    setFormObject({ ...formObject, ingredients: [{ ...ingredientObject, [title]: value }] });
-  };
-  function handleIngredientSubmit(event) {
-    const { title, value } = event.target;
-    setIngredientObject({ ...ingredientObject, [title]: value })
-    setFormObject({ ...formObject, ingredients: { ...ingredientObject, [title]: value } });
-  };
-
-  function handleDirectionChange(event) {
-    const value = event.target.value;
-    setFormObject({ ...formObject, directions: [value] })
-  };
-  function handleNewDirectionChange(event) {
-    const value = event.target.value;
-    console.log("NAME", event.target.name)
-    setFormObject({ ...formObject, directions: [value] })
-  };
-
-
-  function handleTagChange(event) {
-    const value = event.target.value;
-    setFormObject({ ...formObject, tags: [value] })
-  };
-
+    console.log("newRecipe", newRecipe);
+    setRecipeObject(newRecipe);
+    
+  }, [recipeName, recipeImg, ingredientArray, directionArray, selectedTags])
 
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    // if (formObject.title && formObject.author) {
-    API.saveRecipe({
-      title: formObject.title,
-      author: formObject.author,
-      synopsis: formObject.synopsis
-    })
-      .then(res => loadRecipes())
-      .catch(err => console.log(err));
+    console.log("recipeObject", recipeObject);
+
+    // if (formObject) {
+    // API.saveRecipe({
+    //   title: formObject.title,
+    //   author: formObject.author,
+    //   synopsis: formObject.synopsis
+    // })
+    //   .then(res => loadRecipes())
+    //   .catch(err => console.log(err));
     // }
   };
 
 
   return (
     <Container>
-      <h1 className="my-3">New Recipe</h1>
+      <h4 className="my-3">New Recipe</h4>
+      <Form>
+        <Form.Group className="mb-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Name"
+            title="name"
+            onChange={handleRecipeName}
+            value={recipeName}
+            aria-label="Text input recipe name"
+            aria-describedby="recipe-name-entry"
+          />
+        </Form.Group>
 
-      {/* <RecipeDisplay
-        recipes={[formObject]}
-        ingredientToggle={true}
-        directionToggle={true}
-        nutritionToggle={true}
-      /> */}
+        <Form.Group className="mb-3">
+          <Form.Label>Image</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Image Link"
+            title="image"
+            onChange={handleRecipeImg}
+            value={recipeImg}
+            aria-label="Text input recipe image"
+            aria-describedby="recipe-image-entry"
+          />
+        </Form.Group>
 
-      <h4 className="my-3">Name</h4>
-      <InputGroup className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Name"
-          title="name"
-          onChange={handleRecipeName}
-          value={recipeName}
-          aria-label="Text input recipe name"
-          aria-describedby="recipe-name-entry"
-        />
-      </InputGroup>
+        <IngredientEntry ingredientArray={ingredientArray} handleRecipeIngredients={handleRecipeIngredients} />
+        <DirectionEntry directionArray={directionArray} handleRecipeDirections={handleRecipeDirections} />
+        <TagsEntry selectedTags={selectedTags} handleSelectedTags={handleSelectedTags} />
 
-      <h4 className="my-3">Image</h4>
-      <InputGroup className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Image Link"
-          title="image"
-          onChange={handleRecipeImg}
-          value={recipeImg}
-          aria-label="Text input recipe image"
-          aria-describedby="recipe-image-entry"
-        />
-      </InputGroup>
-
-      <IngredientEntry />
-
-      <DirectionEntry />
-
-      <TagsEntry />
-
-
-      <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={() => (console.log("Submit"))}>
-        Submit Recipe
-      </Button>
+        <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={handleFormSubmit}>
+          Submit Recipe
+        </Button>
+      </Form>
 
     </Container>
   )
