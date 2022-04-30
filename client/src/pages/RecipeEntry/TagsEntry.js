@@ -104,14 +104,7 @@ const TagsEntry = ({selectedTags, handleSelectedTags}) => {
 
   return (
     <Form.Group className="mb-3">
-      <p className="my-3">{tags && JSON.stringify(tags)}</p>
-      <p className="my-3">{newTag && JSON.stringify(newTag)}</p>
-      <p className="my-3">{parsedNewTag && JSON.stringify(parsedNewTag)}</p>
-      <p className="my-3">{selectedTags && JSON.stringify(selectedTags)}</p>
-      <p className="my-3">{checkedState && JSON.stringify(checkedState)}</p>
-
       <Form.Label>Tags</Form.Label>
-
         <Row>
           <Col xs="auto">
             <InputGroup className="mb-3">
@@ -153,9 +146,7 @@ const TagsEntry = ({selectedTags, handleSelectedTags}) => {
               <Form.Control.Feedback type="invalid">
                 '{capitalizeName(parsedNewTag)}' tag already exists.
               </Form.Control.Feedback>
-
             </InputGroup>
-
           </Col>
         </Row>
     </Form.Group>
