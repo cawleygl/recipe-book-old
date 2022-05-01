@@ -46,10 +46,12 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
   };
 
   const updateCurrentNumber = (event) => {
-    setCurrentNumber(event.target.value);
-    setCurrentIngredient({ number: event.target.value, unit: currentUnit, name: currentName });
-    addToIngredientArray({ number: event.target.value, unit: currentUnit, name: currentName });
+    let numberInt = parseInt(event.target.value)
+    setCurrentNumber(numberInt);
+    setCurrentIngredient({ number: numberInt, unit: currentUnit, name: currentName });
+    addToIngredientArray({ number: numberInt, unit: currentUnit, name: currentName });
   };
+  
   const updateCurrentUnit = (event) => {
     setCurrentUnit(event.target.value);
     setCurrentIngredient({ number: currentNumber, unit: event.target.value, name: currentName });
