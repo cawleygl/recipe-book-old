@@ -18,9 +18,7 @@ function ViewAll() {
   const [recipes, setRecipes] = useState([])
   const [tags, setTags] = useState([])
 
-  const [formObject, setFormObject] = useState({})
-
-  // Load all recipes and store them with setRecipes
+  // Load all recipes and tags on mount
   useEffect(() => {
     loadRecipes()
     loadTags()
@@ -53,10 +51,9 @@ function ViewAll() {
       <Row>
         <Col size="sm-12">
           <h4 className="my-3">All Recipes</h4>
-          <p>{JSON.stringify(recipes, null, 2)}</p>
           <Accordion defaultActiveKey={['0']} alwaysOpen>
             {recipes.map((recipe, index) => (
-              <Accordion.Item eventKey={index}>
+              <Accordion.Item eventKey={index} key={index}>
                 <Accordion.Header>
                   <Row>
                     <Col xs='auto'>
@@ -65,9 +62,10 @@ function ViewAll() {
                       </Link>
                     </Col>
                     <Col>
-                      {recipe.tags.map((tagID, index) => (
-                          <Badge key={index} bg="primary">{tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null}</Badge>
-                      ))}
+                      {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
+                        <Badge key={index} bg="primary">{capitalizeName(tags.find(tag => tag._id === tagID).name)}</Badge>
+                      )) : null
+                      }
                     </Col>
                   </Row>
                 </Accordion.Header>
@@ -79,28 +77,28 @@ function ViewAll() {
                     <Col>
                       <h4>Ingredients</h4>
                       <ol>
-                        {recipe.ingredients.map((ingredient) => (
-                          <li key={recipe.ingredients.indexOf(ingredient)}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
+                        {recipe.ingredients.map((ingredient, index) => (
+                          <li key={index}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
                         ))}
                       </ol>
                       <h4>Directions</h4>
                       <ol>
-                        {recipe.directions.map((direction) => (
-                          <li key={recipe.directions.indexOf(direction)}>{direction}</li>
+                        {recipe.directions.map((direction, index) => (
+                          <li key={index}>{direction}</li>
                         ))}
                       </ol>
-                      <h4>Notes</h4>
-                      <p>{recipe.notes}</p>
+                      {recipe.notes &&
+                        <>
+                          <h4>Notes</h4>
+                          <p>{recipe.notes}</p>
+                        </>
+                      }
                     </Col>
-
                   </Row>
                 </Accordion.Body>
               </Accordion.Item>
             ))}
           </Accordion>
-
-          <h1 className="my-3">Tags</h1>
-          <p>{JSON.stringify(tags, null, 2)}</p>
         </Col>
       </Row>
     </Container>
