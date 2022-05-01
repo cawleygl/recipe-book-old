@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import API from "../../utils/API";
+
 import DirectionEntry from "./DirectionEntry";
 import IngredientEntry from "./IngredientEntry";
 import TagsEntry from "./TagsEntry";
@@ -13,8 +15,8 @@ const Entry = () => {
 
   const [recipeName, setRecipeName] = useState("");
   const [recipeImg, setRecipeImg] = useState("");
-  const [ingredientArray, setIngredientArray] = useState([]);
-  const [directionArray, setDirectionArray] = useState([]);
+  const [ingredientArray, setIngredientArray] = useState([""]);
+  const [directionArray, setDirectionArray] = useState([""]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [recipeNotes, setRecipeNotes] = useState("");
 
@@ -60,15 +62,11 @@ const Entry = () => {
     event.preventDefault();
     console.log("recipeObject", recipeObject);
 
-    // if (formObject) {
-    // API.saveRecipe({
-    //   title: formObject.title,
-    //   author: formObject.author,
-    //   synopsis: formObject.synopsis
-    // })
-    //   .then(res => loadRecipes())
-    //   .catch(err => console.log(err));
-    // }
+    if (recipeObject) {
+    API.saveRecipe(recipeObject)
+      .then(res => console.log("SAVED RECIPE"))
+      .catch(err => console.log(err));
+    }
   };
 
 
