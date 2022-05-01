@@ -41,8 +41,6 @@ const Entry = () => {
 
 
   useEffect(() => {
-    console.log("Recipe Object", recipeObject);
-
     let newRecipe = {
       name: recipeName,
       img: recipeImg,
@@ -52,7 +50,7 @@ const Entry = () => {
       notes: recipeNotes
     };
 
-    console.log("newRecipe", newRecipe);
+    console.log("New Recipe", newRecipe);
     setRecipeObject(newRecipe);
     
   }, [recipeName, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
