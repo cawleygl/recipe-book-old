@@ -52,7 +52,7 @@ const Entry = () => {
 
     console.log("New Recipe", newRecipe);
     setRecipeObject(newRecipe);
-    
+
   }, [recipeName, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
 
 
@@ -61,9 +61,9 @@ const Entry = () => {
     console.log("recipeObject", recipeObject);
 
     if (recipeObject) {
-    API.saveRecipe(recipeObject)
-      .then(res => console.log("SAVED RECIPE"))
-      .catch(err => console.log(err));
+      API.saveRecipe(recipeObject)
+        .then(res => console.log("SAVED RECIPE"))
+        .catch(err => console.log(err));
     }
   };
 
@@ -75,11 +75,10 @@ const Entry = () => {
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
           <Form.Control
+            as="input"
             type="text"
             placeholder="Name"
-            title="name"
             onChange={handleRecipeName}
-            value={recipeName}
             aria-label="Text input recipe name"
             aria-describedby="recipe-name-entry"
           />
@@ -88,11 +87,10 @@ const Entry = () => {
         <Form.Group className="mb-3">
           <Form.Label>Image</Form.Label>
           <Form.Control
+            as="input"
             type="text"
             placeholder="Image Link"
-            title="image"
             onChange={handleRecipeImg}
-            value={recipeImg}
             aria-label="Text input recipe image"
             aria-describedby="recipe-image-entry"
           />
@@ -105,11 +103,10 @@ const Entry = () => {
         <Form.Group className="mb-3">
           <Form.Label>Notes</Form.Label>
           <Form.Control
+            as="input"
             type="text"
             placeholder="Notes"
-            title="notes"
             onChange={handleRecipeNotes}
-            value={recipeNotes}
             aria-label="Text input recipe notes"
             aria-describedby="recipe-notes-entry"
           />

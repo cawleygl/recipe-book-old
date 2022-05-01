@@ -148,6 +148,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
           placeholder="Number"
           title="number"
           onChange={updateCurrentNumber}
+          value={currentNumber}
           aria-label="Text input ingredient number"
           aria-describedby="recipe-ingredient-entry-number"
         />
@@ -157,6 +158,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
           placeholder="Unit"
           title="unit"
           onChange={updateCurrentUnit}
+          value={currentUnit}
           aria-label="Text input recipe ingredient unit"
           aria-describedby="recipe-ingredient-entry-unit"
         />
@@ -166,6 +168,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
           placeholder="Name"
           title="ingredient"
           onChange={updateCurrentName}
+          value={currentName}
           aria-label="Text input recipe ingredient name"
           aria-describedby="recipe-ingredient-entry-name"
         />

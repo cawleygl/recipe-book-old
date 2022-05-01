@@ -97,7 +97,6 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
           <Form.Control
             as="textarea"
             placeholder={`Step ${currentStep + 1}`}
-            title="directions"
             onChange={updateCurrentDirection}
             value={currentDirection}
             aria-label="Text input recipe directions"
