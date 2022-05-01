@@ -66,7 +66,7 @@ function ViewAll() {
                     </Col>
                     <Col>
                       {recipe.tags.map((tagID, index) => (
-                          <Badge key={index} bg="primary">{capitalizeName(tags.find(tag => tag._id === tagID).name)}</Badge>
+                          <Badge key={index} bg="primary">{tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null}</Badge>
                       ))}
                     </Col>
                   </Row>
