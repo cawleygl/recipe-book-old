@@ -18,8 +18,8 @@ const Navigation = () => {
             <LinkContainer to="/entry">
               <Nav.Link>Entry</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/recipes">
-              <Nav.Link>Recipes</Nav.Link>
+            <LinkContainer to="/viewall">
+              <Nav.Link>View All</Nav.Link>
             </LinkContainer>
 
           </Nav>

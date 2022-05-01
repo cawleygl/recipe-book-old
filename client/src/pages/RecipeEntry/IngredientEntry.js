@@ -13,7 +13,7 @@ import Col from 'react-bootstrap/Col'
 import { capitalizeName } from "../../utils/useTools";
 
 
-const IngredientEntry = ({ingredientArray, handleRecipeIngredients}) => {
+const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
   const [currentNumber, setCurrentNumber] = useState("");
   const [currentUnit, setCurrentUnit] = useState("");
   const [currentName, setCurrentName] = useState("");
@@ -113,7 +113,6 @@ const IngredientEntry = ({ingredientArray, handleRecipeIngredients}) => {
   return (
     <Form.Group className="mb-3">
       <Form.Label>Ingredients</Form.Label>
-
         <ol>
           {ingredientArray.map((ingredient, index) => (
             <div key={index}>
@@ -139,39 +138,39 @@ const IngredientEntry = ({ingredientArray, handleRecipeIngredients}) => {
             </div>
           ))}
         </ol>
-        <InputGroup className="mb-1">
-          <Form.Control
-            type="text"
-            placeholder="Number"
-            title="number"
-            onChange={updateCurrentNumber}
-            value={currentNumber}
-            aria-label="Text input recipe ingredient number"
-            aria-describedby="recipe-ingredient-entry-number"
-          />
-          <Form.Control
-            type="text"
-            placeholder="Unit"
-            title="unit"
-            onChange={updateCurrentUnit}
-            value={currentUnit}
-            aria-label="Text input recipe ingredient unit"
-            aria-describedby="recipe-ingredient-entry-unit"
-          />
-          <Form.Control
-            type="text"
-            placeholder="Name"
-            title="ingredient"
-            onChange={updateCurrentName}
-            value={currentName}
-            aria-label="Text input recipe ingredient name"
-            aria-describedby="recipe-ingredient-entry-name"
-          />
-          <Button variant="outline-primary" id="add-item-button" onClick={addItem}>
-            <FontAwesomeIcon icon={faPlus} />
-          </Button>
-        </InputGroup>
-        <Form.Text>Click the '+' icon to submit the current ingredient and add a new one.</Form.Text>
+      <InputGroup className="mb-1">
+        <Form.Control
+          type="text"
+          placeholder="Number"
+          title="number"
+          onChange={updateCurrentNumber}
+          value={currentNumber}
+          aria-label="Text input recipe ingredient number"
+          aria-describedby="recipe-ingredient-entry-number"
+        />
+        <Form.Control
+          type="text"
+          placeholder="Unit"
+          title="unit"
+          onChange={updateCurrentUnit}
+          value={currentUnit}
+          aria-label="Text input recipe ingredient unit"
+          aria-describedby="recipe-ingredient-entry-unit"
+        />
+        <Form.Control
+          type="text"
+          placeholder="Name"
+          title="ingredient"
+          onChange={updateCurrentName}
+          value={currentName}
+          aria-label="Text input recipe ingredient name"
+          aria-describedby="recipe-ingredient-entry-name"
+        />
+        <Button variant="outline-primary" id="add-item-button" onClick={addItem}>
+          <FontAwesomeIcon icon={faPlus} />
+        </Button>
+      </InputGroup>
+      <Form.Text>Click the '+' icon to submit the current ingredient and add a new one.</Form.Text>
 
     </Form.Group>
   )

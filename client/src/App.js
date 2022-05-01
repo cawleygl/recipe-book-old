@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import LandingPage from "./pages/LandingPage";
 import Search from "./pages/Search";
 import Entry from "./pages/RecipeEntry/EntryPage";
-import Recipes from "./pages/Recipes";
+import ViewAll from "./pages/ViewAll";
 
 import Navigation from "./components/Navigation";
 
@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="search" element={<Search />} />
           <Route path="entry" element={<Entry />} />
-          <Route path="recipes" element={<Recipes />} />
+          <Route path="viewall" element={<ViewAll />} />
 
         </Routes>
       </Container>
