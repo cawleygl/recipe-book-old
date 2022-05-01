@@ -95,8 +95,8 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
         </ol>
         <InputGroup className="mb-1">
           <Form.Control
-            type="text"
-            placeholder="Directions"
+            as="textarea"
+            placeholder={`Step ${currentStep + 1}`}
             title="directions"
             onChange={updateCurrentDirection}
             value={currentDirection}
