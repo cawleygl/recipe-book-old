@@ -29,9 +29,7 @@ const recipeSeed = [
       "Remove from heat, add half of the grated Pecorino Romano, and toss or stir rapidly to combine. Once cheese is fully emulsified in the sauce, add remaining Pecorino Romano, and toss or stir rapidly once more to combine. Adjust sauce consistency as needed with more pasta water. Season with salt and pepper, if needed. Serve right away, passing more cheese at the table.",
 
     ],
-    tags: [
-      'vegan', 'gluten-free', 'dairy-free'
-    ],
+    tags: [],
     notes: "",
   }
 ];
