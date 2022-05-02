@@ -7,12 +7,10 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 
-import { capitalizeName } from "../../utils/useTools";
+import { capitalizeName, badgeLabel } from "../../utils/useTools";
 
-const TagsEntry = ({selectedTags, handleSelectedTags}) => {
+const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
 
   const [tags, setTags] = useState([""]);
 
@@ -31,12 +29,14 @@ const TagsEntry = ({selectedTags, handleSelectedTags}) => {
   const addTag = () => {
     console.log("Add");
     console.log(parsedNewTag);
-    createTag({name: parsedNewTag});
+    createTag({ name: parsedNewTag });
+    setNewTag("");
+    setParsedNewTag("");
   };
 
   const handleNewTag = (event) => {
     setNewTag(event.target.value);
-    const parsedTag = event.target.value.trim().toLowerCase()
+    let parsedTag = event.target.value.trim().toLowerCase().replaceAll(' ', '-')
     setParsedNewTag(parsedTag);
 
     // Check if tag already exists
@@ -83,10 +83,10 @@ const TagsEntry = ({selectedTags, handleSelectedTags}) => {
     API.getTags()
       .then(res => {
         console.log("res", res);
-        setTags(res.data)
+        res.data.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+        setTags(res.data);
         setCheckedState(new Array(res.data.length).fill(false));
-      }
-      )
+      })
       .catch(err => console.log(err));
   };
   // Add new tag all tags and sets them to tags
@@ -96,60 +96,51 @@ const TagsEntry = ({selectedTags, handleSelectedTags}) => {
         console.log("res", res);
         setTags(res.data)
         loadTags();
-      }
-      )
+      })
       .catch(err => console.log(err));
   };
 
-
   return (
-    <Form.Group className="mb-3">
-      <Form.Label>Tags</Form.Label>
-        <Row>
-          <Col xs="auto">
-            <InputGroup className="mb-3">
-              {tags.length > 0 && tags.map((tag, index) => (
-                <div key={tag._id} className="mb-3">
-                  <Form.Check
-                    inline
-                    type={"switch"}
-                    id={tag._id}
-                    data-index={index}
-                    label={capitalizeName(tag.name)}
-                    onChange={handleTagChange}
-                  />
-                </div>
-              ))}
-            </InputGroup>
-          </Col>
-          <Col xs="auto">
-            <InputGroup hasValidation className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Add New Tag"
-                title="addTag"
-                onChange={handleNewTag}
-                value={newTag}
-                aria-label="Text input add recipe tag"
-                aria-describedby="recipe-tag-entry"
-                isInvalid={repeatTag}
-              />
-              <Button
-                variant="outline-primary"
-                id="add-step-button"
-                onClick={addTag}
-                disabled={repeatTag}
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </Button>
-
-              <Form.Control.Feedback type="invalid">
-                '{capitalizeName(parsedNewTag)}' tag already exists.
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Col>
-        </Row>
-    </Form.Group>
+    <>
+      <Form.Group className="mb-3">
+        <Form.Label>Tags</Form.Label>
+        {tags.length > 0 && tags.map((tag, index) => (
+          <Form.Check
+            key={tag._id}
+            type={"switch"}
+            label={badgeLabel(tag.name, index, tag._id, tag.color)}
+            id={tag._id}
+            data-index={index}
+            onChange={handleTagChange}
+          />
+        ))}
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <InputGroup hasValidation className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Add New Tag"
+            title="addTag"
+            onChange={handleNewTag}
+            value={newTag}
+            aria-label="Text input add recipe tag"
+            aria-describedby="recipe-tag-entry"
+            isInvalid={repeatTag}
+          />
+          <Button
+            variant="outline-primary"
+            id="add-step-button"
+            onClick={addTag}
+            disabled={repeatTag}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </Button>
+          <Form.Control.Feedback type="invalid">
+            '{capitalizeName(parsedNewTag)}' tag already exists.
+          </Form.Control.Feedback>
+        </InputGroup>
+      </Form.Group>
+    </>
   )
 }
 export default TagsEntry

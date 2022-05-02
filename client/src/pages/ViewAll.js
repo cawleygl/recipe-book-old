@@ -63,7 +63,15 @@ function ViewAll() {
                     </Col>
                     <Col>
                       {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
-                        <Badge key={index} bg="primary">{capitalizeName(tags.find(tag => tag._id === tagID).name)}</Badge>
+                        <div key={index}>
+                          <style type="text/css">
+                            {`
+                          .bg-${tagID} {
+                            background-color: ${tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).color : null};
+                          }`}
+                          </style>
+                          <Badge bg={tagID}>{(tags.find(tag => tag._id === tagID)) ? (capitalizeName(tags.find(tag => tag._id === tagID).name)) : null}</Badge>
+                        </div>
                       )) : null
                       }
                     </Col>
