@@ -34,7 +34,7 @@ const colorButton = (color, iconColor, callBack) => {
       <style type="text/css">
         {`.btn-${color} {
           background-color: ${color};
-          ${color === 'white' ? `border-color: black`: "null"}
+          ${color === 'white' ? `border-color: black`: ""}
         }  
         .btn-${color}:hover{
           ${color === 'black' ? `background-color: #4d4d4d`: `filter: brightness(90%)`}
