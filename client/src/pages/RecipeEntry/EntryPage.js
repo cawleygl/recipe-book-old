@@ -9,11 +9,16 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container';
 
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+
 const Entry = () => {
   // Setting our component's initial state
   const [recipeObject, setRecipeObject] = useState({})
 
   const [recipeName, setRecipeName] = useState("");
+  const [recipeOwner, setRecipeOwner] = useState("");
   const [recipeImg, setRecipeImg] = useState("");
   const [ingredientArray, setIngredientArray] = useState([""]);
   const [directionArray, setDirectionArray] = useState([""]);
@@ -22,6 +27,9 @@ const Entry = () => {
 
   const handleRecipeName = (event) => {
     setRecipeName(event.target.value);
+  };
+  const handleRecipeOwner = (event) => {
+    setRecipeOwner(event.target.value);
   };
   const handleRecipeImg = (event) => {
     setRecipeImg(event.target.value);
@@ -39,10 +47,10 @@ const Entry = () => {
     setRecipeNotes(event.target.value);
   };
 
-
   useEffect(() => {
     let newRecipe = {
       name: recipeName,
+      owner: recipeOwner,
       img: recipeImg,
       ingredients: ingredientArray,
       directions: directionArray,
@@ -53,7 +61,7 @@ const Entry = () => {
     console.log("New Recipe", newRecipe);
     setRecipeObject(newRecipe);
 
-  }, [recipeName, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
+  }, [recipeName, recipeOwner, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
 
 
   function handleFormSubmit(event) {
@@ -72,29 +80,47 @@ const Entry = () => {
     <Container>
       <h4 className="my-3">New Recipe</h4>
       <Form>
-        <Form.Group className="mb-3">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            as="input"
-            type="text"
-            placeholder="Name"
-            onChange={handleRecipeName}
-            aria-label="Text input recipe name"
-            aria-describedby="recipe-name-entry"
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Image</Form.Label>
-          <Form.Control
-            as="input"
-            type="text"
-            placeholder="Image Link"
-            onChange={handleRecipeImg}
-            aria-label="Text input recipe image"
-            aria-describedby="recipe-image-entry"
-          />
-        </Form.Group>
+        <Row>
+          <Col sm={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                as="input"
+                type="text"
+                placeholder="Name"
+                onChange={handleRecipeName}
+                aria-label="Text input recipe name"
+                aria-describedby="recipe-name-entry"
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Owner</Form.Label>
+              <Form.Control
+                as="input"
+                type="text"
+                placeholder="Owner"
+                onChange={handleRecipeOwner}
+                aria-label="Text input recipe owner"
+                aria-describedby="recipe-owner-entry"
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                as="input"
+                type="text"
+                placeholder="URL"
+                onChange={handleRecipeImg}
+                aria-label="Text input recipe image"
+                aria-describedby="recipe-image-entry"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
         <IngredientEntry ingredientArray={ingredientArray} handleRecipeIngredients={handleRecipeIngredients} />
         <DirectionEntry directionArray={directionArray} handleRecipeDirections={handleRecipeDirections} />
@@ -103,8 +129,7 @@ const Entry = () => {
         <Form.Group className="mb-3">
           <Form.Label>Notes</Form.Label>
           <Form.Control
-            as="input"
-            type="text"
+            as="textarea"
             placeholder="Notes"
             onChange={handleRecipeNotes}
             aria-label="Text input recipe notes"

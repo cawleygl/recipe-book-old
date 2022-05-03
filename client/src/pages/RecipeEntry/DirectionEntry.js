@@ -84,7 +84,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
                     </Button>
                   </ButtonGroup>
                 </Col>
-                <Col xs="auto">
+                <Col>
                   <li>
                     {direction}
                   </li>

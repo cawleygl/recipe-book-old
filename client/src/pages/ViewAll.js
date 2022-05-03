@@ -8,9 +8,8 @@ import Container from 'react-bootstrap/Container'
 
 import Accordion from 'react-bootstrap/Accordion'
 import Image from 'react-bootstrap/Image'
-import Badge from 'react-bootstrap/Badge'
 
-import { capitalizeName } from "../utils/useTools";
+import { customBadge, capitalizeName } from "../utils/useTools";
 import placeholder from '../assets/logo512.png'
 
 function ViewAll() {
@@ -64,13 +63,16 @@ function ViewAll() {
                     <Col>
                       {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
                         <div key={index}>
-                          <style type="text/css">
-                            {`
-                          .bg-${tagID} {
-                            background-color: ${tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).color : null};
-                          }`}
-                          </style>
-                          <Badge bg={tagID}>{(tags.find(tag => tag._id === tagID)) ? (capitalizeName(tags.find(tag => tag._id === tagID).name)) : null}</Badge>
+                          {customBadge(
+                            // Find tag name with matching ID from tags state variable
+                            tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null,
+                            index,
+                            tagID,
+                            // Find tag color with matching ID from tags state variable
+                            tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).tagColor : null,
+                            // Find text color with matching ID from tags state variable
+                            tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).textColor : null,
+                          )}
                         </div>
                       )) : null
                       }
@@ -81,12 +83,13 @@ function ViewAll() {
                   <Row>
                     <Col xs={4}>
                       <Image thumbnail src={recipe.img ? recipe.img : placeholder} width="100%" />
+                      <p>From: {recipe.owner}</p>
                     </Col>
                     <Col>
                       <h4>Ingredients</h4>
                       <ol>
                         {recipe.ingredients.map((ingredient, index) => (
-                          <li key={index}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
+                          <li key={index}>{ingredient.number} {ingredient.unit} {ingredient.name}</li>
                         ))}
                       </ol>
                       <h4>Directions</h4>

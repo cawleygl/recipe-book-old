@@ -115,7 +115,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
   return (
     <Form.Group className="mb-3">
       <Form.Label>Ingredients</Form.Label>
-      <ol>
+      <ul>
         {ingredientArray.map((ingredient, index) => (
           <div key={index}>
             <Row>
@@ -139,7 +139,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
             </Row>
           </div>
         ))}
-      </ol>
+      </ul>
       <InputGroup className="mb-1">
         <Form.Control
           as="input"
