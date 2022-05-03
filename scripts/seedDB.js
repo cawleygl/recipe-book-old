@@ -35,9 +35,9 @@ const recipeSeed = [
   }
 ];
 const tagSeed = [
-  { name: "vegan", tagColor: "#056b00", textColor: "#000000" },
-  { name: "vegetarian", tagColor: "#056b00", textColor: "#000000" },
-  { name: "gluten-free", tagColor: "#ffc800", textColor: "#000000" }
+  { name: "vegan", tagColor: "DarkGreen", textColor: "HoneyDew" },
+  { name: "vegetarian", tagColor: "SeaGreen", textColor: "white" },
+  { name: "gluten-free", tagColor: "LemonChiffon", textColor: "GoldenRod" }
 ];
 
 db.Recipe

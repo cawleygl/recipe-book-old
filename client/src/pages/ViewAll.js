@@ -13,6 +13,7 @@ import { customBadge, capitalizeName } from "../utils/useTools";
 import placeholder from '../assets/logo512.png'
 
 function ViewAll() {
+  let log = false;
   // Setting our component's initial state
   const [recipes, setRecipes] = useState([])
   const [tags, setTags] = useState([])
@@ -27,8 +28,8 @@ function ViewAll() {
   function loadRecipes() {
     API.getRecipes()
       .then(res => {
-        console.log("res", res);
-        setRecipes(res.data)
+        log && console.log("res", res);
+        setRecipes(res.data);
       }
       )
       .catch(err => console.log(err));
@@ -38,7 +39,7 @@ function ViewAll() {
   function loadTags() {
     API.getTags()
       .then(res => {
-        console.log("res", res);
+        log && console.log("res", res);
         setTags(res.data)
       }
       )

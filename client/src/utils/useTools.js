@@ -1,5 +1,5 @@
-import Badge from "react-bootstrap/esm/Badge";
-import Button from "react-bootstrap/esm/Button";
+import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFillDrip } from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +18,7 @@ const customBadge = (tagName, index, tagID, tagColor, textColor, large) => {
         {`.bg-${tagID} {
           background-color: ${tagColor};
           color: ${textColor};
+          ${textColor === 'black' ? `border-color: black;`: ""}
           ${large ? `font-size: 20px;` : null} 
           ${large ? `margin-bottom: 10px;` : null} 
         }`}
@@ -27,24 +28,23 @@ const customBadge = (tagName, index, tagID, tagColor, textColor, large) => {
   )
 };
 
-const colorButton = (color, iconColor, callBack) => {
+const colorButton = (tagColor, textColor, callBack) => {
   return (
     <>
-      <Button variant={color} value={color} onClick={callBack}>
+      <Button variant={tagColor} value="test" data-tagcolor={tagColor} data-textcolor={textColor} onClick={callBack}>
       <style type="text/css">
-        {`.btn-${color} {
-          background-color: ${color};
-          ${color === 'white' ? `border-color: black`: ""}
+        {`.btn-${tagColor} {
+          width: 100%;
+          border-radius: 0%;
+          background-color: ${tagColor};
         }  
-        .btn-${color}:hover{
-          ${color === 'black' ? `background-color: #4d4d4d`: `filter: brightness(90%)`}
-          ;
+        .btn-${tagColor}:hover{
+          filter: brightness(90%);
         }`}
       </style>
-
         <FontAwesomeIcon 
         icon={faFillDrip} 
-        color={iconColor} 
+        color={textColor} 
         />
       </Button>
     </>

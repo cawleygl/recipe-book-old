@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -16,7 +16,6 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
 
   const addStep = (event) => {
     const arrayvalue = [...directionArray];
-    console.log(event.target);
     arrayvalue.push("");
     handleRecipeDirections(arrayvalue);
     setCurrentStep(directionArray.length)
@@ -57,15 +56,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
     // Destructure current state array
     const arrayvalue = [...directionArray];
     setCurrentDirection(arrayvalue[index]);
-    console.log(index);
   };
-
-  useEffect(() => {
-    console.log("directionArray", directionArray);
-  }, [directionArray])
-  useEffect(() => {
-    console.log("currentStep", currentStep);
-  }, [currentStep])
 
   return (
     <Form.Group className="mb-3">
@@ -74,7 +65,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
           {directionArray.map((direction, index) => (
             <div key={index}>
               <Row>
-                <Col xs="auto">
+                <Col xs="auto" className='mx-2'>
                   <ButtonGroup aria-label="direction tools">
                     <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
                       <FontAwesomeIcon icon={faXmark} />

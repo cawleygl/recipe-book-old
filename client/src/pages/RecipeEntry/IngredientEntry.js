@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -47,7 +47,6 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
 
   const updateCurrentNumber = (event) => {
     let numberInt = isNaN(parseInt(event.target.value)) === true || parseInt(event.target.value) < 1 ? null : parseInt(event.target.value);
-    console.log(numberInt);
     setCurrentNumber(numberInt);
     setCurrentIngredient({ number: numberInt, unit: currentUnit, name: currentName });
     addToIngredientArray({ number: numberInt, unit: currentUnit, name: currentName });
@@ -102,16 +101,6 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
     setCurrentName(arrayvalue[index].name || "");
   };
 
-  useEffect(() => {
-    console.log("ingredientArray", ingredientArray);
-  }, [ingredientArray])
-  useEffect(() => {
-    console.log("currentIngredient", currentIngredient);
-  }, [currentIngredient])
-  useEffect(() => {
-    console.log("currentItem", currentItem);
-  }, [currentItem])
-
   return (
     <Form.Group className="mb-3">
       <Form.Label>Ingredients</Form.Label>
@@ -119,7 +108,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
         {ingredientArray.map((ingredient, index) => (
           <div key={index}>
             <Row>
-              <Col xs="auto">
+            <Col xs="auto" className='mx-2'>
                 <ButtonGroup aria-label="ingredient tools">
                   <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteItem}>
                     <FontAwesomeIcon icon={faXmark} />

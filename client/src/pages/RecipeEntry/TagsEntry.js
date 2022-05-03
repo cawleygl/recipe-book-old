@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
+import "./style.css"
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -13,8 +14,10 @@ import InputGroup from 'react-bootstrap/InputGroup'
 
 import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
+import DropdownButton from 'react-bootstrap/DropdownButton'
 
 const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
+  let log = false;
 
   const [tags, setTags] = useState([""]);
 
@@ -35,47 +38,41 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
 
   const addTag = () => {
     let tagCreate = { name: parsedNewTag, tagColor: tagColor, textColor: textColor };
-    console.log("Add Tag", tagCreate);
 
     createTag(tagCreate);
 
     setNewTag("");
     setParsedNewTag("");
-    setTagColor("");
+    setTagColor("#0B6EFD");
+    setTextColor("#ffffff");
   };
 
   const handleTagColor = (event) => {
-    if (!event.target.value) {
-      const value = event.target.closest('button').value;
-      console.log(value);
-      setTagColor(value);
-    } else {
-      console.log(event.target.value);
-      setTagColor(event.target.value);
-    }
+    setTagColor(event.target.value);
   };
   const handleTextColor = (event) => {
-    if (!event.target.value) {
-      const value = event.target.closest('button').value;
-      console.log(value);
-      setTextColor(value);
-    } else {
-      console.log(event.target.value);
-      setTextColor(event.target.value);
-    }
+    setTextColor(event.target.value);
+  };
+
+  const handleColorButton = (event) => {
+
+    const tag = event.target.closest('button').dataset.tagcolor;
+    const text = event.target.closest('button').dataset.textcolor;
+
+    setTagColor(tag);
+    setTextColor(text);
+
   };
 
   const handleNewTag = (event) => {
     setNewTag(event.target.value);
     let parsedTag = event.target.value.trim().toLowerCase().replaceAll(' ', '-')
-    console.log(typeof parsedTag);
 
     setParsedNewTag(parsedTag);
 
     // Check if tag already exists
     if (tags.find(tag => tag.name === parsedTag)) {
       setRepeatTag(true);
-      console.log("Repeat")
     } else {
       setRepeatTag(false);
     }
@@ -87,7 +84,6 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
     const arrayvalue = [...selectedTags];
 
     // If setting checked to true, push ID to array 
-    console.log(checkedState[index])
     if (!checkedState[index]) {
       arrayvalue.push(id)
       handleSelectedTags(arrayvalue);
@@ -115,7 +111,7 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
   function loadTags() {
     API.getTags()
       .then(res => {
-        console.log("res", res);
+        log && console.log("res", res);
         res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
         setTags(res.data);
         setCheckedState(new Array(res.data.length).fill(false));
@@ -126,7 +122,7 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
   function createTag(tag) {
     API.saveTag(tag)
       .then(res => {
-        console.log("res", res);
+        log && console.log("res", res);
         setTags(res.data)
         loadTags();
       })
@@ -137,10 +133,13 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
     <>
       <Form.Group className="mb-3">
         <Row>
+          <Form.Label>Tags</Form.Label>
+        </Row>
+        <Row>
           <Col sm={6} className="mb-3">
-            <Form.Label>Tags</Form.Label>
             {tags.length > 0 && tags.map((tag, index) => (
               <Form.Check
+                inline
                 key={tag._id}
                 type={"switch"}
                 label={customBadge(tag.name, index, tag._id, tag.tagColor, tag.textColor)}
@@ -160,7 +159,7 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
               </Col>
             </Row>
             <Row>
-              <InputGroup hasValidation className="mb-3">
+              <InputGroup hasValidation className="mb-1">
                 <Form.Control
                   type="text"
                   placeholder="Tag Name"
@@ -184,45 +183,52 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
                 </Form.Control.Feedback>
               </InputGroup>
             </Row>
+
+            <Row className="mb-1">
+              <Form.Text>Preset Colors</Form.Text>
+              <ButtonGroup>
+                <DropdownButton as={ButtonGroup} title="Rainbow" id="bg-vertical-dropdown-1" className='py-0'>
+                  {colorButton("FireBrick", "white", handleColorButton)}
+                  {colorButton("DarkOrange", "white", handleColorButton)}
+                  {colorButton("Gold ", "black", handleColorButton)}
+                  {colorButton("SeaGreen", "white", handleColorButton)}
+                  {colorButton("DodgerBlue", "black", handleColorButton)}
+                  {colorButton("MediumBlue", "white", handleColorButton)}
+                  {colorButton("RebeccaPurple", "white", handleColorButton)}
+                </DropdownButton>
+                <DropdownButton as={ButtonGroup} title="Light" id="bg-vertical-dropdown-1" className='py-0'>
+                  {colorButton("MistyRose", "FireBrick", handleColorButton)}
+                  {colorButton("AntiqueWhite", "DarkOrange", handleColorButton)}
+                  {colorButton("LemonChiffon", "GoldenRod ", handleColorButton)}
+                  {colorButton("HoneyDew", "SeaGreen", handleColorButton)}
+                  {colorButton("LightCyan", "DodgerBlue", handleColorButton)}
+                  {colorButton("LightSteelBlue  ", "MediumBlue", handleColorButton)}
+                  {colorButton("Lavender ", "RebeccaPurple", handleColorButton)}
+                </DropdownButton>
+                <DropdownButton as={ButtonGroup} title="Dark" id="bg-vertical-dropdown-1" className='py-0'>
+                  {colorButton("Maroon", "MistyRose", handleColorButton)}
+                  {colorButton("SaddleBrown", "AntiqueWhite", handleColorButton)}
+                  {colorButton("DarkGoldenRod", "LemonChiffon", handleColorButton)}
+                  {colorButton("DarkGreen ", "HoneyDew", handleColorButton)}
+                  {colorButton("SteelBlue ", "LightCyan", handleColorButton)}
+                  {colorButton("MidnightBlue", "LightSteelBlue", handleColorButton)}
+                  {colorButton("Indigo", "Lavender ", handleColorButton)}
+                </DropdownButton>
+              </ButtonGroup>
+            </Row>
             <Row>
-              <Col xs={6}>
-                <Form.Text>Background Color</Form.Text>
-                <ButtonGroup className="mb-1">
-                  <Form.Control
-                    type="color"
-                    id="tagColorInput"
-                    defaultValue="#0B6EFD"
-                    onChange={handleTagColor}
-                    title="Tag Background Color"
-                  />
-                  {colorButton("red", "white", handleTagColor)}
-                  {colorButton("orange", "white", handleTagColor)}
-                  {colorButton("yellow", "black", handleTagColor)}
-                  {colorButton("green", "white", handleTagColor)}
-                  {colorButton("blue", "white", handleTagColor)}
-                  {colorButton("purple", "white", handleTagColor)}
-                </ButtonGroup>
-                <ButtonGroup className="mb-1">
-                  {colorButton("FireBrick", "white", handleTagColor)}
-                  {colorButton("DarkOrange", "white", handleTagColor)}
-                  {colorButton("Gold", "black", handleTagColor)}
-                  {colorButton("SeaGreen", "white", handleTagColor)}
-                  {colorButton("SkyBlue", "black", handleTagColor)}
-                  {colorButton("RoyalBlue", "white", handleTagColor)}
-                  {colorButton("RebeccaPurple", "white", handleTagColor)}
-                </ButtonGroup>
-                <ButtonGroup className="mb-1">
-                  {colorButton("LightPink", "black", handleTagColor)}
-                  {colorButton("LightSalmon", "black", handleTagColor)}
-                  {colorButton("LemonChiffon", "black", handleTagColor)}
-                  {colorButton("HoneyDew", "black", handleTagColor)}
-                  {colorButton("LightCyan", "black", handleTagColor)}
-                  {colorButton("LightSkyBlue", "black", handleTagColor)}
-                  {colorButton("Plum", "black", handleTagColor)}
-                </ButtonGroup>
+              <Col xs={'auto'}>
+                <Form.Text>Background</Form.Text>
+                <Form.Control
+                  type="color"
+                  id="tagColorInput"
+                  defaultValue="#0B6EFD"
+                  onChange={handleTagColor}
+                  title="Tag Background Color"
+                />
               </Col>
-              <Col xs={6}>
-                <Form.Text>Text Color</Form.Text>
+              <Col>
+                <Form.Text>Text</Form.Text>
                 <Form.Control
                   xs='20px'
                   type="color"
@@ -231,13 +237,9 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
                   onChange={handleTextColor}
                   title="Tag Text color"
                 />
-                <Row className="mb-1">
-                  <ButtonGroup>
-                    {colorButton("black", "white", handleTextColor)}
-                    {colorButton("white", "black", handleTextColor)}
-                  </ButtonGroup>
-                </Row>
               </Col>
+            </Row>
+            <Row>
             </Row>
           </Col>
         </Row>

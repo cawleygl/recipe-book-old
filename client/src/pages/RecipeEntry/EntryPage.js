@@ -14,6 +14,7 @@ import Col from 'react-bootstrap/Col'
 
 
 const Entry = () => {
+  let log = false;
   // Setting our component's initial state
   const [recipeObject, setRecipeObject] = useState({})
 
@@ -58,7 +59,6 @@ const Entry = () => {
       notes: recipeNotes
     };
 
-    console.log("New Recipe", newRecipe);
     setRecipeObject(newRecipe);
 
   }, [recipeName, recipeOwner, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
@@ -66,11 +66,10 @@ const Entry = () => {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    console.log("recipeObject", recipeObject);
 
     if (recipeObject) {
       API.saveRecipe(recipeObject)
-        .then(res => console.log("SAVED RECIPE"))
+        .then(res => log && console.log("res", res))
         .catch(err => console.log(err));
     }
   };
