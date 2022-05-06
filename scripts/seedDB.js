@@ -35,9 +35,42 @@ const recipeSeed = [
   }
 ];
 const tagSeed = [
-  { name: "vegan", tagColor: "DarkGreen", textColor: "HoneyDew" },
-  { name: "vegetarian", tagColor: "SeaGreen", textColor: "white" },
-  { name: "gluten-free", tagColor: "LemonChiffon", textColor: "GoldenRod" }
+  // Bright
+  {name: "red-bright", tagColor: "FireBrick", textColor: "white" },
+  {name: "orange-bright", tagColor: "DarkOrange", textColor: "white" },
+  {name: "yellow-bright", tagColor: "Gold", textColor: "black" },
+  {name: "green-bright", tagColor: "ForestGreen", textColor: "white" },
+  {name: "lightblue-bright", tagColor: "DodgerBlue", textColor: "white" },
+  {name: "darkblue-bright", tagColor: "MediumBlue", textColor: "white" },
+  {name: "purple-bright", tagColor: "RebeccaPurple", textColor: "white" },
+  {name: "pink-bright", tagColor: "Plum", textColor: "black" },
+  // Tropical
+  {name: "red-tropical", tagColor: "Crimson", textColor: "white" },
+  {name: "orange-tropical", tagColor: "OrangeRed", textColor: "white" },
+  {name: "yellow-tropical", tagColor: "Yellow", textColor: "black" },
+  {name: "green-tropical", tagColor: "Chartreuse", textColor: "black" },
+  {name: "lightblue-tropical", tagColor: "Aquamarine", textColor: "black" },
+  {name: "darkblue-tropical", tagColor: "Teal", textColor: "white" },
+  {name: "purple-tropical", tagColor: "MediumVioletRed", textColor: "white" },
+  {name: "pink-tropical", tagColor: "LightCoral", textColor: "white" },
+  // Pastel
+  {name: "red-pastel", textColor: "FireBrick", tagColor: "MistyRose" },
+  {name: "orange-pastel", textColor: "DarkOrange", tagColor: "AntiqueWhite" },
+  {name: "yellow-pastel", textColor: "GoldenRod", tagColor: "LemonChiffon" },
+  {name: "green-pastel", textColor: "ForestGreen", tagColor: "HoneyDew" },
+  {name: "lightblue-pastel", textColor: "DodgerBlue", tagColor: "LightCyan" },
+  {name: "darkblue-pastel", textColor: "MediumBlue", tagColor: "LightSteelBlue" },
+  {name: "purple-pastel", textColor: "RebeccaPurple", tagColor: "Lavender" },
+  {name: "pink-pastel", textColor: "Plum", tagColor: "LavenderBlush" },
+  // Dark
+  {name: "red-dark", tagColor: "DarkRed", textColor: "MistyRose" },
+  {name: "orange-dark", tagColor: "Chocolate", textColor: "AntiqueWhite" },
+  {name: "yellow-dark", tagColor: "DarkGoldenRod", textColor: "LemonChiffon" },
+  {name: "green-dark", tagColor: "DarkGreen", textColor: "HoneyDew" },
+  {name: "lightblue-dark", tagColor: "SteelBlue", textColor: "LightCyan" },
+  {name: "darkblue-dark", tagColor: "MidnightBlue", textColor: "LightSteelBlue" },
+  {name: "purple-dark", tagColor: "Indigo", textColor: "Lavender" },
+  {name: "pink-dark", tagColor: "DarkMagenta", textColor: "LavenderBlush" },
 ];
 
 db.Recipe

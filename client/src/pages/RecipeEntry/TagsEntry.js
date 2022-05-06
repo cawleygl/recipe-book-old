@@ -187,35 +187,49 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
             <Row className="mb-1">
               <Form.Text>Preset Colors</Form.Text>
               <ButtonGroup>
-                <DropdownButton as={ButtonGroup} title="Rainbow" id="bg-vertical-dropdown-1" className='py-0'>
+                <DropdownButton as={ButtonGroup} title="Bright" className='py-0'>
                   {colorButton("FireBrick", "white", handleColorButton)}
                   {colorButton("DarkOrange", "white", handleColorButton)}
-                  {colorButton("Gold ", "black", handleColorButton)}
-                  {colorButton("SeaGreen", "white", handleColorButton)}
-                  {colorButton("DodgerBlue", "black", handleColorButton)}
+                  {colorButton("Gold", "black", handleColorButton)}
+                  {colorButton("ForestGreen", "white", handleColorButton)}
+                  {colorButton("DodgerBlue", "white", handleColorButton)}
                   {colorButton("MediumBlue", "white", handleColorButton)}
                   {colorButton("RebeccaPurple", "white", handleColorButton)}
+                  {colorButton("Plum", "black", handleColorButton)}
                 </DropdownButton>
-                <DropdownButton as={ButtonGroup} title="Light" id="bg-vertical-dropdown-1" className='py-0'>
+                <DropdownButton as={ButtonGroup} title="Tropical" className='py-0'>
+                  {colorButton("Crimson", "white", handleColorButton)}
+                  {colorButton("OrangeRed", "white", handleColorButton)}
+                  {colorButton("Yellow", "black", handleColorButton)}
+                  {colorButton("Chartreuse", "black", handleColorButton)}
+                  {colorButton("Aquamarine", "black", handleColorButton)}
+                  {colorButton("Teal", "white", handleColorButton)}
+                  {colorButton("MediumVioletRed", "white", handleColorButton)}
+                  {colorButton("LightCoral", "white", handleColorButton)}
+                </DropdownButton>
+                <DropdownButton as={ButtonGroup} title="Pastel" className='py-0'>
                   {colorButton("MistyRose", "FireBrick", handleColorButton)}
                   {colorButton("AntiqueWhite", "DarkOrange", handleColorButton)}
                   {colorButton("LemonChiffon", "GoldenRod ", handleColorButton)}
-                  {colorButton("HoneyDew", "SeaGreen", handleColorButton)}
+                  {colorButton("HoneyDew", "ForestGreen", handleColorButton)}
                   {colorButton("LightCyan", "DodgerBlue", handleColorButton)}
-                  {colorButton("LightSteelBlue  ", "MediumBlue", handleColorButton)}
-                  {colorButton("Lavender ", "RebeccaPurple", handleColorButton)}
+                  {colorButton("LightSteelBlue", "MediumBlue", handleColorButton)}
+                  {colorButton("Lavender", "RebeccaPurple", handleColorButton)}
+                  {colorButton("LavenderBlush", "Plum", handleColorButton)}
                 </DropdownButton>
-                <DropdownButton as={ButtonGroup} title="Dark" id="bg-vertical-dropdown-1" className='py-0'>
-                  {colorButton("Maroon", "MistyRose", handleColorButton)}
-                  {colorButton("SaddleBrown", "AntiqueWhite", handleColorButton)}
+                <DropdownButton as={ButtonGroup} title="Dark" className='py-0'>
+                  {colorButton("DarkRed", "MistyRose", handleColorButton)}
+                  {colorButton("Chocolate", "AntiqueWhite", handleColorButton)}
                   {colorButton("DarkGoldenRod", "LemonChiffon", handleColorButton)}
-                  {colorButton("DarkGreen ", "HoneyDew", handleColorButton)}
-                  {colorButton("SteelBlue ", "LightCyan", handleColorButton)}
+                  {colorButton("DarkGreen", "HoneyDew", handleColorButton)}
+                  {colorButton("SteelBlue", "LightCyan", handleColorButton)}
                   {colorButton("MidnightBlue", "LightSteelBlue", handleColorButton)}
-                  {colorButton("Indigo", "Lavender ", handleColorButton)}
+                  {colorButton("Indigo", "Lavender", handleColorButton)}
+                  {colorButton("DarkMagenta", "LavenderBlush", handleColorButton)}
                 </DropdownButton>
               </ButtonGroup>
             </Row>
+
             <Row>
               <Col xs={'auto'}>
                 <Form.Text>Background</Form.Text>

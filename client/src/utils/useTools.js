@@ -28,10 +28,10 @@ const customBadge = (tagName, index, tagID, tagColor, textColor, large) => {
   )
 };
 
-const colorButton = (tagColor, textColor, callBack) => {
+const colorButton = (tagColor, textColor, onClick) => {
   return (
     <>
-      <Button variant={tagColor} value="test" data-tagcolor={tagColor} data-textcolor={textColor} onClick={callBack}>
+      <Button variant={tagColor} value="test" data-tagcolor={tagColor} data-textcolor={textColor} onClick={onClick}>
       <style type="text/css">
         {`.btn-${tagColor} {
           width: 100%;
