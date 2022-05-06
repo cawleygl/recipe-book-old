@@ -65,7 +65,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
           {directionArray.map((direction, index) => (
             <div key={index}>
               <Row>
-                <Col xs="auto" className='mx-2'>
+                <Col xs="auto" className='me-2'>
                   <ButtonGroup aria-label="direction tools">
                     <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
                       <FontAwesomeIcon icon={faXmark} />

@@ -108,7 +108,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
         {ingredientArray.map((ingredient, index) => (
           <div key={index}>
             <Row>
-            <Col xs="auto" className='mx-2'>
+            <Col xs="auto" className='me-2'>
                 <ButtonGroup aria-label="ingredient tools">
                   <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteItem}>
                     <FontAwesomeIcon icon={faXmark} />
