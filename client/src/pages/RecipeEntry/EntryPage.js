@@ -21,6 +21,7 @@ const Entry = () => {
 
   const [recipeName, setRecipeName] = useState("");
   const [recipeSource, setRecipeSource] = useState("");
+  const [recipeDescription, setRecipeDescription] = useState("");
   const [recipeImgObject, setRecipeImgObject] = useState({ data: "", preview: "" });
   const [ingredientArray, setIngredientArray] = useState([""]);
   const [directionArray, setDirectionArray] = useState([""]);
@@ -32,6 +33,7 @@ const Entry = () => {
     let newRecipe = {
       name: recipeName,
       source: recipeSource,
+      description: recipeDescription,
       img: recipeImgObject,
       ingredients: ingredientArray,
       directions: directionArray,
@@ -42,7 +44,7 @@ const Entry = () => {
     setRecipeObject(newRecipe);
     log && console.log("Recipe", recipeObject);
 
-  }, [recipeName, recipeSource, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
+  }, [recipeName, recipeSource, recipeDescription, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
 
   // Submit current recipe and save to db
   function handleFormSubmit(event) {
@@ -89,6 +91,18 @@ const Entry = () => {
           </Col>
         </Row>
 
+        <Form.Group className="mb-3">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            placeholder="Description"
+            onChange={(event) => setRecipeDescription(event.target.value)}
+            aria-label="Text input recipe description"
+            aria-describedby="recipe-description-entry"
+          />
+          <Form.Text>Enter a basic description of this dish.</Form.Text>
+        </Form.Group>
+
         <ImageEntry
           recipeImgObject={recipeImgObject}
           setRecipeImgObject={setRecipeImgObject}
@@ -115,6 +129,8 @@ const Entry = () => {
             aria-label="Text input recipe notes"
             aria-describedby="recipe-notes-entry"
           />
+          <Form.Text>Add any additional information about this dish here.</Form.Text>
+
         </Form.Group>
         <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={handleFormSubmit}>
           Submit Recipe
