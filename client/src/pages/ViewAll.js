@@ -9,8 +9,7 @@ import Container from 'react-bootstrap/Container'
 import Accordion from 'react-bootstrap/Accordion'
 import Image from 'react-bootstrap/Image'
 
-import { customBadge, capitalizeName } from "../utils/useTools";
-import placeholder from '../assets/logo512.png'
+import { customBadge, capitalizeName, imageErrorHandler } from "../utils/useTools";
 
 function ViewAll() {
   let log = false;
@@ -83,8 +82,11 @@ function ViewAll() {
                 <Accordion.Body>
                   <Row>
                     <Col xs={4}>
-                      <Image thumbnail src={recipe.img ? recipe.img : placeholder} width="100%" />
-                      <p>From: {recipe.owner}</p>
+                      <Image thumbnail
+                        src={recipe.img.preview}
+                        onError={(event) => imageErrorHandler(event.target)}
+                        width="100%" />
+                      <p>From: {recipe.source}</p>
                     </Col>
                     <Col>
                       <h4>Ingredients</h4>
