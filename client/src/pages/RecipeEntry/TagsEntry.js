@@ -16,7 +16,7 @@ import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
-const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
+const TagsEntry = ({ selectedTags, setSelectedTags }) => {
   let log = false;
 
   const [tags, setTags] = useState([""]);
@@ -86,12 +86,12 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
     // If setting checked to true, push ID to array 
     if (!checkedState[index]) {
       arrayvalue.push(id)
-      handleSelectedTags(arrayvalue);
+      setSelectedTags(arrayvalue);
 
       // If setting to false, find ID and splice
     } else {
       const removed = arrayvalue.filter(tagId => tagId !== id);
-      handleSelectedTags(removed);
+      setSelectedTags(removed);
     }
     // Update checked state
     updateCheckState(index);
@@ -138,10 +138,9 @@ const TagsEntry = ({ selectedTags, handleSelectedTags }) => {
         <Row>
           <Col sm={6} className="mb-3">
             {tags.length > 0 && tags.map((tag, index) => (
-              <Form.Check
+              <Form.Check key={tag._id}
                 inline
-                key={tag._id}
-                type={"switch"}
+                type="switch"
                 label={customBadge(tag.name, index, tag._id, tag.tagColor, tag.textColor)}
                 id={tag._id}
                 data-index={index}

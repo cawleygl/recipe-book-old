@@ -10,14 +10,14 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
+const DirectionEntry = ({directionArray, setDirectionArray}) => {
   const [currentDirection, setCurrentDirection] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
 
   const addStep = (event) => {
     const arrayvalue = [...directionArray];
     arrayvalue.push("");
-    handleRecipeDirections(arrayvalue);
+    setDirectionArray(arrayvalue);
     setCurrentStep(directionArray.length)
     setCurrentDirection("")
   };
@@ -27,7 +27,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
     // Destructure current state array
     let arrayvalue = [...directionArray];
     arrayvalue[currentStep] = value;
-    handleRecipeDirections(arrayvalue);
+    setDirectionArray(arrayvalue);
     setCurrentDirection(event.target.value);
   };
 
@@ -35,7 +35,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
     // Do not delete last step, only clear
     if (directionArray.length === 1) {
       setCurrentDirection("");
-      handleRecipeDirections([""]);
+      setDirectionArray([""]);
       return;
     }
     const index = event.target.closest('button').dataset.index;
@@ -43,7 +43,7 @@ const DirectionEntry = ({directionArray, handleRecipeDirections}) => {
     const arrayvalue = [...directionArray];
     // Remove value at index
     arrayvalue.splice(index, 1);
-    handleRecipeDirections(arrayvalue);
+    setDirectionArray(arrayvalue);
 
     // change current step to last step
     setCurrentStep(arrayvalue.length - 1)

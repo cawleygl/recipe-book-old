@@ -4,6 +4,7 @@ import API from "../../utils/API";
 import DirectionEntry from "./DirectionEntry";
 import IngredientEntry from "./IngredientEntry";
 import TagsEntry from "./TagsEntry";
+import ImageEntry from "./ImageEntry";
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -14,45 +15,24 @@ import Col from 'react-bootstrap/Col'
 
 
 const Entry = () => {
-  let log = false;
-  // Setting our component's initial state
+  let log = true;
+
   const [recipeObject, setRecipeObject] = useState({})
 
   const [recipeName, setRecipeName] = useState("");
-  const [recipeOwner, setRecipeOwner] = useState("");
-  const [recipeImg, setRecipeImg] = useState("");
+  const [recipeSource, setRecipeSource] = useState("");
+  const [recipeImgObject, setRecipeImgObject] = useState({ data: "", preview: "" });
   const [ingredientArray, setIngredientArray] = useState([""]);
   const [directionArray, setDirectionArray] = useState([""]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [recipeNotes, setRecipeNotes] = useState("");
 
-  const handleRecipeName = (event) => {
-    setRecipeName(event.target.value);
-  };
-  const handleRecipeOwner = (event) => {
-    setRecipeOwner(event.target.value);
-  };
-  const handleRecipeImg = (event) => {
-    setRecipeImg(event.target.value);
-  };
-  const handleRecipeIngredients = (value) => {
-    setIngredientArray(value);
-  };
-  const handleRecipeDirections = (value) => {
-    setDirectionArray(value);
-  };
-  const handleSelectedTags = (value) => {
-    setSelectedTags(value);
-  };
-  const handleRecipeNotes = (event) => {
-    setRecipeNotes(event.target.value);
-  };
-
+  // Set Recipe object when variables change
   useEffect(() => {
     let newRecipe = {
       name: recipeName,
-      owner: recipeOwner,
-      img: recipeImg,
+      source: recipeSource,
+      img: recipeImgObject,
       ingredients: ingredientArray,
       directions: directionArray,
       tags: selectedTags,
@@ -60,12 +40,14 @@ const Entry = () => {
     };
 
     setRecipeObject(newRecipe);
+    log && console.log(recipeObject);
 
-  }, [recipeName, recipeOwner, recipeImg, ingredientArray, directionArray, selectedTags, recipeNotes])
+  }, [recipeName, recipeSource, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
 
-
+  // Submit current recipe and save to db
   function handleFormSubmit(event) {
     event.preventDefault();
+    console.log(recipeObject)
 
     if (recipeObject) {
       API.saveRecipe(recipeObject)
@@ -74,20 +56,19 @@ const Entry = () => {
     }
   };
 
-
   return (
     <Container>
-      <h4 className="my-3">New Recipe</h4>
+      <h3 className="my-3">New Recipe</h3>
       <Form>
         <Row>
-          <Col sm={4}>
+          <Col sm={8}>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 as="input"
                 type="text"
                 placeholder="Name"
-                onChange={handleRecipeName}
+                onChange={(event) => setRecipeName(event.target.value)}
                 aria-label="Text input recipe name"
                 aria-describedby="recipe-name-entry"
               />
@@ -95,52 +76,50 @@ const Entry = () => {
           </Col>
           <Col sm={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Owner</Form.Label>
+              <Form.Label>Source</Form.Label>
               <Form.Control
                 as="input"
                 type="text"
-                placeholder="Owner"
-                onChange={handleRecipeOwner}
-                aria-label="Text input recipe owner"
-                aria-describedby="recipe-owner-entry"
-              />
-            </Form.Group>
-          </Col>
-          <Col sm={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                as="input"
-                type="text"
-                placeholder="URL"
-                onChange={handleRecipeImg}
-                aria-label="Text input recipe image"
-                aria-describedby="recipe-image-entry"
+                placeholder="Source"
+                onChange={(event) => setRecipeSource(event.target.value)}
+                aria-label="Text input recipe source"
+                aria-describedby="recipe-source-entry"
               />
             </Form.Group>
           </Col>
         </Row>
 
-        <IngredientEntry ingredientArray={ingredientArray} handleRecipeIngredients={handleRecipeIngredients} />
-        <DirectionEntry directionArray={directionArray} handleRecipeDirections={handleRecipeDirections} />
-        <TagsEntry selectedTags={selectedTags} handleSelectedTags={handleSelectedTags} />
+        <ImageEntry
+          recipeImgObject={recipeImgObject}
+          setRecipeImgObject={setRecipeImgObject}
+        />
+        <IngredientEntry
+          ingredientArray={ingredientArray}
+          setIngredientArray={setIngredientArray}
+        />
+        <DirectionEntry
+          directionArray={directionArray}
+          setDirectionArray={setDirectionArray}
+        />
+        <TagsEntry
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
 
         <Form.Group className="mb-3">
           <Form.Label>Notes</Form.Label>
           <Form.Control
             as="textarea"
             placeholder="Notes"
-            onChange={handleRecipeNotes}
+            onChange={(event) => setRecipeNotes(event.target.value)}
             aria-label="Text input recipe notes"
             aria-describedby="recipe-notes-entry"
           />
         </Form.Group>
-
         <Button className="my-3" variant="primary" size="lg" id="submit-button" onClick={handleFormSubmit}>
           Submit Recipe
         </Button>
       </Form>
-
     </Container>
   )
 }

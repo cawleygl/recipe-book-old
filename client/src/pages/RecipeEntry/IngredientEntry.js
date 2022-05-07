@@ -13,7 +13,7 @@ import Col from 'react-bootstrap/Col'
 import { capitalizeName } from "../../utils/useTools";
 
 
-const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
+const IngredientEntry = ({ ingredientArray, setIngredientArray }) => {
   const [currentNumber, setCurrentNumber] = useState("");
   const [currentUnit, setCurrentUnit] = useState("");
   const [currentName, setCurrentName] = useState("");
@@ -28,7 +28,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
     // Destructure and add empty value to ingredient array
     const arrayvalue = [...ingredientArray];
     arrayvalue.push("");
-    handleRecipeIngredients(arrayvalue);
+    setIngredientArray(arrayvalue);
     // Clear current number, unit, name, and change current item
     setCurrentNumber("");
     setCurrentUnit("");
@@ -42,7 +42,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
   const addToIngredientArray = (newIngredient) => {
     let arrayvalue = [...ingredientArray];
     arrayvalue[currentItem] = newIngredient;
-    handleRecipeIngredients(arrayvalue);
+    setIngredientArray(arrayvalue);
   };
 
   const updateCurrentNumber = (event) => {
@@ -71,7 +71,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
       setCurrentNumber("");
       setCurrentUnit("");
       setCurrentName("");
-      handleRecipeIngredients([""]);
+      setIngredientArray([""]);
       return;
     }
     const index = event.target.closest('button').dataset.index;
@@ -79,7 +79,7 @@ const IngredientEntry = ({ ingredientArray, handleRecipeIngredients }) => {
     const arrayvalue = [...ingredientArray];
     // Remove value at index
     arrayvalue.splice(index, 1);
-    handleRecipeIngredients(arrayvalue);
+    setIngredientArray(arrayvalue);
 
     // change current item to last item
     setCurrentItem(arrayvalue.length - 1)
