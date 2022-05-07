@@ -137,16 +137,23 @@ const TagsEntry = ({ selectedTags, setSelectedTags }) => {
         </Row>
         <Row>
           <Col sm={6} className="mb-3">
-            {tags.length > 0 && tags.map((tag, index) => (
-              <Form.Check key={tag._id}
-                inline
-                type="switch"
-                label={customBadge(tag.name, index, tag._id, tag.tagColor, tag.textColor)}
-                id={tag._id}
-                data-index={index}
-                onChange={handleTagChange}
-              />
-            ))}
+            <Row>
+              <Col>
+                {tags.length > 0 && tags.map((tag, index) => (
+                  <Form.Check key={tag._id}
+                    inline
+                    type="switch"
+                    label={customBadge(tag.name, index, tag._id, tag.tagColor, tag.textColor)}
+                    id={tag._id}
+                    data-index={index}
+                    onChange={handleTagChange}
+                  />
+                ))}
+              </Col>
+            </Row>
+            <Row>
+              <Form.Text>Select any tag that describes this dish to add it.</Form.Text>
+            </Row>
           </Col>
           <Col sm={6}>
             <Row>
@@ -181,10 +188,12 @@ const TagsEntry = ({ selectedTags, setSelectedTags }) => {
                   '{capitalizeName(parsedNewTag)}' tag already exists.
                 </Form.Control.Feedback>
               </InputGroup>
+              <Form.Text>Enter a name and choose colors to create a new tag.</Form.Text>
             </Row>
 
-            <Row className="mb-1">
-              <Form.Text>Preset Colors</Form.Text>
+            <Row className="my-2">
+              <Form.Label>New Tag Colors</Form.Label>
+              <Form.Text>Presets</Form.Text>
               <ButtonGroup>
                 <DropdownButton as={ButtonGroup} title="Bright" className='py-0'>
                   {colorButton("FireBrick", "white", handleColorButton)}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 
+import "./style.css"
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -86,10 +88,14 @@ function ViewAll() {
                         src={recipe.img.preview}
                         onError={(event) => imageErrorHandler(event.target)}
                         width="100%" />
-                      <p>From: {recipe.source}</p>
                     </Col>
                     <Col>
-                      <h4>Ingredients</h4>
+                      <div className='title'>
+                        <div className="header">{recipe.name}</div>
+                        <div className="desc">"{recipe.description}"</div>
+                        <div>-{recipe.source}</div>
+                      </div>
+                      <h4 className='mt-3'>Ingredients</h4>
                       <ol>
                         {recipe.ingredients.map((ingredient, index) => (
                           <li key={index}>{ingredient.number} {ingredient.unit} {ingredient.name}</li>
