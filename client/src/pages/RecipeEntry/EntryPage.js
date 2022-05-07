@@ -15,7 +15,7 @@ import Col from 'react-bootstrap/Col'
 
 
 const Entry = () => {
-  let log = true;
+  let log = false;
 
   const [recipeObject, setRecipeObject] = useState({})
 
@@ -40,14 +40,14 @@ const Entry = () => {
     };
 
     setRecipeObject(newRecipe);
-    log && console.log(recipeObject);
+    log && console.log("Recipe", recipeObject);
 
   }, [recipeName, recipeSource, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
 
   // Submit current recipe and save to db
   function handleFormSubmit(event) {
     event.preventDefault();
-    console.log(recipeObject)
+    log && console.log("Submit", recipeObject)
 
     if (recipeObject) {
       API.saveRecipe(recipeObject)
