@@ -11,9 +11,12 @@ mongoose.connect(
 const recipeSeed = [
   {
     name: "Pasta alla Gricia",
-    owner: "Serious Eats",
-    img: "https://www.seriouseats.com/thmb/2JIfR84hQDdB2JTBJjmuzKlI1cA=/880x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2018__10__20181017-pasta-gricia-vicky-wasik-21-b1cfa4939bd347d1a59068b55c801d29.jpg",
-    ingredients: [
+    source: "Serious Eats",
+    img: {
+      preview: "https://www.seriouseats.com/thmb/2JIfR84hQDdB2JTBJjmuzKlI1cA=/880x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2018__10__20181017-pasta-gricia-vicky-wasik-21-b1cfa4939bd347d1a59068b55c801d29.jpg",
+      data: null 
+    },
+      ingredients: [
       { name: "Guanciale", amount: 8, unit: "oz" },
       { name: "Extra-virgin olive oil", amount: 1, unit: "tbsp" },
       { name: "Rigatoni", amount: 12, unit: "oz" },
