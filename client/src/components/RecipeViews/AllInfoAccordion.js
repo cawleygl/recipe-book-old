@@ -41,7 +41,7 @@ function AllInfo({ recipes }) {
   };
 
   return (
-    <Container>
+    <Accordion>
       <h5 className="my-3">All Info View</h5>
       {recipes ?
         recipes.map((recipe, index) => (
@@ -64,11 +64,11 @@ function AllInfo({ recipes }) {
                     <Row>
                       <div className="header">{capitalizeName(recipe.name)}</div>
                       {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
-                        <div key={index}>
+                        <div key={tagID}>
                           {customBadge(
                             // Find tag name with matching ID from tags state variable
                             tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null,
-                            index,
+                            // Pass in ID
                             tagID,
                             // Find tag color with matching ID from tags state variable
                             tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).tagColor : null,
@@ -85,11 +85,11 @@ function AllInfo({ recipes }) {
                   </div>
 
                   <h4 className='mt-3'>Ingredients</h4>
-                  <ol>
+                  <ul>
                     {recipe.ingredients.map((ingredient, index) => (
                       <li key={index}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
                     ))}
-                  </ol>
+                  </ul>
                   <h4>Directions</h4>
                   <ol>
                     {recipe.directions.map((direction, index) => (
@@ -109,7 +109,7 @@ function AllInfo({ recipes }) {
         ))
         : null
       }
-    </Container>
+    </Accordion>
   );
 }
 
