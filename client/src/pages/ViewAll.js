@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 
-import "./style.css"
+import AllInfo from '../components/RecipeViews/AllInfo'
+import ThumbnailCard from "../components/RecipeViews/ThumbnailCard";
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -29,11 +30,10 @@ function ViewAll() {
   function loadRecipes() {
     API.getRecipes()
       .then(res => {
+        res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
         log && console.log("res", res);
         setRecipes(res.data);
-      }
-      )
-      .catch(err => console.log(err));
+      }).catch(err => console.log(err));
   };
 
   // Loads all tags and sets them to tags
@@ -42,86 +42,16 @@ function ViewAll() {
       .then(res => {
         log && console.log("res", res);
         setTags(res.data)
-      }
-      )
-      .catch(err => console.log(err));
+      }).catch(err => console.log(err));
   };
 
   return (
-    <Container fluid>
-      <Row>
-        <Col size="sm-12">
-          <h4 className="my-3">All Recipes</h4>
-          <Accordion defaultActiveKey={['0']} alwaysOpen>
-            {recipes.map((recipe, index) => (
-              <Accordion.Item eventKey={index} key={index}>
-                <Accordion.Header>
-                  <Row>
-                    <Col xs='auto'>
-                      <Link to={"/recipes/" + recipe._id}>
-                        {capitalizeName(recipe.name)}
-                      </Link>
-                    </Col>
-                    <Col>
-                      {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
-                        <div key={index}>
-                          {customBadge(
-                            // Find tag name with matching ID from tags state variable
-                            tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null,
-                            index,
-                            tagID,
-                            // Find tag color with matching ID from tags state variable
-                            tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).tagColor : null,
-                            // Find text color with matching ID from tags state variable
-                            tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).textColor : null,
-                          )}
-                        </div>
-                      )) : null
-                      }
-                    </Col>
-                  </Row>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <Row>
-                    <Col xs={4}>
-                      <Image thumbnail
-                        src={recipe.img.preview}
-                        onError={(event) => imageErrorHandler(event.target)}
-                        width="100%" />
-                    </Col>
-                    <Col>
-                      <div className='title'>
-                        <div className="header">{recipe.name}</div>
-                        <div className="desc">"{recipe.description}"</div>
-                        <div>-{recipe.source}</div>
-                      </div>
-                      <h4 className='mt-3'>Ingredients</h4>
-                      <ol>
-                        {recipe.ingredients.map((ingredient, index) => (
-                          <li key={index}>{ingredient.number} {ingredient.unit} {ingredient.name}</li>
-                        ))}
-                      </ol>
-                      <h4>Directions</h4>
-                      <ol>
-                        {recipe.directions.map((direction, index) => (
-                          <li key={index}>{direction}</li>
-                        ))}
-                      </ol>
-                      {recipe.notes &&
-                        <>
-                          <h4>Notes</h4>
-                          <p>{recipe.notes}</p>
-                        </>
-                      }
-                    </Col>
-                  </Row>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <h4 className="my-3">Recipe Views</h4>
+      <Accordion defaultActiveKey="0" >
+        <AllInfo recipes={recipes} />
+      </Accordion>
+    </>
   );
 }
 

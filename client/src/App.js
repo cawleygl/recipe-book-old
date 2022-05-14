@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Routes,
   Route,
@@ -5,8 +6,9 @@ import {
 import Container from 'react-bootstrap/Container';
 import LandingPage from "./pages/LandingPage";
 import Search from "./pages/Search";
-import Entry from "./pages/RecipeEntry/EntryPage";
+import EntryPage from "./pages/Entry";
 import ViewAll from "./pages/ViewAll";
+import RecipeDetails from "./pages/RecipeDetails";
 
 import Navigation from "./components/Navigation";
 
@@ -16,11 +18,11 @@ const App = () => {
       <Navigation />
       <Container>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route exact path="/" element={<LandingPage />} />
           <Route path="search" element={<Search />} />
-          <Route path="entry" element={<Entry />} />
+          <Route path="entry" element={<EntryPage />} />
           <Route path="viewall" element={<ViewAll />} />
-
+          <Route path="/recipes/:id" element={<RecipeDetails />} />
         </Routes>
       </Container>
     </>

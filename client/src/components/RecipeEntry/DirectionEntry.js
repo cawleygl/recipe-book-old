@@ -10,7 +10,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-const DirectionEntry = ({directionArray, setDirectionArray}) => {
+const DirectionEntry = ({ directionArray, setDirectionArray }) => {
   const [currentDirection, setCurrentDirection] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -59,8 +59,9 @@ const DirectionEntry = ({directionArray, setDirectionArray}) => {
   };
 
   return (
-    <Form.Group className="mb-3">
-      <Form.Label>Directions</Form.Label>
+    <Row>
+      <Form.Group className="mb-3">
+        <Form.Label>Directions</Form.Label>
         <ol>
           {directionArray.map((direction, index) => (
             <div key={index}>
@@ -99,7 +100,8 @@ const DirectionEntry = ({directionArray, setDirectionArray}) => {
         </InputGroup>
         <Form.Text>Click the '+' icon to submit the current step and add a new one.</Form.Text>
 
-    </Form.Group>
+      </Form.Group>
+    </Row>
   )
 }
 export default DirectionEntry;
