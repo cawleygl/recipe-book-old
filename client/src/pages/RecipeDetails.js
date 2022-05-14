@@ -103,7 +103,7 @@ function RecipeDetails() {
                       {customBadge(
                         // Find tag name with matching ID from tags state variable
                         tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null,
-                        index,
+                        // Pass in ID
                         tagID,
                         // Find tag color with matching ID from tags state variable
                         tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).tagColor : null,

@@ -37,7 +37,7 @@ function ThumbnailCard({ recipes }) {
       <Row xs={1} md={2} lg={3}>
         {recipes ?
           recipes.map((recipe) => (
-            <Col key={recipe._id}>
+            <div key={recipe._id}>
               <Card style={{ width: '18rem' }}>
                 <Card.Img
                   variant="top"
@@ -52,7 +52,7 @@ function ThumbnailCard({ recipes }) {
                         {customBadge(
                           // Find tag name with matching ID from tags state variable
                           tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null,
-                          index,
+                          // Pass in ID
                           tagID,
                           // Find tag color with matching ID from tags state variable
                           tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).tagColor : null,
@@ -69,7 +69,7 @@ function ThumbnailCard({ recipes }) {
                   </Link>
                 </Card.Body>
               </Card>
-            </Col>
+            </div>
           ))
           : null
         }

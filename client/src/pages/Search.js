@@ -3,7 +3,7 @@ import API from "../utils/API";
 
 import { useParams } from "react-router-dom";
 
-import AllInfo from '../components/RecipeViews/AllInfo'
+import AllInfo from '../components/RecipeViews/AllInfoAccordion'
 import ThumbnailCard from "../components/RecipeViews/ThumbnailCard";
 
 import Row from 'react-bootstrap/Row'
@@ -31,13 +31,15 @@ const Search = () => {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     console.log(searchTerm);
-    API.getRecipeBySearchTerm(searchTerm)
-      .then(res => {
-        log && console.log("res", res);
-        res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-        setSearchResults(res.data);
-      })
-      .catch(err => console.log(err));
+    if (searchTerm) {
+      API.getRecipeBySearchTerm(searchTerm)
+        .then(res => {
+          log && console.log("res", res);
+          res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+          setSearchResults(res.data);
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -60,9 +62,7 @@ const Search = () => {
           value="Search"
         />
       </Form>
-      <Accordion defaultActiveKey="0" >
-        <ThumbnailCard recipes={searchResults} />
-      </Accordion>
+      <ThumbnailCard recipes={searchResults} />
     </Container>
   )
 }

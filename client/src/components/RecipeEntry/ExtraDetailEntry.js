@@ -16,7 +16,7 @@ import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
-const TagsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
+const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
   let log = false;
 
   const [tags, setTags] = useState([""]);
@@ -140,10 +140,11 @@ const TagsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
               <Row>
                 <Col>
                   {tags.length > 0 && tags.map((tag, index) => (
-                    <Form.Check key={tag._id}
+                    <Form.Check
+                      key={index}
                       inline
                       type="switch"
-                      label={customBadge(tag.name, index, tag._id, tag.tagColor, tag.textColor)}
+                      label={customBadge(tag.name, tag._id, tag.tagColor, tag.textColor)}
                       id={tag._id}
                       data-index={index}
                       onChange={handleTagChange}
@@ -161,7 +162,7 @@ const TagsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
                   <Form.Label>Add a New Tag</Form.Label>
                 </Col>
                 <Col>
-                  {customBadge(parsedNewTag, 0, "sampleTag", tagColor, textColor, true)}
+                  {customBadge(parsedNewTag, "sampleTag", tagColor, textColor, true)}
                 </Col>
               </Row>
               <Row>
@@ -284,4 +285,4 @@ const TagsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
     </>
   )
 }
-export default TagsEntry
+export default ExtraDetailsEntry

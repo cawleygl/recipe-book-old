@@ -13,9 +13,9 @@ const capitalizeName = (name) => {
   return name.replace(/\b(\w)/g, s => s.toUpperCase());
 };
 
-const customBadge = (tagName, index, tagID, tagColor, textColor, large) => {
+const customBadge = (tagName, tagID, tagColor, textColor, large) => {
   return (
-    <div key={index}>
+    <div key={tagID}>
       <style type="text/css">
         {`.bg-${tagID} {
           background-color: ${tagColor};
