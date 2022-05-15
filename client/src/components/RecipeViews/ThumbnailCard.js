@@ -9,6 +9,8 @@ import Container from 'react-bootstrap/Container'
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card'
 
+import '../style.css'
+
 import { customBadge, capitalizeName, imageErrorHandler } from "../../utils/useTools";
 
 function ThumbnailCard({ recipes }) {
@@ -32,22 +34,21 @@ function ThumbnailCard({ recipes }) {
   };
 
   return (
-    <Container>
-      <h5 className="my-3">Thumbnail Card View</h5>
-      <Row xs={1} md={2} lg={3}>
-        {recipes ?
-          recipes.map((recipe) => (
-            <div key={recipe._id}>
-              <Card style={{ width: '18rem' }}>
-                <Card.Img
-                  variant="top"
-                  src={recipe.img.preview}
-                  onError={(event) => imageErrorHandler(event.target)}
-                />
-                <Card.Body>
-                  <Card.Title>{recipe.name}</Card.Title>
-                  {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
-                    <Card.Title>
+    <Row xs={1} md={2} lg={3}>
+      {recipes ?
+        recipes.map((recipe, index) => (
+          <div key={index}>
+            <Card style={{ width: '18rem' }}>
+              <Card.Img
+                variant="top"
+                src={recipe.img.preview}
+                onError={(event) => imageErrorHandler(event.target)}
+              />
+              <Card.Body>
+                <Card.Title className='header'>{recipe.name}</Card.Title>
+                {recipe.tags && tags.length ?
+                  <Card.Title>
+                    {recipe.tags.map((tagID) => (
                       <div key={tagID}>
                         {customBadge(
                           // Find tag name with matching ID from tags state variable
@@ -60,22 +61,23 @@ function ThumbnailCard({ recipes }) {
                           tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).textColor : null,
                         )}
                       </div>
-                    </Card.Title>
-                  )) : null}
-                  <Card.Subtitle>By {recipe.source}</Card.Subtitle>
-                  <Card.Text>'{recipe.description}'</Card.Text>
+                    ))}
+                  </Card.Title>
+                  : null}
+                <Card.Subtitle>{recipe.source ? `By ${recipe.source}` : null}</Card.Subtitle>
+                <Card.Text className="desc">{recipe.description ? `'${recipe.description}'` : null}</Card.Text>
+                {recipe._id ?
                   <Link to={`/recipes/${recipe._id}`}>
                     <Card.Text>Details</Card.Text>
                   </Link>
-                </Card.Body>
-              </Card>
-            </div>
-          ))
-          : null
-        }
-      </Row>
-
-    </Container>
+                  : null}
+              </Card.Body>
+            </Card>
+          </div>
+        ))
+        : null
+      }
+    </Row>
   );
 }
 

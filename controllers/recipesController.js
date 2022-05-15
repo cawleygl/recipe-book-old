@@ -17,7 +17,7 @@ module.exports = {
   },
   findBySearchTerm: function(req, res) {
     db.Recipe
-      .find({ $text: { $search: req.params.term } })
+      .aggregate({ $search: { 'text': { 'query': req.params.term }}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

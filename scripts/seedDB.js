@@ -113,7 +113,7 @@ db.Recipe
   .then(data => {
     console.log(data.insertedCount + " recipe records inserted!");
   })
-  .then(() => db.Recipe.collection.createIndex({ "name": "text", "source": "text", "description": "text", "notes": "text" }))
+  .then(() => db.Recipe.collection.createIndex({ "name": "text", "source": "text", "description": "text" }))
 
   .catch(err => {
     console.error(err);

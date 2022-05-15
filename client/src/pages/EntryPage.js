@@ -57,35 +57,40 @@ const Entry = () => {
   return (
     <Container>
       <h2 className="my-3">New Recipe</h2>
-      <Form>
-        <BasicDetailEntry
-          setRecipeName={setRecipeName}
-          setRecipeSource={setRecipeSource}
-          setRecipeDescription={setRecipeDescription}
-          recipeImgObject={recipeImgObject}
-          setRecipeImgObject={setRecipeImgObject}
-        />
+      <BasicDetailEntry
+        recipeName={recipeName}
+        setRecipeName={setRecipeName}
 
-        <IngredientEntry
-          ingredientArray={ingredientArray}
-          setIngredientArray={setIngredientArray}
-        />
+        recipeSource={recipeSource}
+        setRecipeSource={setRecipeSource}
 
-        <DirectionEntry
-          directionArray={directionArray}
-          setDirectionArray={setDirectionArray}
-        />
+        recipeDescription={recipeDescription}
+        setRecipeDescription={setRecipeDescription}
 
-        <ExtraDetailEntry
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          setRecipeNotes={setRecipeNotes}
-        />
+        recipeImgObject={recipeImgObject}
+        setRecipeImgObject={setRecipeImgObject}
+      />
 
-      <Button type="submit" className="my-3" variant="primary" id="submit-button" onSubmit={handleFormSubmit}>
+      <IngredientEntry
+        ingredientArray={ingredientArray}
+        setIngredientArray={setIngredientArray}
+      />
+
+      <DirectionEntry
+        directionArray={directionArray}
+        setDirectionArray={setDirectionArray}
+      />
+
+      <ExtraDetailEntry
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
+        setRecipeNotes={setRecipeNotes}
+      />
+
+      <Button type="button" className="my-3" variant="primary" id="submit-recipe" onClick={handleFormSubmit}>
         Submit Recipe
       </Button>
-    </Form>
+
     </Container >
   )
 }

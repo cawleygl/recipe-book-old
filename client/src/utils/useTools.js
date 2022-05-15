@@ -60,10 +60,18 @@ const imageErrorHandler = (currentTarget) => {
   return currentTarget;
 };
 
+const handleEnterKeyDown = (event, submitFunction) => {
+  if (event.key === "Enter" && event.shiftKey === false) {
+    submitFunction(event);
+  }
+};
+
+
 export {
   capitalizeName,
   customBadge,
   colorButton,
-  imageErrorHandler
+  imageErrorHandler,
+  handleEnterKeyDown
 };
 

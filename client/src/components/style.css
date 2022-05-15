@@ -11,3 +11,8 @@
 .search-bar {
   padding-left: 10px;
 }
+.card-img-top {
+    width: 100%;
+    height: 15pc;
+    object-fit: cover;
+}

@@ -10,12 +10,26 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { handleEnterKeyDown } from "../../utils/useTools";
+
 const DirectionEntry = ({ directionArray, setDirectionArray }) => {
   const [currentDirection, setCurrentDirection] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
 
   const addStep = (event) => {
+    event.preventDefault();
+
+    // Destructure
     const arrayvalue = [...directionArray];
+
+    // If editing a step mid-array, switch to last step to submit
+    if (currentStep + 1 !== arrayvalue.length) {
+      setDirectionArray(arrayvalue);
+      setCurrentStep(arrayvalue.length - 1)
+      setCurrentDirection(arrayvalue[arrayvalue.length - 1])
+      return;
+    }
+
     arrayvalue.push("");
     setDirectionArray(arrayvalue);
     setCurrentStep(directionArray.length)
@@ -60,13 +74,13 @@ const DirectionEntry = ({ directionArray, setDirectionArray }) => {
 
   return (
     <Row>
-      <Form.Group className="mb-3">
+      <Form className="mb-3" onSubmit={addStep}>
         <Form.Label>Directions</Form.Label>
         <ol>
           {directionArray.map((direction, index) => (
             <div key={index}>
               <Row>
-                <Col xs="auto" className='me-2'>
+                <Col xs="auto" className='me-3 ms-0 ps-0 pe-1'>
                   <ButtonGroup aria-label="direction tools">
                     <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteStep}>
                       <FontAwesomeIcon icon={faXmark} />
@@ -77,9 +91,7 @@ const DirectionEntry = ({ directionArray, setDirectionArray }) => {
                   </ButtonGroup>
                 </Col>
                 <Col>
-                  <li>
-                    {direction}
-                  </li>
+                  <li>{direction}</li>
                 </Col>
               </Row>
             </div>
@@ -93,14 +105,14 @@ const DirectionEntry = ({ directionArray, setDirectionArray }) => {
             value={currentDirection}
             aria-label="Text input recipe directions"
             aria-describedby="recipe-direction-entry"
+            onKeyDown={(event) => handleEnterKeyDown(event, addStep)}
           />
-          <Button variant="outline-primary" id="add-step-button" onClick={addStep}>
+          <Button type="submit" variant="outline-primary" id="add-step-button" >
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </InputGroup>
         <Form.Text>Click the '+' icon to submit the current step and add a new one.</Form.Text>
-
-      </Form.Group>
+      </Form>
     </Row>
   )
 }

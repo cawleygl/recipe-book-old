@@ -30,7 +30,6 @@ const Search = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log(searchTerm);
     if (searchTerm) {
       API.getRecipeBySearchTerm(searchTerm)
         .then(res => {

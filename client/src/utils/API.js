@@ -36,8 +36,11 @@ const API = {
   // Saves a Tag to the database
   saveTag: function (tagData) {
     return axios.post("/api/tags", tagData);
+  },
+  // Updates a Tag to the database
+  updateTag: function (id, tagData) {
+    return axios.put("/api/tags/" + id, tagData);
   }
-
 };
 
 export default API;

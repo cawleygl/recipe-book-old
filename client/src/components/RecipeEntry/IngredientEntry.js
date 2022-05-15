@@ -10,7 +10,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { capitalizeName } from "../../utils/useTools";
+import { capitalizeName, handleEnterKeyDown } from "../../utils/useTools";
 
 
 const IngredientEntry = ({ ingredientArray, setIngredientArray }) => {
@@ -25,18 +25,36 @@ const IngredientEntry = ({ ingredientArray, setIngredientArray }) => {
   const [currentItem, setCurrentItem] = useState(0);
 
   const addItem = (event) => {
-    // Destructure and add empty value to ingredient array
+    event.preventDefault();
+
+    // Destructure
     const arrayvalue = [...ingredientArray];
+
+    // If editing an item mid-array, switch to last item to submit
+    if (currentItem + 1 !== arrayvalue.length) {
+      setIngredientArray(arrayvalue);
+      setCurrentItem(arrayvalue.length - 1)
+
+      let lastIngredient = arrayvalue[arrayvalue.length - 1];
+      console.log("lastIngredient", lastIngredient);
+
+      setCurrentAmount(lastIngredient.amount);
+      setCurrentUnit(lastIngredient.unit);
+      setCurrentName(lastIngredient.name);
+      setCurrentIngredient(lastIngredient);
+      return;
+    }
+
+    // Add empty value to ingredient array
     arrayvalue.push("");
     setIngredientArray(arrayvalue);
-    // Clear current amount, unit, name, and change current item
+    // Clear current amount, unit, name 
     setCurrentAmount("");
     setCurrentUnit("");
     setCurrentName("");
-
+    // Change current item
     setCurrentIngredient({ amount: "", unit: "", name: "" });
     setCurrentItem(ingredientArray.length)
-
   };
 
   const addToIngredientArray = (newIngredient) => {
@@ -103,13 +121,13 @@ const IngredientEntry = ({ ingredientArray, setIngredientArray }) => {
 
   return (
     <Row>
-      <Form.Group className="mb-3">
+      <Form className="mb-3" onSubmit={addItem}>
         <Form.Label>Ingredients</Form.Label>
         <ul>
           {ingredientArray.map((ingredient, index) => (
             <div key={index}>
               <Row>
-                <Col xs="auto" className='me-2'>
+                <Col xs="auto" className='me-3 ms-0 px-0'>
                   <ButtonGroup aria-label="ingredient tools">
                     <Button variant="outline-danger" id="delete-button" data-index={index} onClick={deleteItem}>
                       <FontAwesomeIcon icon={faXmark} />
@@ -161,14 +179,14 @@ const IngredientEntry = ({ ingredientArray, setIngredientArray }) => {
             value={currentName}
             aria-label="Text input recipe ingredient name"
             aria-describedby="recipe-ingredient-entry-name"
+            onKeyDown={(event) => handleEnterKeyDown(event, addItem)}
           />
-          <Button variant="outline-primary" id="add-item-button" onClick={addItem}>
+          <Button type="submit" variant="outline-primary" id="add-item-button">
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         </InputGroup>
         <Form.Text>Click the '+' icon to submit the current ingredient and add a new one.</Form.Text>
-
-      </Form.Group>
+      </Form>
     </Row>
   )
 }
