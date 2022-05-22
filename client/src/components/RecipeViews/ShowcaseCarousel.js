@@ -14,7 +14,7 @@ function ShowcaseCarousel({ recipes, tags }) {
     <Carousel keyboard touch>
       {recipes.length ?
         recipes.map((recipe) => (
-          <Carousel.Item>
+          <Carousel.Item key={recipe._id}>
             <img
               className="carousel-img d-block w-100"
               src={recipe.img.preview}
