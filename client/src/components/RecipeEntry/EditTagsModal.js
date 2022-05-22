@@ -19,8 +19,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
 
-const EditTagsModal = ({ tags, setTags, loadTags, selectedTags, setSelectedTags, handleCloseModal }) => {
-  let log = false;
+const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
+  let log = true;
 
   //Tab state
   const [key, setKey] = useState('newTag');
@@ -34,48 +34,112 @@ const EditTagsModal = ({ tags, setTags, loadTags, selectedTags, setSelectedTags,
 
   const [repeatTag, setRepeatTag] = useState(false);
 
-  useEffect(() => {
-    // Load tags and create checked state array on mount
-    loadTags()
-  }, [])
+  const loadTagChanges = async () => {
+    // Destructure All Tags array (current loaded tags)
+    let allTagsArray = [...allTags];
+    log && console.log("allTagsArray", allTagsArray);
+
+    // Load tags from DB, including new changes
+    const loadRes = await API.getTags();
+    log && console.log("loadRes", loadRes);
+
+    // Parse through loaded tags and add selectedState values where present in All Tags array
+    let newTagLoad = [];
+    loadRes.forEach(dbTag => {
+      const currentTag = allTagsArray.find(allTag => allTag._id === dbTag._id);
+
+      let newTag = dbTag;
+      if (currentTag) newTag.selectedState = currentTag.selectedState;
+      else newTag.selectedState = false;
+      newTagLoad.push(newTag);
+    });
+    // Set DB tags with current selectedState values to state
+    setAllTags(newTagLoad);
+  };
 
   // Add new tag all tags and sets them to tags
-  const addTag = () => {
+  const addTag = async () => {
     if (parsedNewTagName) {
       let tagCreate = { name: parsedNewTagName, tagColor: tagColor, textColor: textColor };
 
-      API.saveTag(tagCreate)
-      .then(res => {
-        log && console.log("res", res);
+      try {
+        // Add new tag to DB
+        const submitRes = await API.saveTag(tagCreate);
+        log && console.log("submitRes", submitRes);
+
+        // Reset Tag Parameters
         setNewTagName("");
         setParsedNewTagName("");
         setTagColor("#0B6EFD");
-        setTextColor("#ffffff");  
-        loadTags();
-        handleCloseModal();
-      })
-      .catch(err => console.log(err));
+        setTextColor("#ffffff");
+
+        // Load tags from DB and carry over selectedState values by ID
+        loadTagChanges();
+
+        // Close Modal
+        setShowModal(false);
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+
     }
   };
 
-    // Add new tag all tags and sets them to tags
-    const editTag = () => {
-      if (parsedNewTagName) {
-        let tagCreate = { name: parsedNewTagName, tagColor: tagColor, textColor: textColor };
-  
-        API.updateTag(tagEditId, tagCreate)
-        .then(res => {
-          log && console.log("res", res);
-          setNewTagName("");
-          setParsedNewTagName("");
-          setTagColor("#0B6EFD");
-          setTextColor("#ffffff");  
-          loadTags();
-          handleCloseModal();
-        })
-        .catch(err => console.log(err));
+  // Add new tag all tags and sets them to tags
+  const editTag = async () => {
+    if (parsedNewTagName && tagEditId) {
+      let tagCreate = { name: parsedNewTagName, tagColor: tagColor, textColor: textColor };
+      try {
+        // Update tag in DB
+        const updateRes = await API.updateTag(tagEditId, tagCreate);
+        log && console.log("updateRes", updateRes);
+
+        // Reset Tag Parameters
+        setNewTagName("");
+        setParsedNewTagName("");
+        setTagColor("#0B6EFD");
+        setTextColor("#ffffff");
+
+        // Load tags from DB and carry over selectedState values by ID
+        loadTagChanges();
+
+        // Close Modal
+        setShowModal(false);
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
       }
-    };
+    }
+  };
+
+  // Delete tag 
+  const removeTag = async () => {
+    if (tagEditId) {
+      try {
+        // Update tag in DB
+        const deleteRes = await API.deleteTag(tagEditId);
+        log && console.log("deleteRes", deleteRes);
+
+        // Reset Tag Parameters
+        setNewTagName("");
+        setParsedNewTagName("");
+        setTagColor("#0B6EFD");
+        setTextColor("#ffffff");
+
+        // Load tags from DB and carry over selectedState values by ID
+        loadTagChanges();
+
+        // Close Modal
+        setShowModal(false);
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    }
+  };
+
 
   const handleTagColor = (event) => {
     setTagColor(event.target.value);
@@ -126,7 +190,7 @@ const EditTagsModal = ({ tags, setTags, loadTags, selectedTags, setSelectedTags,
           <Col xs="auto">
             <Modal.Title>Edit Tags</Modal.Title>
           </Col>
-          <Col>
+          <Col className="pt-1">
             {customBadge(parsedNewTagName, "sampleTag", tagColor, textColor, true)}
           </Col>
         </Row>
@@ -143,16 +207,23 @@ const EditTagsModal = ({ tags, setTags, loadTags, selectedTags, setSelectedTags,
             <Form.Text>Enter a name and choose colors to create a new tag.</Form.Text>
           </Tab>
           <Tab eventKey="editTag" title="Edit Existing Tag">
-            {tags.length > 0 && tags.map((tag, index) => (
-              <Form.Check
-                key={index}
-                inline
-                name="tags"
-                type="radio"
-                label={customBadge(tag.name, tag._id, tag.tagColor, tag.textColor)}
-                data-tagid={tag._id}
-                onChange={handleTagSelect} />
-            ))}
+            <Row>
+              <Form.Text>Select a tab and submit changes below.</Form.Text>
+            </Row>
+            <Row>
+              <Col className="mb-3">
+                {tags.length > 0 && tags.map((tag, index) => (
+                  <Form.Check
+                    key={index}
+                    inline
+                    name="tags"
+                    type="radio"
+                    label={customBadge(tag.name, tag._id, tag.tagColor, tag.textColor)}
+                    data-tagid={tag._id}
+                    onChange={handleTagSelect} />
+                ))}
+              </Col>
+            </Row>
           </Tab>
         </Tabs>
         <Row>
@@ -167,14 +238,6 @@ const EditTagsModal = ({ tags, setTags, loadTags, selectedTags, setSelectedTags,
               aria-describedby="recipe-tag-entry"
               isInvalid={repeatTag}
             />
-            <Button
-              variant="outline-primary"
-              id="add-step-button"
-              onClick={addTag}
-              disabled={repeatTag}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-            </Button>
             <Form.Control.Feedback type="invalid">
               '{capitalizeName(parsedNewTagName)}' tag already exists.
             </Form.Control.Feedback>
@@ -255,13 +318,21 @@ const EditTagsModal = ({ tags, setTags, loadTags, selectedTags, setSelectedTags,
 
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
+        <Button variant="secondary" onClick={() => setShowModal(false)}>
           Close
         </Button>
+        {key === "editTag" ?
+          <Button variant="danger"
+            onClick={removeTag}
+          >
+            Delete {parsedNewTagName !== 'tag-name' ? ("'" + capitalizeName(parsedNewTagName) + "' Tag") : 'Tag'}
+          </Button>
+          : null}
         <Button variant="primary"
           onClick={key === "newTag" ? addTag : editTag}
+          disabled={repeatTag}
         >
-          Submit {key === "newTag" ? "addTag" : "editTag"}
+          {key === "newTag" ? "Create New Tag" : "Submit Changes"}
         </Button>
       </Modal.Footer>
     </>

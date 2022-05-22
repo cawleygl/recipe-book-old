@@ -6,80 +6,84 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import InputGroup from 'react-bootstrap/InputGroup'
 import Modal from 'react-bootstrap/Modal'
-import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
-import DropdownButton from 'react-bootstrap/DropdownButton'
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import EditTagsModal from "./EditTagsModal";
 
-import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
+import { customBadge } from "../../utils/useTools";
 
 const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
-  let log = false;
+  let log = true;
 
-  const [tags, setTags] = useState([""]);
-  const [checkedState, setCheckedState] = useState([""]);
-
-  // Modal
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
-
+  const [allTags, setAllTags] = useState([""]);
 
   useEffect(() => {
-    // Load tags and create checked state array on mount
-    loadTags()
+    async function initalLoadTags() {
+      // Load tags from db 
+      const response = await API.getTags();
+
+      // add selectedState boolean (set to false)
+      response.forEach(tag => tag.selectedState = false);
+
+      // Sort alphabetically by name
+      response.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+      // Set to state variable
+      setAllTags(response);
+    }
+    initalLoadTags();
   }, [])
 
 
+  // Tag Modal
+  const [showModal, setShowModal] = useState(false);
+  const handleShowModal = () => setShowModal(true);
+
   const handleTagChange = (event) => {
-    const index = parseInt(event.target.dataset.index);
     const id = event.target.id;
-    const arrayvalue = [...selectedTags];
+    const index = event.target.dataset.index;
 
-    // If setting checked to true, push ID to array 
-    if (!checkedState[index]) {
-      arrayvalue.push(id)
-      setSelectedTags(arrayvalue);
+    const selectedTagsArray = [...selectedTags];
+    let allTagsArray = [...allTags];
 
-      // If setting to false, find ID and splice
+    const checkedTag = allTagsArray[index]
+
+    // If selectedState === false, setting to true
+    if (checkedTag.selectedState === false) {
+      // Push ID from checked tag to selectedTags array
+      selectedTagsArray.push(checkedTag._id)
+      setSelectedTags(selectedTagsArray);
+
+      // Change its boolean value of checked tag in All Tags array
+      allTagsArray[index].selectedState = true;
+
+      // Else (If selectedState === true, setting to false)
     } else {
-      const removed = arrayvalue.filter(tagId => tagId !== id);
-      setSelectedTags(removed);
+      // Filter selected ID from selectedTags array
+      setSelectedTags(selectedTagsArray.filter(tagId => tagId !== id));
+
+      // Change its boolean value of checked tag in All Tags array
+      allTagsArray[index].selectedState = false;
+
     }
-    // Update checked state
-    updateCheckState(index);
   };
 
-  const updateCheckState = (position) => {
-    // Destructure current state array
-    const arrayvalue = [...checkedState];
-    // Switch checked array boolean at checked position
-    const updatedCheckedState = arrayvalue.map((item, index) =>
-      index === position ? !item : item
-    );
-    setCheckedState(updatedCheckedState);
+  const refreshCheckedState = (response) => {
+    // setCheckedState(Array.from(response, tag => ({ id: tag._id, state: false })));
   };
 
-  // Loads all tags and sets them to tags
-  function loadTags() {
-    API.getTags()
-      .then(res => {
-        log && console.log("res", res);
-        res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-        setTags(res.data);
-        setCheckedState(new Array(res.data.length).fill(false));
-      })
-      .catch(err => console.log(err));
-  };
-
+  const maintainCheckedState = (response) => {
+    // setCheckedState(Array.from(response, tag => ({ id: tag._id, state: false })));
+  }
   return (
     <>
+      <Row>
+        {allTags.length > 0 && allTags.map((tag) => (
+          <div>{JSON.stringify(tag, null, 2)}</div>
+        ))}
+        <p>{JSON.stringify(selectedTags)}</p>
+
+      </Row>
       <Row>
         <Col sm={6} className="mb-3">
           <Form.Group className="mb-3">
@@ -88,14 +92,15 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
             </Row>
             <Row>
               <Col>
-                {tags.length > 0 && tags.map((tag, index) => (
+                {allTags.length > 0 && allTags.map((tag, index) => (
                   <Form.Check
-                    key={index}
+                    key={tag._id}
                     inline
                     type="switch"
                     label={customBadge(tag.name, tag._id, tag.tagColor, tag.textColor)}
                     id={tag._id}
                     data-index={index}
+                    checked={allTags[index].selectedState}
                     onChange={handleTagChange} />
                 ))}
               </Col>
@@ -105,14 +110,12 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
           <Button variant="primary" onClick={handleShowModal}>
             Add / Edit Tags
           </Button>
-          <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal show={showModal} onHide={() => setShowModal(false)}>
             <EditTagsModal
-              tags={tags}
-              setTags={setTags}
-              loadTags={loadTags}
-              selectedTags={selectedTags}
-              setSelectedTags={setSelectedTags}
-              handleCloseModal={handleCloseModal}
+              tags={allTags}
+              setShowModal={setShowModal}
+              allTags={allTags}
+              setAllTags={setAllTags}
             />
           </Modal>
         </Col>
