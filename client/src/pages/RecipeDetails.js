@@ -98,7 +98,7 @@ function RecipeDetails() {
                   </Col>
                 </Row>
                 <Row className='ms-1 mb-1'>
-                  {selectedTags.length && tags.length ? selectedTags.map((tagID, index) => (
+                  {selectedTags && tags ? selectedTags.map((tagID, index) => (
                     <Col className='px-1' xs='auto' key={index}>
                       {customBadge(
                         // Find tag name with matching ID from tags state variable

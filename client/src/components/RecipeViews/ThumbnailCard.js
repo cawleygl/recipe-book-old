@@ -46,7 +46,7 @@ function ThumbnailCard({ recipes }) {
               />
               <Card.Body>
                 <Card.Title className='header'>{recipe.name}</Card.Title>
-                {recipe.tags && tags && tags.length ?
+                {recipe.tags && tags ?
                   <Card.Title>
                     {recipe.tags.map((tagID) => (
                       <div key={tagID}>

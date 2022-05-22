@@ -78,7 +78,7 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
             </Row>
             <Row>
               <Col>
-                {allTags.length > 0 && allTags.map((tag, index) => (
+                {allTags && allTags.map((tag, index) => (
                   <Form.Check
                     key={tag._id}
                     inline

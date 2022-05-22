@@ -12,7 +12,7 @@ function ShowcaseCarousel({ recipes, tags }) {
 
   return (
     <Carousel keyboard touch>
-      {recipes.length ?
+      {recipes ?
         recipes.map((recipe) => (
           <Carousel.Item key={recipe._id}>
             <img

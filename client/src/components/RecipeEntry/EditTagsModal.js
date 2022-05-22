@@ -212,7 +212,7 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
             </Row>
             <Row>
               <Col className="mb-3">
-                {tags.length > 0 && tags.map((tag, index) => (
+                {tags && tags.map((tag, index) => (
                   <Form.Check
                     key={index}
                     inline
