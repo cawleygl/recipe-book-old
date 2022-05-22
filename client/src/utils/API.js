@@ -7,7 +7,7 @@ const API = {
   },
   // Gets all Recipes with a particular tag
   getRecipesByTag: function (tagId) {
-    return axios.get("/api/recipes/all");
+    return axios.get("/api/recipes/tag/" + tagId);
   },
   // Gets the Recipe with the given id
   getRecipeById: function (id) {

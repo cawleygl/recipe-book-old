@@ -13,6 +13,10 @@ router.route("/save")
 router.route("/search/:term")
   .get(recipesController.findBySearchTerm)
 
+// Matches with "/api/recipes/tag/:tagId"
+router.route("/tag/:tagId")
+  .get(recipesController.findByTag)
+
 // Matches with "/api/recipes/id/:id"
 router.route("/id/:id")
   .get(recipesController.findById)

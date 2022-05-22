@@ -68,13 +68,6 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
     }
   };
 
-  const refreshCheckedState = (response) => {
-    // setCheckedState(Array.from(response, tag => ({ id: tag._id, state: false })));
-  };
-
-  const maintainCheckedState = (response) => {
-    // setCheckedState(Array.from(response, tag => ({ id: tag._id, state: false })));
-  }
   return (
     <>
       <Row>
