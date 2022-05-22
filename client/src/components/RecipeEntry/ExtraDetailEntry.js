@@ -78,13 +78,6 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
   return (
     <>
       <Row>
-        {allTags.length > 0 && allTags.map((tag) => (
-          <div>{JSON.stringify(tag, null, 2)}</div>
-        ))}
-        <p>{JSON.stringify(selectedTags)}</p>
-
-      </Row>
-      <Row>
         <Col sm={6} className="mb-3">
           <Form.Group className="mb-3">
             <Row>
