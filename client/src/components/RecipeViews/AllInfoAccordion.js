@@ -63,7 +63,7 @@ function AllInfo({ recipes }) {
                   <div className='title'>
                     <Row>
                       <div className="header">{capitalizeName(recipe.name)}</div>
-                      {recipe.tags.length && tags.length ? recipe.tags.map((tagID, index) => (
+                      {recipe.tags && tags ? recipe.tags.map((tagID, index) => (
                         <div key={tagID}>
                           {customBadge(
                             // Find tag name with matching ID from tags state variable
