@@ -19,17 +19,23 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
 
   useEffect(() => {
     async function initalLoadTags() {
-      // Load tags from db 
-      const response = await API.getTags();
+      try {
+        // Load tags from db 
+        const response = await API.getTags();
 
-      // add selectedState boolean (set to false)
-      response.forEach(tag => tag.selectedState = false);
+        // add selectedState boolean (set to false)
+        response.forEach(tag => tag.selectedState = false);
 
-      // Sort alphabetically by name
-      response.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        // Sort alphabetically by name
+        response.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 
-      // Set to state variable
-      setAllTags(response);
+        // Set to state variable
+        setAllTags(response);
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
     }
     initalLoadTags();
   }, [])

@@ -40,21 +40,27 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
     log && console.log("allTagsArray", allTagsArray);
 
     // Load tags from DB, including new changes
-    const loadRes = await API.getTags();
-    log && console.log("loadRes", loadRes);
+    try {
+      const loadRes = await API.getTags();
+      log && console.log("loadRes", loadRes);
+      // Parse through loaded tags and add selectedState values where present in All Tags array
+      let newTagLoad = [];
+      loadRes.forEach(dbTag => {
+        const currentTag = allTagsArray.find(allTag => allTag._id === dbTag._id);
+        let newTag = dbTag;
+        if (currentTag) newTag.selectedState = currentTag.selectedState;
+        else newTag.selectedState = false;
+        newTagLoad.push(newTag);
 
-    // Parse through loaded tags and add selectedState values where present in All Tags array
-    let newTagLoad = [];
-    loadRes.forEach(dbTag => {
-      const currentTag = allTagsArray.find(allTag => allTag._id === dbTag._id);
+        // Set DB tags with current selectedState values to state
+        setAllTags(newTagLoad);
 
-      let newTag = dbTag;
-      if (currentTag) newTag.selectedState = currentTag.selectedState;
-      else newTag.selectedState = false;
-      newTagLoad.push(newTag);
-    });
-    // Set DB tags with current selectedState values to state
-    setAllTags(newTagLoad);
+      });
+
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
   };
 
   // Add new tag all tags and sets them to tags
