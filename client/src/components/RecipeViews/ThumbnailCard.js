@@ -4,9 +4,6 @@ import { Link } from "react-router-dom";
 import API from "../../utils/API";
 
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
-import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card'
 
 import '../style.css'

@@ -3,17 +3,12 @@ import { Link } from "react-router-dom";
 
 import API from "../../utils/API";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
-
 import "../style.css"
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
 import Image from 'react-bootstrap/Image'
 import Accordion from 'react-bootstrap/Accordion'
-import Button from 'react-bootstrap/Button'
 
 import { customBadge, capitalizeName, imageErrorHandler } from "../../utils/useTools";
 
