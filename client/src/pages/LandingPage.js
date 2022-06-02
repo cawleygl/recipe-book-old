@@ -78,7 +78,7 @@ const LandingPage = () => {
 
   return (
     <Container>
-      {/* {randomRecipe ?
+      {randomRecipe ?
         <Row>
           <h2 className="my-3">Random Recipe</h2>
           <ShowcaseCarousel
@@ -104,7 +104,7 @@ const LandingPage = () => {
             tags={allTags}
           />
         </Row>
-        : null} */}
+        : null}
     </Container >
   )
 }

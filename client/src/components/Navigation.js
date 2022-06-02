@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 const Navigation = () => {
   return (
-    <Navbar bg="primary" variant="dark" expand="lg">
+    <Navbar bg="primary" variant="dark" expand="lg" className='mb-3'>
       <Container>
         <Navbar.Brand href="/">Recipe Book</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
