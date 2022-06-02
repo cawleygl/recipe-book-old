@@ -12,25 +12,22 @@ import EditTagsModal from "./EditTagsModal";
 
 import { customBadge } from "../../utils/useTools";
 
-const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) => {
+const ExtraDetailsEntry = ({ allTags, setAllTags, selectedTags, setSelectedTags, setRecipeNotes }) => {
   let log = true;
 
-  const [allTags, setAllTags] = useState([""]);
+  const [loadedTags, setLoadedTags] = useState([""]);
 
   useEffect(() => {
     async function initalLoadTags() {
       try {
-        // Load tags from db 
-        const response = await API.getTags();
+        let tagsRes = await API.getTags()
 
         // add selectedState boolean (set to false)
-        response.forEach(tag => tag.selectedState = false);
+        tagsRes.data.forEach(tag => tag.selectedState = false);
+        log && console.log("Loaded Tags:", tagsRes);
 
-        // Sort alphabetically by name
-        response.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
-        // Set to state variable
-        setAllTags(response);
+        // Set to loaded tags state variable
+        setLoadedTags(tagsRes.data);
 
       } catch (err) {
         // Handle Error Here
@@ -50,27 +47,24 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
     const index = event.target.dataset.index;
 
     const selectedTagsArray = [...selectedTags];
-    let allTagsArray = [...allTags];
+    let loadedTagsArray = [...loadedTags];
 
-    const checkedTag = allTagsArray[index]
+    const checkedTag = loadedTagsArray[index]
 
-    // If selectedState === false, setting to true
+    // Check, adding ID to array
     if (checkedTag.selectedState === false) {
       // Push ID from checked tag to selectedTags array
       selectedTagsArray.push(checkedTag._id)
       setSelectedTags(selectedTagsArray);
-
       // Change its boolean value of checked tag in All Tags array
-      allTagsArray[index].selectedState = true;
+      loadedTagsArray[index].selectedState = true;
 
-      // Else (If selectedState === true, setting to false)
+      // Uncheck, removing ID from array
     } else {
       // Filter selected ID from selectedTags array
       setSelectedTags(selectedTagsArray.filter(tagId => tagId !== id));
-
       // Change its boolean value of checked tag in All Tags array
-      allTagsArray[index].selectedState = false;
-
+      loadedTagsArray[index].selectedState = false;
     }
   };
 
@@ -84,7 +78,7 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
             </Row>
             <Row>
               <Col>
-                {allTags && allTags.map((tag, index) => (
+                {loadedTags && loadedTags.map((tag, index) => (
                   <Form.Check
                     key={tag._id}
                     inline
@@ -92,7 +86,7 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
                     label={customBadge(tag.name, tag._id, tag.tagColor, tag.textColor)}
                     id={tag._id}
                     data-index={index}
-                    checked={allTags[index].selectedState}
+                    checked={loadedTags[index].selectedState}
                     onChange={handleTagChange} />
                 ))}
               </Col>
@@ -104,10 +98,10 @@ const ExtraDetailsEntry = ({ selectedTags, setSelectedTags, setRecipeNotes }) =>
           </Button>
           <Modal show={showModal} onHide={() => setShowModal(false)}>
             <EditTagsModal
-              tags={allTags}
+              tags={loadedTags}
               setShowModal={setShowModal}
-              allTags={allTags}
-              setAllTags={setAllTags}
+              loadedTags={loadedTags}
+              setLoadedTags={setLoadedTags}
             />
           </Modal>
         </Col>

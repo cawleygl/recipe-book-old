@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import API from "../../utils/API";
 import "../style.css"
 
@@ -14,12 +14,9 @@ import Tab from 'react-bootstrap/Tab'
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-
 import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
 
-const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
+const EditTagsModal = ({ tags, setShowModal, loadedTags, setLoadedTags }) => {
   let log = true;
 
   //Tab state
@@ -27,7 +24,8 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
 
   const [newTagName, setNewTagName] = useState("");
   const [parsedNewTagName, setParsedNewTagName] = useState("tag-name");
-  const [tagEditId, setTagEditId] = useState("");
+
+  const [tagEdit, setTagEdit] = useState("");
 
   const [tagColor, setTagColor] = useState("#0B6EFD");
   const [textColor, setTextColor] = useState("#ffffff");
@@ -36,26 +34,28 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
 
   const loadTagChanges = async () => {
     // Destructure All Tags array (current loaded tags)
-    let allTagsArray = [...allTags];
-    log && console.log("allTagsArray", allTagsArray);
+    let loadedTagsArray = [...loadedTags];
 
     // Load tags from DB, including new changes
     try {
-      const loadRes = await API.getTags();
-      log && console.log("loadRes", loadRes);
-      // Parse through loaded tags and add selectedState values where present in All Tags array
       let newTagLoad = [];
-      loadRes.forEach(dbTag => {
-        const currentTag = allTagsArray.find(allTag => allTag._id === dbTag._id);
+
+      const loadRes = await API.getTags();
+      log && console.log("Updated Tags Response", loadRes);
+      // Parse through loaded tags and add selectedState values where present in All Tags array
+      loadRes.data.forEach(dbTag => {
+        const currentTag = loadedTagsArray.find(loadedTag => loadedTag._id === dbTag._id);
         let newTag = dbTag;
+
         if (currentTag) newTag.selectedState = currentTag.selectedState;
         else newTag.selectedState = false;
-        newTagLoad.push(newTag);
 
+        newTagLoad.push(newTag);
         // Set DB tags with current selectedState values to state
-        setAllTags(newTagLoad);
 
       });
+
+      setLoadedTags(newTagLoad);
 
     } catch (err) {
       // Handle Error Here
@@ -70,8 +70,7 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
 
       try {
         // Add new tag to DB
-        const submitRes = await API.saveTag(tagCreate);
-        log && console.log("submitRes", submitRes);
+        await API.saveTag(tagCreate);
 
         // Reset Tag Parameters
         setNewTagName("");
@@ -95,12 +94,11 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
 
   // Add new tag all tags and sets them to tags
   const editTag = async () => {
-    if (parsedNewTagName && tagEditId) {
+    if (parsedNewTagName && tagEdit) {
       let tagCreate = { name: parsedNewTagName, tagColor: tagColor, textColor: textColor };
       try {
         // Update tag in DB
-        const updateRes = await API.updateTag(tagEditId, tagCreate);
-        log && console.log("updateRes", updateRes);
+        await API.updateTag(tagEdit._id, tagCreate);
 
         // Reset Tag Parameters
         setNewTagName("");
@@ -122,11 +120,10 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
 
   // Delete tag 
   const removeTag = async () => {
-    if (tagEditId) {
+    if (tagEdit) {
       try {
         // Update tag in DB
-        const deleteRes = await API.deleteTag(tagEditId);
-        log && console.log("deleteRes", deleteRes);
+        await API.deleteTag(tagEdit._id);
 
         // Reset Tag Parameters
         setNewTagName("");
@@ -146,14 +143,6 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
     }
   };
 
-
-  const handleTagColor = (event) => {
-    setTagColor(event.target.value);
-  };
-  const handleTextColor = (event) => {
-    setTextColor(event.target.value);
-  };
-
   const handleColorButton = (event) => {
 
     const tag = event.target.closest('button').dataset.tagcolor;
@@ -166,28 +155,33 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
 
   const handleNewTag = (event) => {
     setNewTagName(event.target.value);
-    let parsedTag = event.target.value.trim().toLowerCase().replaceAll(' ', '-')
-    setParsedNewTagName(parsedTag);
+    // Set parsed tag name value
+    let parsedTagName = event.target.value.trim().toLowerCase();
+    setParsedNewTagName(parsedTagName);
 
     // Check if tag already exists
-    if (tags.find(tag => tag.name === parsedTag)) {
-      setRepeatTag(true);
-    } else {
+    if (!tags.find(tag => tag.name === parsedTagName)) {
       setRepeatTag(false);
+    } else {
+      // Don't activate if editing tag of the same name
+      if (tagEdit.name === parsedTagName) {
+        setRepeatTag(false);
+      } else {
+        setRepeatTag(true);
+      }
     }
   };
 
   const handleTagSelect = (event) => {
     const tagId = event.target.dataset.tagid;
-    console.log(tagId);
-    setTagEditId(tagId);
-
-    let selectedTag = (tags.find(tag => tag._id === tagId));
-    setParsedNewTagName(selectedTag.name);
-    setTagColor(selectedTag.tagColor);
-    setTextColor(selectedTag.textColor);
+    const tagEdit = tags.find(tag => tag._id === tagId)
+    console.log(tagId, tagEdit);
+    setTagEdit(tagEdit);
+    setParsedNewTagName(tagEdit.name);
+    setNewTagName(tagEdit.name);
+    setTagColor(tagEdit.tagColor);
+    setTextColor(tagEdit.textColor);
   };
-
 
   return (
     <>
@@ -214,7 +208,7 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
           </Tab>
           <Tab eventKey="editTag" title="Edit Existing Tag">
             <Row>
-              <Form.Text>Select a tab and submit changes below.</Form.Text>
+              <Form.Text>Select a tag and submit changes below.</Form.Text>
             </Row>
             <Row>
               <Col className="mb-3">
@@ -260,7 +254,7 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
                 type="color"
                 id="tagColorInput"
                 defaultValue="#0B6EFD"
-                onChange={handleTagColor}
+                onChange={(event) => setTagColor(event.target.value)}
                 title="Tag Background Color"
               />
             </Col>
@@ -271,7 +265,7 @@ const EditTagsModal = ({ tags, setShowModal, allTags, setAllTags }) => {
                 type="color"
                 id="textColorInput"
                 defaultValue="#ffffff"
-                onChange={handleTextColor}
+                onChange={(event) => setTextColor(event.target.value)}
                 title="Tag Text color"
               />
             </Col>

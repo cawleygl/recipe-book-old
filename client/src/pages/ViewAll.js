@@ -1,47 +1,50 @@
-import React, { useState, useEffect } from "react";
-import API from "../utils/API";
+import React, { useState, useEffect, } from "react";
 
-import AllInfo from '../components/RecipeViews/AllInfoAccordion'
+import AllInfoAccordion from '../components/RecipeViews/AllInfoAccordion'
 
-import Accordion from 'react-bootstrap/Accordion'
+import API from "../utils/API"
+
 
 function ViewAll() {
-  let log = false;
-  // Setting our component's initial state
-  const [recipes, setRecipes] = useState([])
-  const [tags, setTags] = useState([])
+  let log = true;
+
+  const [allRecipes, setAllRecipes] = useState([]);
+  const [allTags, setAllTags] = useState([]);
 
   // Load all recipes and tags on mount
   useEffect(() => {
-    loadRecipes()
-    loadTags()
+    loadRecipes();
+    loadTags();
   }, [])
 
   // Loads all recipes and sets them to recipes
-  function loadRecipes() {
-    API.getRecipes()
-      .then(res => {
-        res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-        log && console.log("res", res);
-        setRecipes(res.data);
-      }).catch(err => console.log(err));
+  async function loadRecipes() {
+    try {
+      let recipesRes = await API.getRecipes()
+      log && console.log("View All Recipes Page Recipes Response:", recipesRes);
+      setAllRecipes(recipesRes.data);
+    } catch (err) {
+      // Handle Error Here
+      console.error('RECIPES DB CALL -', err);
+    }
   };
 
   // Loads all tags and sets them to tags
-  function loadTags() {
-    API.getTags()
-      .then(res => {
-        log && console.log("res", res);
-        setTags(res.data)
-      }).catch(err => console.log(err));
+  async function loadTags() {
+    try {
+      let tagsRes = await API.getTags()
+      log && console.log("View All Recipes Page Tags Response:", tagsRes);
+      setAllTags(tagsRes.data);
+    } catch (err) {
+      // Handle Error Here
+      console.error('TAGS DB CALL -', err);
+    }
   };
 
   return (
     <>
       <h4 className="my-3">Recipe Views</h4>
-      <Accordion defaultActiveKey="0" >
-        <AllInfo recipes={recipes} />
-      </Accordion>
+        <AllInfoAccordion recipes={allRecipes} allTags={allTags} />
     </>
   );
 }

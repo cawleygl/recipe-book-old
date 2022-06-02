@@ -11,7 +11,40 @@ import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container';
 
 const Entry = () => {
-  let log = false;
+  let log = true;
+
+  const [allRecipes, setAllRecipes] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+
+  // Load all recipes and tags on mount
+  useEffect(() => {
+    loadRecipes();
+    loadTags();
+  }, [])
+
+  // Loads all recipes and sets them to recipes
+  async function loadRecipes() {
+    try {
+      let recipesRes = await API.getRecipes()
+      log && console.log("Entry Page Recipes Response:", recipesRes);
+      setAllRecipes(recipesRes.data);
+    } catch (err) {
+      // Handle Error Here
+      console.error('RECIPES DB CALL -', err);
+    }
+  };
+
+  // Loads all tags and sets them to tags
+  async function loadTags() {
+    try {
+      let tagsRes = await API.getTags()
+      log && console.log("Entry Page Tags Response:", tagsRes);
+      setAllTags(tagsRes.data);
+    } catch (err) {
+      // Handle Error Here
+      console.error('TAGS DB CALL -', err);
+    }
+  };
 
   const [recipeObject, setRecipeObject] = useState({})
 
@@ -38,7 +71,7 @@ const Entry = () => {
     };
 
     setRecipeObject(newRecipe);
-    log && console.log("Recipe", recipeObject);
+    log && console.log("Recipe", newRecipe);
 
   }, [recipeName, recipeSource, recipeDescription, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
 
@@ -82,6 +115,8 @@ const Entry = () => {
       />
 
       <ExtraDetailEntry
+        allTags={allTags}
+        setAllTags={setAllTags}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
         setRecipeNotes={setRecipeNotes}
