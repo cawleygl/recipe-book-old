@@ -16,8 +16,9 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findByTag: function (req, res) {
+    console.log(req.params.id);
     db.Recipe
-      .find(req.query)
+      .find( { tags: req.params.id } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

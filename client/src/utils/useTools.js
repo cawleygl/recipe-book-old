@@ -66,12 +66,17 @@ const handleEnterKeyDown = (event, submitFunction) => {
   }
 };
 
+const getRandomInt = (maximum) => {
+  return Math.floor(Math.random() * maximum);
+};
+
 
 export {
   capitalizeName,
   customBadge,
   colorButton,
   imageErrorHandler,
-  handleEnterKeyDown
+  handleEnterKeyDown,
+  getRandomInt
 };
 
