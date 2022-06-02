@@ -12,26 +12,7 @@ import Accordion from 'react-bootstrap/Accordion'
 
 import { customBadge, capitalizeName, imageErrorHandler } from "../../utils/useTools";
 
-function AllInfo({ recipes }) {
-  let log = false;
-
-  // Setting our component's initial state
-  const [tags, setTags] = useState([])
-
-  // Load all recipes and tags on mount
-  useEffect(() => {
-    loadTags()
-  }, [])
-
-  // Loads all tags and sets them to tags
-  function loadTags() {
-    API.getTags()
-      .then(res => {
-        log && console.log("res", res);
-        setTags(res.data)
-      }).catch(err => console.log(err));
-  };
-
+function AllInfo({ recipes, allTags }) {
   return (
     <Accordion>
       <h5 className="my-3">All Info View</h5>
@@ -55,17 +36,17 @@ function AllInfo({ recipes }) {
                   <div className='title'>
                     <Row>
                       <div className="header">{capitalizeName(recipe.name)}</div>
-                      {recipe.tags && tags ? recipe.tags.map((tagID, index) => (
+                      {recipe.tags && allTags ? recipe.tags.map((tagID, index) => (
                         <div key={tagID}>
                           {customBadge(
                             // Find tag name with matching ID from tags state variable
-                            tags.find(tag => tag._id === tagID) ? capitalizeName(tags.find(tag => tag._id === tagID).name) : null,
+                            allTags.find(tag => tag._id === tagID) ? capitalizeName(allTags.find(tag => tag._id === tagID).name) : null,
                             // Pass in ID
                             tagID,
                             // Find tag color with matching ID from tags state variable
-                            tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).tagColor : null,
+                            allTags.find(tag => tag._id === tagID) ? allTags.find(tag => tag._id === tagID).tagColor : null,
                             // Find text color with matching ID from tags state variable
-                            tags.find(tag => tag._id === tagID) ? tags.find(tag => tag._id === tagID).textColor : null,
+                            allTags.find(tag => tag._id === tagID) ? allTags.find(tag => tag._id === tagID).textColor : null,
                           )}
                         </div>
                       )) : null
