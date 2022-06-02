@@ -6,11 +6,13 @@ import { useParams } from "react-router-dom";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Alert from 'react-bootstrap/Alert'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
 
 import "../components/style.css"
 
@@ -112,9 +114,6 @@ function RecipeDetails() {
                 width="100%" />
               <div className="details-caption">
                 <div className="header">{capitalizeName(recipeName)}</div>
-                <Button variant="outline-primary" id="edit-button" onClick={handleShow}>
-                  <FontAwesomeIcon icon={faPenToSquare} />
-                </Button>
                 {selectedTags && allTags ? selectedTags.map((tagID, index) => (
                   <Col className='px-1' xs='auto' key={index}>
                     {customBadge(
@@ -132,10 +131,20 @@ function RecipeDetails() {
                 <div className="desc">"{recipeDescription}"</div>
                 <div>-{recipeSource}</div>
               </div>
+              <div className="details-edit-basic-button">
+                <ButtonGroup>
+                <Button variant="primary" onClick={handleShow}>
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </Button>
+                <Button variant="success" onClick={(event) => console.log(event)}>
+                  <FontAwesomeIcon icon={faFloppyDisk} />
+                </Button>
+                </ButtonGroup>
+              </div>
             </div>
           </Row>
           <Row>
-            <Col md='auto' className='details-ingredients'>
+            <Col md='auto' className='details-ingredients mb-3'>
               <h4>Ingredients</h4>
               <ul>
                 {ingredientArray.map((ingredient, index) => (
@@ -144,7 +153,7 @@ function RecipeDetails() {
               </ul>
             </Col>
             <Col>
-              <h4>Directions</h4>
+            <h4>Directions</h4>
               <ol>
                 {directionArray.map((direction, index) => (
                   <li key={index}>{direction}</li>
@@ -154,10 +163,9 @@ function RecipeDetails() {
           </Row>
           <Row>
             {recipeNotes &&
-              <>
-                <h4>Notes</h4>
+              <Alert variant="primary">
                 <p>{recipeNotes}</p>
-              </>
+              </Alert>
             }
           </Row>
         </div>
