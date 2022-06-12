@@ -25,6 +25,10 @@ const API = {
   saveRecipe: async function (recipeData) {
     return await axios.post("/api/recipes/save", recipeData);
   },
+  // Updates a Recipe in the database
+  updateRecipe: async function (id, recipeData) {
+    return await axios.put("/api/recipes/id/" + id, recipeData);
+  },
   // Gets all Tags
   getTags: async function () {
     return await axios.get("/api/tags");

@@ -8,61 +8,36 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
+import Offcanvas from 'react-bootstrap/Offcanvas'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 import Alert from 'react-bootstrap/Alert'
+import Image from 'react-bootstrap/Image'
+import Table from 'react-bootstrap/Table'
+import Dropdown from 'react-bootstrap/Dropdown'
+
+
+import BasicDetailEntry from "../components/RecipeEntry/BasicDetailEntry";
+import DirectionEntry from "../components/RecipeEntry/DirectionEntry";
+import IngredientEntry from "../components/RecipeEntry/IngredientEntry";
+import ExtraDetailEntry from "../components/RecipeEntry/ExtraDetailEntry";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faScrewdriverWrench, faBook } from '@fortawesome/free-solid-svg-icons'
 
 import "../components/style.css"
 
-import Image from 'react-bootstrap/Image'
-
 import { customBadge, capitalizeName, imageErrorHandler } from "../utils/useTools";
+import CloseButton from "react-bootstrap/esm/CloseButton";
+import MyRecipesPage from "./MyRecipesPage";
 
 function RecipeDetails() {
   let log = true;
 
-  const [allRecipes, setAllRecipes] = useState([]);
-  const [allTags, setAllTags] = useState([]);
-
-  // Load all recipes and tags on mount
-  useEffect(() => {
-    loadRecipes();
-    loadTags();
-  }, [])
-
-  // Loads all recipes and sets them to recipes
-  async function loadRecipes() {
-    try {
-      let recipesRes = await API.getRecipes()
-      log && console.log("Recipe Details Page Recipe Response:", recipesRes);
-      setAllRecipes(recipesRes.data);
-    } catch (err) {
-      // Handle Error Here
-      console.error('RECIPES DB CALL -', err);
-    }
-  };
-
-  // Loads all tags and sets them to tags
-  async function loadTags() {
-    try {
-      let tagsRes = await API.getTags()
-      log && console.log("Recipe Details Page Tags Response:", tagsRes);
-      setAllTags(tagsRes.data);
-    } catch (err) {
-      // Handle Error Here
-      console.error('TAGS DB CALL -', err);
-    }
-  };
-
-  let { id } = useParams();
-
   // Setting our component's initial state
-  const [showModal, setShowModal] = useState(false);
-
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const [allTags, setAllTags] = useState([]);
+  // Sidebar (Offcanvas) toggle
+  const [show, setShow] = useState(false);
 
   const [recipeObject, setRecipeObject] = useState("");
 
@@ -75,11 +50,23 @@ function RecipeDetails() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [recipeNotes, setRecipeNotes] = useState("");
 
+  let { id } = useParams();
 
-  // Load recipe on mount
-  useEffect(() => {
-    loadRecipe(id)
-  }, [])
+  // Offcanvas open and close
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  // Loads all tags and sets them to tags
+  async function loadTags() {
+    try {
+      let tagsRes = await API.getTags()
+      log && console.log("Recipe Details Page Tags Response:", tagsRes);
+      setAllTags(tagsRes.data);
+    } catch (err) {
+      // Handle Error Here
+      console.error('TAGS DB CALL -', err);
+    }
+  };
 
   // Loads corresponsing recipes by ID
   async function loadRecipe(id) {
@@ -100,6 +87,96 @@ function RecipeDetails() {
       console.error(`RECIPE ID# ${id} DB CALL -`, err);
     }
   };
+
+  // Update current recipe and save to db
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    log && console.log("Submit", recipeObject)
+
+    if (recipeObject) {
+      API.updateRecipe(id, recipeObject)
+        .then(res => log && console.log("res", res))
+        .catch(err => console.log(err));
+    }
+    handleClose();
+  };
+
+  function handleFormCancel(event) {
+    event.preventDefault();
+    loadRecipe(id)
+    handleClose();
+  };
+
+  // Recipe Options Dropdown
+  const handleRecipeEdit = () => {
+    console.log("Edit");
+  };
+  const handleRecipeBookmark = () => {
+    let myRecipes = JSON.parse(localStorage.getItem('MyRecipes'));
+
+    if (!myRecipes) {
+      myRecipes = [id]
+    } else {
+      if (!myRecipes.includes(id)) {
+        myRecipes.push(id)
+      }
+    }
+
+    localStorage.setItem('MyRecipes', JSON.stringify(myRecipes));
+    console.log("myRecipes", myRecipes);
+    console.log("Bookmark");
+  };
+  const handleRecipeCart = () => {
+    console.log("Cart");
+  };
+  const handleRecipePrint = () => {
+    console.log("Print");
+  };
+
+  const handleRecipeOptions = (event) => {
+    event = parseInt(event);
+    console.log(event);
+    switch (event) {
+      case 0:
+        handleRecipeEdit();
+        break;
+      case 1:
+        handleRecipeBookmark();
+        break;
+      case 2:
+        handleRecipeCart();
+        break;
+      case 3:
+        handleRecipePrint();
+        break;
+      default:
+        console.error("ERROR");
+    }
+  };
+
+  // Load all recipes and tags on mount
+  useEffect(() => {
+    loadTags();
+    loadRecipe(id)
+  }, [])
+
+  // Set Recipe object when variables change
+  useEffect(() => {
+    let newRecipe = {
+      name: recipeName,
+      source: recipeSource,
+      description: recipeDescription,
+      img: recipeImgObject,
+      ingredients: ingredientArray,
+      directions: directionArray,
+      tags: selectedTags,
+      notes: recipeNotes
+    };
+
+    setRecipeObject(newRecipe);
+    log && console.log("Recipe", newRecipe);
+
+  }, [recipeName, recipeSource, recipeDescription, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
 
   return (
     <Container>
@@ -128,32 +205,44 @@ function RecipeDetails() {
                     )}
                   </Col>
                 )) : null}
-                <div className="desc">"{recipeDescription}"</div>
-                <div>-{recipeSource}</div>
+                {recipeSource &&
+                  <div className="desc">"{recipeDescription}"</div>
+                }
+                {recipeSource &&
+                  <div>-{recipeSource}</div>
+                }
               </div>
-              <div className="details-edit-basic-button">
-                <ButtonGroup>
-                <Button variant="primary" onClick={handleShow}>
-                  <FontAwesomeIcon icon={faPenToSquare} />
-                </Button>
-                <Button variant="success" onClick={(event) => console.log(event)}>
-                  <FontAwesomeIcon icon={faFloppyDisk} />
-                </Button>
-                </ButtonGroup>
+              <div className="details-options-button">
+                <Dropdown onSelect={handleRecipeOptions}>
+                  <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                    <FontAwesomeIcon icon={faScrewdriverWrench} />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Header>Recipe Options</Dropdown.Header>
+                    <Dropdown.Item eventKey={0}>Edit Recipe</Dropdown.Item>
+                    <Dropdown.Item eventKey={1}>Bookmark Recipe</Dropdown.Item>
+                    <Dropdown.Item eventKey={2}>Add to/Remove from Cart</Dropdown.Item>
+                    <Dropdown.Item eventKey={3}>Print View</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
             </div>
           </Row>
           <Row>
             <Col md='auto' className='details-ingredients mb-3'>
               <h4>Ingredients</h4>
-              <ul>
-                {ingredientArray.map((ingredient, index) => (
-                  <li key={index}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
-                ))}
-              </ul>
+              <Table striped bordered hover size="sm">
+                <tbody>
+                  {ingredientArray.map((ingredient, index) => (
+                    <tr key={index}>
+                      <td>{ingredient.amount} {ingredient.unit} {ingredient.name}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             </Col>
             <Col>
-            <h4>Directions</h4>
+              <h4>Directions</h4>
               <ol>
                 {directionArray.map((direction, index) => (
                   <li key={index}>{direction}</li>
@@ -172,20 +261,18 @@ function RecipeDetails() {
 
         : null
       }
-      <Modal
-        show={showModal}
+      <Offcanvas
+        show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Recipe</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* <EditRecipe 
-            recipeObject={recipeObject}
-            setRecipeObject={setRecipeObject}
-
+        <Offcanvas.Header>
+          <Offcanvas.Title>Edit Recipe</Offcanvas.Title>
+          <CloseButton onClick={handleFormCancel} />
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <BasicDetailEntry
             recipeName={recipeName}
             setRecipeName={setRecipeName}
 
@@ -197,30 +284,31 @@ function RecipeDetails() {
 
             recipeImgObject={recipeImgObject}
             setRecipeImgObject={setRecipeImgObject}
+          />
 
+          <IngredientEntry
             ingredientArray={ingredientArray}
             setIngredientArray={setIngredientArray}
+          />
 
+          <DirectionEntry
             directionArray={directionArray}
             setDirectionArray={setDirectionArray}
+          />
 
+          <ExtraDetailEntry
+            allTags={allTags}
+            setAllTags={setAllTags}
             selectedTags={selectedTags}
             setSelectedTags={setSelectedTags}
+            setRecipeNotes={setRecipeNotes}
+          />
 
-            recipeNotes={recipeNotes}
-            setRecipeNotes={setRecipeNotes} */}
-
-          {/* /> */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleClose}>Submit</Button>
-        </Modal.Footer>
-      </Modal>
+          <Button variant="danger" onClick={handleFormCancel}>Cancel</Button>
+          <Button variant="primary" onClick={handleFormSubmit}>Submit Changes</Button>
+        </Offcanvas.Body>
+      </Offcanvas>
     </Container>
-
   );
 }
 

@@ -152,7 +152,10 @@ const IngredientEntry = ({ ingredientArray, setIngredientArray }) => {
           <Form.Control
             as="input"
             type="number"
-            min="1"
+            min="0.00"
+            step="0.001"
+            max="1.00"
+            presicion={2}
             placeholder="Amount"
             title="amount"
             onChange={updateCurrentAmount}

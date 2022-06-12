@@ -12,9 +12,9 @@
   padding-left: 10px;
 }
 .card-img-top {
-    width: 100%;
-    height: 15pc;
-    object-fit: cover;
+  width: 100%;
+  height: 15pc;
+  object-fit: cover;
 }
 .carousel-img {
   width: 100%;
@@ -23,7 +23,7 @@
 }
 .carousel-caption {
   background-color: black;
-  border-radius: calc(0.25rem - 1px);;
+  border-radius: calc(0.25rem - 1px);
   opacity: 0.65;
 }
 .details-container {
@@ -46,16 +46,17 @@
   color: #fff;
   text-align: center;
   background-color: black;
-  border-radius: calc(0.25rem - 1px);;
+  border-radius: calc(0.25rem - 1px);
   width: 75%;
   opacity: 0.65;
 }
-@media (min-width: 768px) {
-  .details-ingredients {
-    border-right-style: solid;
-  }
-}
-.details-edit-basic-button {
+.details-edit-button {
   position: absolute;
-  bottom: 0;
+  top: 0;
+  right: 0;
+}
+
+.details-options-button {
+  position: absolute;
+  top: 0;
 }

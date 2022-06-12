@@ -7,32 +7,17 @@ import IngredientEntry from "../components/RecipeEntry/IngredientEntry";
 import ExtraDetailEntry from "../components/RecipeEntry/ExtraDetailEntry";
 
 import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container';
 
 const Entry = () => {
   let log = true;
 
-  const [allRecipes, setAllRecipes] = useState([]);
   const [allTags, setAllTags] = useState([]);
 
   // Load all recipes and tags on mount
   useEffect(() => {
-    loadRecipes();
     loadTags();
   }, [])
-
-  // Loads all recipes and sets them to recipes
-  async function loadRecipes() {
-    try {
-      let recipesRes = await API.getRecipes()
-      log && console.log("Entry Page Recipes Response:", recipesRes);
-      setAllRecipes(recipesRes.data);
-    } catch (err) {
-      // Handle Error Here
-      console.error('RECIPES DB CALL -', err);
-    }
-  };
 
   // Loads all tags and sets them to tags
   async function loadTags() {
