@@ -21,6 +21,9 @@ const Navigation = () => {
             <LinkContainer to="/viewall">
               <Nav.Link>View All</Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/myrecipes">
+              <Nav.Link>My Recipes</Nav.Link>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Container>

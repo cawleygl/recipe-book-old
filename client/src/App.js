@@ -8,6 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import Search from "./pages/Search";
 import EntryPage from "./pages/EntryPage";
 import ViewAll from "./pages/ViewAll";
+import MyRecipesPage from "./pages/MyRecipesPage";
 import RecipeDetails from "./pages/RecipeDetails";
 
 import Navigation from "./components/Navigation";
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="search" element={<Search />} />
           <Route path="entry" element={<EntryPage />} />
           <Route path="viewall" element={<ViewAll />} />
+          <Route path="myrecipes" element={<MyRecipesPage />} />
           <Route path="/recipes/:id" element={<RecipeDetails />} />
         </Routes>
       </Container>
