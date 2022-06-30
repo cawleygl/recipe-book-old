@@ -123,7 +123,7 @@ function RecipeDetails() {
     }
 
     localStorage.setItem('MyRecipes', JSON.stringify(myRecipes));
-    log && ("myRecipes", myRecipes);
+    log && console.log("myRecipes", myRecipes);
     log && console.log("Bookmark");
   };
   const handleRecipeCart = () => {
