@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 import Accordion from 'react-bootstrap/Accordion'
 
-import { customBadge, capitalizeName, imageErrorHandler } from "../../utils/useTools";
+import { customBadge, capitalizeName, imageErrorHandler, parseFractionAmount } from "../../hooks/useTools";
 
 function AllInfo({ recipes, allTags }) {
   return (
@@ -21,7 +21,7 @@ function AllInfo({ recipes, allTags }) {
           <Accordion.Item eventKey={index} key={recipe._id}>
             <Accordion.Header>
               <Link to={`/recipes/${recipe._id}`}>
-                {recipe.name}
+                {recipe.recipeName}
               </Link>
             </Accordion.Header>
             <Accordion.Body>
@@ -35,7 +35,7 @@ function AllInfo({ recipes, allTags }) {
                 <Col>
                   <div className='title'>
                     <Row>
-                      <div className="header">{capitalizeName(recipe.name)}</div>
+                      <div className="header">{capitalizeName(recipe.recipeName)}</div>
                       {recipe.tags && allTags ? recipe.tags.map((tagID, index) => (
                         <div key={tagID}>
                           {customBadge(
@@ -60,7 +60,12 @@ function AllInfo({ recipes, allTags }) {
                   <h4 className='mt-3'>Ingredients</h4>
                   <ul>
                     {recipe.ingredients.map((ingredient, index) => (
-                      <li key={index}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
+                      <li key={index}>
+                    {parseFractionAmount(ingredient.ingredientAmount)}{' '}
+                    {capitalizeName(ingredient.ingredientUnit)}{ingredient.ingredientUnit ? ' of ' : null}
+                    {capitalizeName(ingredient.ingredientName)}{ingredient.ingredientModifier ? ', ' : null}
+                    {capitalizeName(ingredient.ingredientModifier)}
+                      </li>
                     ))}
                   </ul>
                   <h4>Directions</h4>

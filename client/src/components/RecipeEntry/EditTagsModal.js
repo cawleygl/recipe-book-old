@@ -14,7 +14,7 @@ import Tab from 'react-bootstrap/Tab'
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
-import { capitalizeName, customBadge, colorButton } from "../../utils/useTools";
+import { capitalizeName, customBadge, colorButton } from "../../hooks/useTools";
 
 const EditTagsModal = ({ tags, setShowModal, loadedTags, setLoadedTags }) => {
   let log = true;
@@ -185,7 +185,7 @@ const EditTagsModal = ({ tags, setShowModal, loadedTags, setLoadedTags }) => {
 
   return (
     <>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Row>
           <Col xs="auto">
             <Modal.Title>Edit Tags</Modal.Title>

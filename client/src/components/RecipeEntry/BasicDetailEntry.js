@@ -3,12 +3,13 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 import ThumbnailCard from "../../components/RecipeViews/ThumbnailCard";
 
-
 const BasicDetailEntry = ({
+  handleChange, values, errors, touched, handleImageTypeChange,
   recipeName, setRecipeName,
   recipeSource, setRecipeSource,
   recipeDescription, setRecipeDescription,
@@ -18,55 +19,73 @@ const BasicDetailEntry = ({
   const [imageSwitch, setImageSwitch] = useState("");
 
   return (
-    <Row>
+    <>
       <Col className="mb-3" md={3}>
-        <ThumbnailCard recipes={[{
-          name: recipeName,
-          source: recipeSource,
-          description: recipeDescription,
-          img: recipeImgObject,
-        }]} />
+        <ThumbnailCard recipes={[values]} />
       </Col>
       <Col md={9}>
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                as="input"
-                type="text"
-                placeholder="Name"
-                onChange={(event) => setRecipeName(event.target.value)}
-                aria-label="Text input recipe name"
-                aria-describedby="recipe-name-entry"
-              />
+              <FloatingLabel
+                controlId="recipe-name"
+                label="Name"
+              >
+                <Form.Control
+                  as="input"
+                  type="text"
+                  name="recipeName"
+                  isInvalid={errors.recipeName && touched.recipeName}
+                  onChange={handleChange}
+                  value={values.recipeName}
+                  placeholder="Name"
+                  aria-label="Text input recipe name"
+                  aria-describedby="recipe-name-entry"
+                />
+              </FloatingLabel>
+              <Form.Text>{errors.recipeName && touched.recipeName ? errors.recipeName : null}</Form.Text>
             </Form.Group>
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Source</Form.Label>
-              <Form.Control
-                as="input"
-                type="text"
-                placeholder="Source"
-                onChange={(event) => setRecipeSource(event.target.value)}
-                aria-label="Text input recipe source"
-                aria-describedby="recipe-source-entry"
-              />
+              <FloatingLabel
+                controlId="recipe-source"
+                label="Source"
+              >
+                <Form.Control
+                  as="input"
+                  type="text"
+                  name="source"
+                  isInvalid={errors.source && touched.source}
+                  onChange={handleChange}
+                  value={values.source}
+                  placeholder="Source"
+                  aria-label="Text input recipe source"
+                  aria-describedby="recipe-source-entry"
+                />
+              </FloatingLabel>
+              <Form.Text>{errors.source && touched.source ? errors.source : null}</Form.Text>
             </Form.Group>
           </Col>
         </Row>
         <Row>
           <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              placeholder="Description"
-              onChange={(event) => setRecipeDescription(event.target.value)}
-              aria-label="Text input recipe description"
-              aria-describedby="recipe-description-entry"
-            />
-            <Form.Text>Enter a basic description of this dish.</Form.Text>
+            <FloatingLabel
+              controlId="recipe-description"
+              label="Description"
+            >
+              <Form.Control
+                as="input"
+                name="description"
+                isInvalid={errors.description && touched.description}
+                onChange={handleChange}
+                value={values.description}
+                placeholder="Description"
+                aria-label="Text input recipe description"
+                aria-describedby="recipe-description-entry"
+              />
+            </FloatingLabel>
+            <Form.Text>{errors.description && touched.description ? errors.description : null}</Form.Text>
           </Form.Group>
         </Row>
         <Row>
@@ -90,11 +109,13 @@ const BasicDetailEntry = ({
                       as="input"
                       type="file"
                       accept="image/*"
-                      placeholder="Upload Image"
-                      onChange={(event) => setRecipeImgObject({
-                        preview: URL.createObjectURL(event.target.files[0]),
-                        data: event.target.files[0],
-                      })}
+                      name='imgUpload'
+                      onChange={handleChange}
+                      // value={values.img.preview}
+                      // onChange={(event) => setRecipeImgObject({
+                      //   preview: URL.createObjectURL(event.target.files[0]),
+                      //   data: event.target.files[0],
+                      // })}
                       aria-label="File input recipe image upload"
                       aria-describedby="recipe-image-upload"
                     />
@@ -105,11 +126,13 @@ const BasicDetailEntry = ({
                     <Form.Control
                       as="input"
                       type="text"
-                      placeholder="Image URL"
-                      onChange={(event) => setRecipeImgObject({
-                        preview: event.target.value,
-                        data: null,
-                      })}
+                      name='imgLink'
+                      onChange={handleChange}
+                      // value={values.img.preview}
+                      // onChange={(event) => setRecipeImgObject({
+                      //   preview: event.target.value,
+                      //   data: null,
+                      // })}
                       aria-label="Text input recipe image url"
                       aria-describedby="recipe-image-link"
                     />
@@ -121,7 +144,7 @@ const BasicDetailEntry = ({
           </Form.Group>
         </Row>
       </Col>
-    </Row>
+    </>
   )
 }
 export default BasicDetailEntry

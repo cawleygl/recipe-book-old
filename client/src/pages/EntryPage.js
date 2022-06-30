@@ -6,11 +6,45 @@ import DirectionEntry from "../components/RecipeEntry/DirectionEntry";
 import IngredientEntry from "../components/RecipeEntry/IngredientEntry";
 import ExtraDetailEntry from "../components/RecipeEntry/ExtraDetailEntry";
 
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container';
 
+import useForm from '../hooks/useForm';
+
 const Entry = () => {
   let log = true;
+  // Submit current recipe and save to db
+  function handleFormSubmit() {
+    console.log("Callback function when form is submitted!");
+
+    log && console.log("Submit", values)
+
+    API.saveRecipe(values)
+      .then(res => log && console.log("res", res))
+      .catch(err => console.log(err));
+  };
+
+  //Custom hook call
+  const {
+    values,
+    errors,
+    touched,
+    currentStep,
+    currentItem,
+    addErrors,
+    loadedTags,
+    handleImageTypeChange,
+    handleChange,
+    handleSubmit,
+    handleSelect,
+    handleAdd,
+    handleDelete,
+    handleToggle
+  } = useForm(handleFormSubmit);
 
   const [allTags, setAllTags] = useState([]);
 
@@ -60,56 +94,87 @@ const Entry = () => {
 
   }, [recipeName, recipeSource, recipeDescription, recipeImgObject, ingredientArray, directionArray, selectedTags, recipeNotes])
 
-  // Submit current recipe and save to db
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    log && console.log("Submit", recipeObject)
-
-    if (recipeObject) {
-      API.saveRecipe(recipeObject)
-        .then(res => log && console.log("res", res))
-        .catch(err => console.log(err));
-    }
-  };
-
   return (
     <Container>
-      <h2 className="my-3">New Recipe</h2>
-      <BasicDetailEntry
-        recipeName={recipeName}
-        setRecipeName={setRecipeName}
+      <Form onSubmit={(event) => {
+        event.preventDefault();
+        // handleSubmit();
+      }}>
+        <h2 className="my-3">New Recipe</h2>
+        <Row>
+          <BasicDetailEntry
+            handleChange={handleChange}
+            values={values}
+            errors={errors}
+            touched={touched}
 
-        recipeSource={recipeSource}
-        setRecipeSource={setRecipeSource}
+            handleImageTypeChange={handleImageTypeChange}
 
-        recipeDescription={recipeDescription}
-        setRecipeDescription={setRecipeDescription}
+            recipeName={recipeName}
+            setRecipeName={setRecipeName}
 
-        recipeImgObject={recipeImgObject}
-        setRecipeImgObject={setRecipeImgObject}
-      />
+            recipeSource={recipeSource}
+            setRecipeSource={setRecipeSource}
 
-      <IngredientEntry
-        ingredientArray={ingredientArray}
-        setIngredientArray={setIngredientArray}
-      />
+            recipeDescription={recipeDescription}
+            setRecipeDescription={setRecipeDescription}
 
-      <DirectionEntry
-        directionArray={directionArray}
-        setDirectionArray={setDirectionArray}
-      />
+            recipeImgObject={recipeImgObject}
+            setRecipeImgObject={setRecipeImgObject}
+          />
+        </Row>
+        <Row>
+          <Col md={6}>
+            <IngredientEntry
+              handleChange={handleChange}
+              values={values}
+              errors={errors}
+              touched={touched}
+              addErrors={addErrors}
 
-      <ExtraDetailEntry
-        allTags={allTags}
-        setAllTags={setAllTags}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-        setRecipeNotes={setRecipeNotes}
-      />
+              currentItem={currentItem}
+              handleSelect={handleSelect}
+              handleAdd={handleAdd}
+              handleDelete={handleDelete}
+              handleToggle={handleToggle}
+            />
+          </Col>
+          <Col>
+            <DirectionEntry
+              handleChange={handleChange}
+              values={values}
+              errors={errors}
+              touched={touched}
+              addErrors={addErrors}
 
-      <Button type="button" className="my-3" variant="primary" id="submit-recipe" onClick={handleFormSubmit}>
-        Submit Recipe
-      </Button>
+              currentStep={currentStep}
+              handleSelect={handleSelect}
+              handleAdd={handleAdd}
+              handleDelete={handleDelete}
+              handleToggle={handleToggle}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <ExtraDetailEntry
+            handleChange={handleChange}
+            values={values}
+            errors={errors}
+            loadedTags={loadedTags}
+
+            allTags={allTags}
+            setAllTags={setAllTags}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+            setRecipeNotes={setRecipeNotes}
+          />
+        </Row>
+
+        <Button onClick={handleSubmit} className="my-3" variant="primary" id="submit-recipe">
+          Submit Recipe
+        </Button>
+
+      </Form>
 
     </Container >
   )

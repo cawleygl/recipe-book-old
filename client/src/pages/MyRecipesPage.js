@@ -57,7 +57,7 @@ function MyRecipesPage() {
       console.error('TAGS DB CALL -', err);
     }
   };
-
+if (myRecipes.length) {
   return (
     <>
       <h4 className="my-3">My Recipes</h4>
@@ -65,6 +65,13 @@ function MyRecipesPage() {
       <h4 className="my-3">Shopping Cart</h4>
     </>
   );
+} else {
+  return (
+    <>
+      <h4 className="my-3">NO RECIPES</h4>
+    </>
+  );
+}
 }
 
 

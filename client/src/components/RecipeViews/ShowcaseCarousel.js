@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import '../style.css'
 
-import { customBadge, capitalizeName } from "../../utils/useTools";
+import { customBadge, capitalizeName } from "../../hooks/useTools";
 
 function ShowcaseCarousel({ recipes, tags }) {
   if (!recipes) return <p>NO RECIPES FOUND</p>
@@ -23,7 +23,7 @@ function ShowcaseCarousel({ recipes, tags }) {
           alt="Second slide"
         />
         <Carousel.Caption>
-          <h3 className='header'>{recipe.name}</h3>
+          <h3 className='header'>{recipe.recipeName}</h3>
           <div className='tagsContainer'>
             {tags ?
               recipe.tags.map((tagID) => (

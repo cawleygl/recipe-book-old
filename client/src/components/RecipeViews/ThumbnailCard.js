@@ -8,7 +8,7 @@ import Card from 'react-bootstrap/Card'
 
 import '../style.css'
 
-import { customBadge, capitalizeName, imageErrorHandler } from "../../utils/useTools";
+import { customBadge, capitalizeName, imageErrorHandler } from "../../hooks/useTools";
 
 function ThumbnailCard({ recipes }) {
   let log = false;
@@ -42,7 +42,7 @@ function ThumbnailCard({ recipes }) {
                 onError={(event) => imageErrorHandler(event.target)}
               />
               <Card.Body>
-                <Card.Title className='header'>{recipe.name}</Card.Title>
+                <Card.Title className='header'>{recipe.recipeName}</Card.Title>
                 {recipe.tags && tags ?
                   <Card.Title>
                     {recipe.tags.map((tagID) => (

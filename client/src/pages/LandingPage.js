@@ -9,7 +9,7 @@ import '../components/style.css'
 
 import ShowcaseCarousel from "../components/RecipeViews/ShowcaseCarousel";
 
-import { getRandomInt } from "../utils/useTools";
+import { getRandomInt } from "../hooks/useTools";
 
 
 const LandingPage = () => {

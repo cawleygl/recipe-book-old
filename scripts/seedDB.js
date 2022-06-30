@@ -10,7 +10,7 @@ mongoose.connect(
 
 const recipeSeed = [
   {
-    name: "Pasta alla Gricia",
+    recipeName: "Pasta alla Gricia",
     source: "Serious Eats",
     description: "A simple pasta dish",
     img: {
@@ -18,11 +18,11 @@ const recipeSeed = [
       data: null
     },
     ingredients: [
-      { name: "Guanciale", amount: 8, unit: "oz" },
-      { name: "Extra-virgin olive oil", amount: 1, unit: "tbsp" },
-      { name: "Rigatoni", amount: 12, unit: "oz" },
-      { name: "Pecorino Romano cheese", amount: 2, unit: "oz" },
-      { name: "Salt and Pepper", amount: null, unit: null },
+      { ingredientName: "Guanciale", ingredientAmount: 8, ingredientUnit: "oz" },
+      { ingredientName: "olive oil", ingredientAmount: 1, ingredientUnit: "tbsp", ingredientModifier: 'Extra-virgin' },
+      { ingredientName: "Rigatoni", ingredientAmount: 12, ingredientUnit: "oz" },
+      { ingredientName: "Pecorino Romano cheese", ingredientAmount: 2, ingredientUnit: "oz", ingredientModifier: "grated" },
+      { ingredientName: "Salt and Pepper", ingredientAmount: null, ingredientUnit: null },
     ],
     directions: [
       "Freeze guanciale for at least 15 minutes, and up to 45 minutes (partially freezing the guanciale makes it easier to slice). Using a sharp chef's knife, cut into 1/4-inch-thick planks, then cut planks into 1/4-inch-thick batons (lardons).",
@@ -37,7 +37,7 @@ const recipeSeed = [
     notes: "Don't forget the cheese",
   },
   {
-    name: "The Classic Burger",
+    recipeName: "The Classic Burger",
     source: "MyRecipes",
     description: "A classic hamburger",
     img: {
@@ -45,16 +45,16 @@ const recipeSeed = [
       data: null
     },
     ingredients: [
-      { name: "Ground Beef", amount: 1, unit: "pound" },
-      { name: "Egg", amount: 1, unit: "" },
-      { name: "Minced Onion", amount: 0.5, unit: "cup" },
-      { name: "Fine Dried Bread Crumbs", amount: 0.25, unit: "cup" },
-      { name: "Worcestershire", amount: 1, unit: "tbsp" },
-      { name: "Garlic", amount: 1, unit: "clove" },
-      { name: "Iceberg Lettuce", amount: 4, unit: "leaves" },
-      { name: "Tomato", amount: 1, unit: "" },
-      { name: "Red Onion", amount: 4, unit: "slice" },
-      { name: "Hamburger Buns", amount: null, unit: "" },
+      { ingredientName: "Ground Beef", ingredientAmount: 1, ingredientUnit: "pound" },
+      { ingredientName: "Egg", ingredientAmount: 1, ingredientUnit: "" },
+      { ingredientName: "Onion", ingredientAmount: 0.5, ingredientUnit: "cup", ingredientModifier: 'minced' },
+      { ingredientName: "Bread Crumbs", ingredientAmount: 0.25, ingredientUnit: "cup", ingredientModifier: 'fine-dried' },
+      { ingredientName: "Worcestershire", ingredientAmount: 1, ingredientUnit: "tbsp" },
+      { ingredientName: "Garlic", ingredientAmount: 1, ingredientUnit: "clove" },
+      { ingredientName: "Iceberg Lettuce", ingredientAmount: 4, ingredientUnit: "leaves" },
+      { ingredientName: "Tomato", ingredientAmount: 1, ingredientUnit: null },
+      { ingredientName: "Red Onion", ingredientAmount: 4, ingredientUnit: "slice" },
+      { ingredientName: "Hamburger Buns", ingredientAmount: null, ingredientUnit: null },
     ],
 
     directions: [
@@ -113,7 +113,7 @@ db.Recipe
   .then(data => {
     console.log(data.insertedCount + " recipe records inserted!");
   })
-  .then(() => db.Recipe.collection.createIndex({ "name": "text", "source": "text", "description": "text" }))
+  .then(() => db.Recipe.collection.createIndex({ "recipeName": "text", "source": "text", "description": "text" }))
 
   .catch(err => {
     console.error(err);

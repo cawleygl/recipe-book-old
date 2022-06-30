@@ -27,7 +27,7 @@ import { faPenToSquare, faScrewdriverWrench, faBook } from '@fortawesome/free-so
 
 import "../components/style.css"
 
-import { customBadge, capitalizeName, imageErrorHandler } from "../utils/useTools";
+import { customBadge, capitalizeName, imageErrorHandler, parseFractionAmount } from "../hooks/useTools";
 import CloseButton from "react-bootstrap/esm/CloseButton";
 import MyRecipesPage from "./MyRecipesPage";
 
@@ -74,7 +74,7 @@ function RecipeDetails() {
       let recipeRes = await API.getRecipeById(id)
       log && console.log(`Recipe ID# ${id} Response:`, recipeRes);
       setRecipeObject(recipeRes.data);
-      setRecipeName(recipeRes.data.name);
+      setRecipeName(recipeRes.data.recipeName);
       setRecipeSource(recipeRes.data.source);
       setRecipeDescription(recipeRes.data.description);
       setRecipeImgObject(recipeRes.data.img);
@@ -163,7 +163,7 @@ function RecipeDetails() {
   // Set Recipe object when variables change
   useEffect(() => {
     let newRecipe = {
-      name: recipeName,
+      recipeName: recipeName,
       source: recipeSource,
       description: recipeDescription,
       img: recipeImgObject,
@@ -235,7 +235,11 @@ function RecipeDetails() {
                 <tbody>
                   {ingredientArray.map((ingredient, index) => (
                     <tr key={index}>
-                      <td>{ingredient.amount} {ingredient.unit} {ingredient.name}</td>
+                      <td>
+                    {parseFractionAmount(ingredient.ingredientAmount)}{' '}
+                    {capitalizeName(ingredient.ingredientUnit)}{ingredient.ingredientUnit ? ' of ' : null}
+                    {capitalizeName(ingredient.ingredientName)}{ingredient.ingredientModifier ? ', ' : null}
+                    {capitalizeName(ingredient.ingredientModifier)}                        </td>
                     </tr>
                   ))}
                 </tbody>
