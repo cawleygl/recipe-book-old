@@ -6,7 +6,7 @@ import API from "../utils/API"
 
 
 function MyRecipesPage() {
-  let log = true;
+  let log = false;
 
   const [myRecipes, setMyRecipes] = useState([]);
   const [allTags, setAllTags] = useState([]);
@@ -15,7 +15,7 @@ function MyRecipesPage() {
   useEffect(() => {
     loadTags();
     let recipes = JSON.parse(localStorage.getItem('MyRecipes'));
-    console.log("Recipe IDs", recipes);
+    log && console.log("recipes", recipes);
     if (recipes) buildRecipeArray(recipes);
   }, [])
 
@@ -34,7 +34,6 @@ function MyRecipesPage() {
     };
   
   
-    console.log("recipes", recipes);
     let myRecipes = [];
 
     for (let i = 0; i < recipes.length; i++) {
@@ -42,7 +41,6 @@ function MyRecipesPage() {
       myRecipes.push(recipe);
     };
 
-    console.log("myRecipes", myRecipes);
     setMyRecipes(myRecipes);
   };
 

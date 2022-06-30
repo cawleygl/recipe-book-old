@@ -16,16 +16,16 @@ import Container from 'react-bootstrap/Container';
 import useForm from '../hooks/useForm';
 
 const Entry = () => {
-  let log = true;
+  let log = false;
   // Submit current recipe and save to db
   function handleFormSubmit() {
-    console.log("Callback function when form is submitted!");
+    log && console.log("Callback function when form is submitted!");
 
     log && console.log("Submit", values)
 
     API.saveRecipe(values)
       .then(res => log && console.log("res", res))
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   };
 
   //Custom hook call

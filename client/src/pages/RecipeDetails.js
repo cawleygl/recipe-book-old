@@ -32,7 +32,7 @@ import CloseButton from "react-bootstrap/esm/CloseButton";
 import MyRecipesPage from "./MyRecipesPage";
 
 function RecipeDetails() {
-  let log = true;
+  let log = false;
 
   // Setting our component's initial state
   const [allTags, setAllTags] = useState([]);
@@ -109,7 +109,7 @@ function RecipeDetails() {
 
   // Recipe Options Dropdown
   const handleRecipeEdit = () => {
-    console.log("Edit");
+    log && console.log("Edit");
   };
   const handleRecipeBookmark = () => {
     let myRecipes = JSON.parse(localStorage.getItem('MyRecipes'));
@@ -123,19 +123,19 @@ function RecipeDetails() {
     }
 
     localStorage.setItem('MyRecipes', JSON.stringify(myRecipes));
-    console.log("myRecipes", myRecipes);
-    console.log("Bookmark");
+    log && ("myRecipes", myRecipes);
+    log && console.log("Bookmark");
   };
   const handleRecipeCart = () => {
-    console.log("Cart");
+    log && console.log("Cart");
   };
   const handleRecipePrint = () => {
-    console.log("Print");
+    log && console.log("Print");
   };
 
   const handleRecipeOptions = (event) => {
     event = parseInt(event);
-    console.log(event);
+    log && console.log(event);
     switch (event) {
       case 0:
         handleRecipeEdit();

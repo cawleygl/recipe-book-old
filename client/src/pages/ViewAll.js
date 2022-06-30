@@ -6,7 +6,7 @@ import API from "../utils/API"
 
 
 function ViewAll() {
-  let log = true;
+  let log = false;
 
   const [allRecipes, setAllRecipes] = useState([]);
   const [allTags, setAllTags] = useState([]);

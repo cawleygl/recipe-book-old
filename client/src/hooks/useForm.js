@@ -4,6 +4,7 @@ import { omit } from 'lodash'
 import API from "../utils/API";
 
 const useForm = (callback) => {
+  let log = false;
   // Form Values
   // State
   const [values, setValues] = useState({
@@ -49,18 +50,6 @@ const useForm = (callback) => {
     ingredients: false
   });
 
-  useEffect(() => {
-    console.log("values", values);
-  }, [values]);
-
-  useEffect(() => {
-    console.log("errors", errors);
-  }, [errors]);
-
-  useEffect(() => {
-    console.log("touched", touched);
-  }, [touched]);
-
   // Currently activated item in directions and ingredients
   const [currentStep, setCurrentStep] = useState(0);
   const [currentItem, setCurrentItem] = useState(0);
@@ -74,7 +63,7 @@ const useForm = (callback) => {
 
         // add selectedState boolean (set to false)
         tagsRes.data.forEach(tag => tag.selectedState = false);
-        console.log("Loaded Tags:", tagsRes);
+        log && console.log("Loaded Tags:", tagsRes);
 
         // Set to loaded tags state variable
         setLoadedTags(tagsRes.data);
@@ -129,13 +118,9 @@ const useForm = (callback) => {
         else removeFromErrors(name);
         break;
       default:
-        console.log(`Name not recognized - Validate`)
+        console.error(`Name not recognized - Validate`)
         break;
     }
-  };
-  // A method to change the image entry type (link / upload)
-  const handleImageTypeChange = (event) => {
-    console.log(event)
   };
 
   // show popover when user tries to add an empty field
@@ -144,7 +129,6 @@ const useForm = (callback) => {
     let key = name;
     addErrorsObj[key] = true;
     setAddErrors(addErrorsObj)
-    console.log("EMPTY", name);
   };
 
   //A method to handle popover toggling
@@ -153,14 +137,12 @@ const useForm = (callback) => {
       let key = name;
       addErrorsObj[key] = false;
       setAddErrors(addErrorsObj)
-      console.log("EMPTY", name);
   };
 
   // A method to add an item to form inputs stored in arrays
   const handleAdd = (event) => {
     //To stop default events    
     event.persist();
-    console.log("BUTTON", event.target.type);
     // Name value - 'directions' or 'ingredients'
     let name;
     // Use text field name value on enter key press
@@ -170,17 +152,14 @@ const useForm = (callback) => {
     } else {
       name = event.target.closest('button').name;
     }
-    console.log('NAME', name);
     let submittingItem = values[name][values[name].length - 1];
 
     // Destructure values
     let arrayvalue = [...values[name]];
-    console.log("Values", arrayvalue)
 
     // Push empty item to array (string for directions, object for ingredients)
     switch (name) {
       case 'directions':
-        console.log('directions');
         // return if current direction is empty
         if (!submittingItem) {
           showEmptyItemPopover(name);
@@ -192,7 +171,6 @@ const useForm = (callback) => {
         setCurrentStep(arrayvalue.length - 1);
         break;
       case 'ingredients':
-        console.log('ingredients');
         // return if current ingredient name is empty
         if (!submittingItem.ingredientName) {
           showEmptyItemPopover(name);
@@ -204,14 +182,12 @@ const useForm = (callback) => {
         setCurrentItem(arrayvalue.length - 1);
         break;
       default:
-        console.log(`Name not recognized - handleAdd`)
+        console.error(`Name not recognized - handleAdd`)
         break;
     }
 
     let valuesObj = { ...values };
     valuesObj[name] = arrayvalue;
-    console.log("Add Array to Object:", valuesObj);
-
     setValues(valuesObj)
   };
 
@@ -220,23 +196,19 @@ const useForm = (callback) => {
     event.stopPropagation();
     const name = event.target.closest('tbody').dataset.name;
     const index = event.target.closest('button').dataset.index;
-    console.log("index", index, name);
 
     // Do not delete last step, only clear
     if (values[name].length <= 1) {
-      console.log('Clear last item')
       let valuesObj = { ...values };
       switch (name) {
         case 'directions':
-          console.log('directions')
           valuesObj[name] = [""];
           break;
         case 'ingredients':
-          console.log('ingredients')
           valuesObj[name] = [{ ingredientAmount: "", ingredientUnit: "", ingredientName: "", ingredientModifier: "" }];
           break;
         default:
-          console.log(`Name not recognized - handleDelete`)
+          console.error(`Name not recognized - handleDelete`)
           break;
       }
       setValues(valuesObj);
@@ -245,30 +217,24 @@ const useForm = (callback) => {
 
     // Destructure values
     let arrayvalue = [...values[name]];
-    console.log("Values", arrayvalue)
-
     // Remove value at index
     arrayvalue.splice(index, 1);
-    console.log("arrayvalue", arrayvalue);
 
     switch (name) {
       case 'directions':
-        console.log('directions')
         setCurrentStep(arrayvalue.length - 1);
         break;
       case 'ingredients':
-        console.log('ingredients')
         setCurrentItem(arrayvalue.length - 1);
         break;
       default:
-        console.log(`Name not recognized - handleDelete`)
+        console.error(`Name not recognized - handleDelete`)
         break;
     }
 
     // Set array in state
     let valuesObj = { ...values };
     valuesObj[name] = arrayvalue;
-    console.log("Add Array to Object:", valuesObj);
     setValues(valuesObj)
 
   };
@@ -285,19 +251,16 @@ const useForm = (callback) => {
   const handleSelect = (event) => {
     const name = event.target.closest('tbody').dataset.name;
     const index = event.target.closest('tr').dataset.index;
-    console.log('select', name, parseInt(index));
 
     switch (name) {
       case 'directions':
-        console.log('directions')
         setCurrentStep(parseInt(index));
         break;
       case 'ingredients':
-        console.log('ingredients')
         setCurrentItem(parseInt(index));
         break;
       default:
-        console.log(`Name not recognized - handleSelect`)
+        console.error(`Name not recognized - handleSelect`)
         break;
     }
   };
@@ -308,7 +271,6 @@ const useForm = (callback) => {
     itemObject[name] = value;
     let valuesObj = { ...values };
     valuesObj['ingredients'][currentItem] = itemObject;
-    console.log("Values:", valuesObj);
     setValues(valuesObj)
   };
 
@@ -385,7 +347,7 @@ const useForm = (callback) => {
         break;
 
       default:
-        console.log(`Name not recognized - Add Value`)
+        console.error(`Name not recognized - Add Value`)
         break;
     }
   };
@@ -399,9 +361,9 @@ const useForm = (callback) => {
     let val = event.target.value;
     let files = event.target.files ? event.target.files[0] : null;
 
-    console.log("Name", name);
-    console.log("Value", val);
-    console.log("Files", files);
+    log && console.log("Name", name);
+    log && console.log("Value", val);
+    log && console.log("Files", files);
 
     // Set touched value to true
     touchedField(name);
@@ -422,7 +384,6 @@ const useForm = (callback) => {
     currentItem,
     addErrors,
     loadedTags,
-    handleImageTypeChange,
     handleChange,
     handleSubmit,
     handleSelect,

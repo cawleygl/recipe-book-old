@@ -23,7 +23,7 @@ const Search = () => {
           res.data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
           setSearchResults(res.data);
         })
-        .catch(err => console.log(err));
+        .catch(err => console.error(err));
     }
   };
 

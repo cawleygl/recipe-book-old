@@ -17,7 +17,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import { capitalizeName, customBadge, colorButton } from "../../hooks/useTools";
 
 const EditTagsModal = ({ tags, setShowModal, loadedTags, setLoadedTags }) => {
-  let log = true;
+  let log = false;
 
   //Tab state
   const [key, setKey] = useState('newTag');
@@ -175,7 +175,6 @@ const EditTagsModal = ({ tags, setShowModal, loadedTags, setLoadedTags }) => {
   const handleTagSelect = (event) => {
     const tagId = event.target.dataset.tagid;
     const tagEdit = tags.find(tag => tag._id === tagId)
-    console.log(tagId, tagEdit);
     setTagEdit(tagEdit);
     setParsedNewTagName(tagEdit.name);
     setNewTagName(tagEdit.name);

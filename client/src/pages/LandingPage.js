@@ -13,7 +13,7 @@ import { getRandomInt } from "../hooks/useTools";
 
 
 const LandingPage = () => {
-  let log = true;
+  let log = false;
 
   const [allRecipes, setAllRecipes] = useState([]);
   const [allTags, setAllTags] = useState([]);
