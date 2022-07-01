@@ -4,7 +4,7 @@ import { omit } from 'lodash'
 import API from "../utils/API";
 
 const useForm = (callback) => {
-  let log = false;
+  let log = true;
   // Form Values
   // State
   const [values, setValues] = useState({
@@ -39,10 +39,14 @@ const useForm = (callback) => {
   const [errors, setErrors] = useState({
     description: errorMessages.description,
     directions: errorMessages.directions,
-    ingredientName: errorMessages.ingredients,
+    ingredientName: errorMessages.ingredientName,
     recipeName: errorMessages.recipeName,
     source: errorMessages.source
   });
+  useEffect(() => {
+    console.log("ERORRS", errors);
+  }, [errors])
+
   // Add Empty Field popover booleans
   // State
   const [addErrors, setAddErrors] = useState({
@@ -102,7 +106,7 @@ const useForm = (callback) => {
   const validateField = (name, value) => {
     //A function to validate each input values
     switch (name) {
-      case 'recipeName': case 'source': case 'description': case 'notes':
+      case 'recipeName': case 'source': case 'description':
         if (!value) addToErrors(name);
         else removeFromErrors(name);
         break;
@@ -117,8 +121,11 @@ const useForm = (callback) => {
         if (!value && values.directions.length <= 1) addToErrors(name);
         else removeFromErrors(name);
         break;
+      case 'notes': case 'tag': case 'imgLink': case 'imgUpload':
+        log && console.log(`Field: ${name} not validated`);
+        break;
       default:
-        console.error(`Name not recognized - Validate`)
+        console.error(`Name not recognized - validateField`, name)
         break;
     }
   };
@@ -133,10 +140,10 @@ const useForm = (callback) => {
 
   //A method to handle popover toggling
   const handleToggle = (event, name) => {
-      let addErrorsObj = { ...addErrors };
-      let key = name;
-      addErrorsObj[key] = false;
-      setAddErrors(addErrorsObj)
+    let addErrorsObj = { ...addErrors };
+    let key = name;
+    addErrorsObj[key] = false;
+    setAddErrors(addErrorsObj)
   };
 
   // A method to add an item to form inputs stored in arrays
@@ -145,10 +152,10 @@ const useForm = (callback) => {
     event.persist();
     // Name value - 'directions' or 'ingredients'
     let name;
-    // Use text field name value on enter key press
+    // Use input group (parent of text fields) name value on enter key press
     if (event.target.type === 'textarea' || event.target.type === 'text') {
       name = event.target.closest('.input-group').dataset.name;
-      // use closest button name (can click plus icon) on button click
+      // use closest button name (in case icon is clicked) on button click
     } else {
       name = event.target.closest('button').name;
     }
@@ -177,12 +184,12 @@ const useForm = (callback) => {
           return;
         }
         // Add empty item
-        arrayvalue.push({ ingredientAmount: "", ingredientUnit: "", ingredientName: "" });
+        arrayvalue.push({ ingredientAmount: "", ingredientUnit: "", ingredientName: "", ingredientModifier: "" });
         // change current step to last step
         setCurrentItem(arrayvalue.length - 1);
         break;
       default:
-        console.error(`Name not recognized - handleAdd`)
+        console.error(`Name not recognized - handleAdd`, name)
         break;
     }
 
@@ -208,7 +215,7 @@ const useForm = (callback) => {
           valuesObj[name] = [{ ingredientAmount: "", ingredientUnit: "", ingredientName: "", ingredientModifier: "" }];
           break;
         default:
-          console.error(`Name not recognized - handleDelete`)
+          console.error(`Name not recognized - handleDelete`, name)
           break;
       }
       setValues(valuesObj);
@@ -228,7 +235,7 @@ const useForm = (callback) => {
         setCurrentItem(arrayvalue.length - 1);
         break;
       default:
-        console.error(`Name not recognized - handleDelete`)
+        console.error(`Name not recognized - handleDelete`, name)
         break;
     }
 
@@ -240,11 +247,21 @@ const useForm = (callback) => {
   };
 
   const handleSubmit = (event) => {
-    if (event) event.preventDefault();
     if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
       callback();
     } else {
-      alert(JSON.stringify(errors));
+      event.preventDefault();
+      // Alert user with error messages
+      let errorMessages = Object.values(errors);
+      errorMessages.map(errorMessage => alert(errorMessage));
+      // Set touched values to true to show errors
+      setTouched({
+        description: true,
+        directions: true,
+        ingredientName: true,
+        recipeName: true,
+        source: true
+      });
     }
   };
 
@@ -260,7 +277,7 @@ const useForm = (callback) => {
         setCurrentItem(parseInt(index));
         break;
       default:
-        console.error(`Name not recognized - handleSelect`)
+        console.error(`Name not recognized - handleSelect`, name)
         break;
     }
   };
@@ -345,9 +362,8 @@ const useForm = (callback) => {
       case 'tag':
         setTagValue(name, value);
         break;
-
       default:
-        console.error(`Name not recognized - Add Value`)
+        log && console.log(`Field: ${name} not updated`);
         break;
     }
   };

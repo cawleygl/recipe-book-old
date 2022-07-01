@@ -37,6 +37,7 @@ const IngredientEntry = ({ handleChange, values, errors, touched, addErrors, cur
               isInvalid={errors.ingredientName && touched.ingredientName}
               onChange={handleChange}
               value={values.ingredients[currentItem].ingredientAmount}
+              onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
               aria-label="Text input ingredient amount"
               aria-describedby="recipe-ingredient-entry-amount"
             />
@@ -53,9 +54,9 @@ const IngredientEntry = ({ handleChange, values, errors, touched, addErrors, cur
               isInvalid={errors.ingredientName && touched.ingredientName}
               onChange={handleChange}
               value={values.ingredients[currentItem].ingredientUnit}
+              onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
               aria-label="Text input recipe ingredient unit"
               aria-describedby="recipe-ingredient-entry-unit"
-              onKeyDown={(event) => handleEnterKeyDown(event, handleAdd)}
             />
           </FloatingLabel>
           <OverlayTrigger
@@ -84,9 +85,9 @@ const IngredientEntry = ({ handleChange, values, errors, touched, addErrors, cur
                 isInvalid={errors.ingredientName && touched.ingredientName}
                 onChange={handleChange}
                 value={values.ingredients[currentItem].ingredientName}
+                onKeyDown={(event) => handleEnterKeyDown(event, handleAdd)}
                 aria-label="Text input recipe ingredient name"
                 aria-describedby="recipe-ingredient-entry-name"
-                onKeyDown={(event) => handleEnterKeyDown(event, handleAdd)}
               />
             </FloatingLabel>
           </OverlayTrigger>
@@ -102,9 +103,9 @@ const IngredientEntry = ({ handleChange, values, errors, touched, addErrors, cur
               isInvalid={errors.ingredientName && touched.ingredientName}
               onChange={handleChange}
               value={values.ingredients[currentItem].ingredientModifier}
+              onKeyDown={(event) => handleEnterKeyDown(event, handleAdd)}
               aria-label="Text input recipe ingredient modifier"
               aria-describedby="recipe-ingredient-entry-modifier"
-              onKeyDown={(event) => handleEnterKeyDown(event, handleAdd)}
             />
           </FloatingLabel>
           <Button onClick={handleAdd} name='ingredients' variant="outline-primary" id="add-item-button">

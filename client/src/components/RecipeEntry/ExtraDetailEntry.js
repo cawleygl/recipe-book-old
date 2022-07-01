@@ -11,7 +11,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import EditTagsModal from "./EditTagsModal";
 
-import { customBadge } from "../../hooks/useTools";
+import { customBadge, handleEnterKeyDown } from "../../hooks/useTools";
 
 const ExtraDetailsEntry = ({ handleChange, values, errors, allTags, setAllTags, loadedTags, selectedTags, setSelectedTags, setRecipeNotes }) => {
   // Tag Modal
@@ -36,7 +36,9 @@ const ExtraDetailsEntry = ({ handleChange, values, errors, allTags, setAllTags, 
                   label={customBadge(tag.name, tag._id, tag.tagColor, tag.textColor)}
                   value={tag._id}
                   checked={loadedTags[index].selectedState}
-                  onChange={handleChange} />
+                  onChange={handleChange} 
+                  onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
+                  />
               ))}
             </Col>
           </Row>
@@ -67,8 +69,10 @@ const ExtraDetailsEntry = ({ handleChange, values, errors, allTags, setAllTags, 
               onChange={handleChange}
               value={values.notes}
               placeholder="Notes"
+              onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
               aria-label="Text input recipe notes"
-              aria-describedby="recipe-notes-entry" />
+              aria-describedby="recipe-notes-entry" 
+              />
           </FloatingLabel>
           <Form.Text>Add any important reminders or additional information about this dish here.</Form.Text>
         </Form.Group>

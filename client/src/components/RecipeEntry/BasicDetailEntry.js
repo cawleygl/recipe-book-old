@@ -8,6 +8,8 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 import ThumbnailCard from "../../components/RecipeViews/ThumbnailCard";
 
+import { handleEnterKeyDown } from "../../hooks/useTools";
+
 const BasicDetailEntry = ({
   handleChange, values, errors, touched, handleImageTypeChange,
   recipeName, setRecipeName,
@@ -39,6 +41,7 @@ const BasicDetailEntry = ({
                   onChange={handleChange}
                   value={values.recipeName}
                   placeholder="Name"
+                  onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
                   aria-label="Text input recipe name"
                   aria-describedby="recipe-name-entry"
                 />
@@ -60,6 +63,7 @@ const BasicDetailEntry = ({
                   onChange={handleChange}
                   value={values.source}
                   placeholder="Source"
+                  onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
                   aria-label="Text input recipe source"
                   aria-describedby="recipe-source-entry"
                 />
@@ -81,6 +85,7 @@ const BasicDetailEntry = ({
                 onChange={handleChange}
                 value={values.description}
                 placeholder="Description"
+                onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
                 aria-label="Text input recipe description"
                 aria-describedby="recipe-description-entry"
               />
@@ -111,11 +116,6 @@ const BasicDetailEntry = ({
                       accept="image/*"
                       name='imgUpload'
                       onChange={handleChange}
-                      // value={values.img.preview}
-                      // onChange={(event) => setRecipeImgObject({
-                      //   preview: URL.createObjectURL(event.target.files[0]),
-                      //   data: event.target.files[0],
-                      // })}
                       aria-label="File input recipe image upload"
                       aria-describedby="recipe-image-upload"
                     />
@@ -128,13 +128,9 @@ const BasicDetailEntry = ({
                       type="text"
                       name='imgLink'
                       onChange={handleChange}
-                      // value={values.img.preview}
-                      // onChange={(event) => setRecipeImgObject({
-                      //   preview: event.target.value,
-                      //   data: null,
-                      // })}
                       aria-label="Text input recipe image url"
                       aria-describedby="recipe-image-link"
+                      onKeyDown={(event) => handleEnterKeyDown(event, handleChange)}
                     />
                     <Form.Text>Paste an image URL here to use an image from the web.</Form.Text>
                   </>

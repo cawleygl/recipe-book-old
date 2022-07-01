@@ -20,9 +20,21 @@ const Entry = () => {
   // Submit current recipe and save to db
   function handleFormSubmit() {
     log && console.log("Callback function when form is submitted!");
-
     log && console.log("Submit", values)
 
+    // Remove empty values at the end of ingredients and directions if present
+    let { ingredients, directions } = values;
+    let finalDirection = directions[directions.length - 1];
+    let finalIngredient = ingredients[ingredients.length - 1];
+    let {ingredientAmount: amount, ingredientUnit: unit, ingredientName: name, ingredientModifier: mod} = finalIngredient;
+
+    console.log(amount === "" && unit === "" && name === "" && mod === "");
+    console.log(finalDirection === '');
+
+    if (amount === "" && unit === "" && name === "" && mod === "") ingredients.pop();
+    if (finalDirection === '') directions.pop();
+
+    // Save to DB
     API.saveRecipe(values)
       .then(res => log && console.log("res", res))
       .catch(err => console.error(err));
@@ -97,8 +109,7 @@ const Entry = () => {
   return (
     <Container>
       <Form onSubmit={(event) => {
-        event.preventDefault();
-        // handleSubmit();
+        handleSubmit(event);
       }}>
         <h2 className="my-3">New Recipe</h2>
         <Row>
@@ -170,7 +181,7 @@ const Entry = () => {
           />
         </Row>
 
-        <Button onClick={handleSubmit} className="my-3" variant="primary" id="submit-recipe">
+        <Button type="submit" className="my-3" variant="primary" id="submit-recipe">
           Submit Recipe
         </Button>
 
