@@ -4,7 +4,7 @@ import { omit } from 'lodash'
 import API from "../utils/API";
 
 const useForm = (callback) => {
-  let log = true;
+  let log = false;
   // Form Values
   // State
   const [values, setValues] = useState({
