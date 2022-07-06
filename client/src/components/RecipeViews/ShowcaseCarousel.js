@@ -1,10 +1,11 @@
 import React from "react";
 import Carousel from 'react-bootstrap/Carousel'
+import Image from 'react-bootstrap/Image'
 import { Link } from "react-router-dom";
 
 import '../style.css'
 
-import { customBadge, capitalizeName } from "../../hooks/useTools";
+import { customBadge, capitalizeName, imageErrorHandler } from "../../hooks/useTools";
 
 function ShowcaseCarousel({ recipes, tags }) {
   if (!recipes) return <p>NO RECIPES FOUND</p>
@@ -17,9 +18,10 @@ function ShowcaseCarousel({ recipes, tags }) {
 {recipes.map((recipe) => (
     <Carousel.Item key={recipe._id}>
       <Link to={`/recipes/${recipe._id}`}>
-        <img
+        <Image
           className="carousel-img d-block w-100"
           src={recipe.img.preview}
+          onError={(event) => imageErrorHandler(event.target)}
           alt="Second slide"
         />
         <Carousel.Caption>
